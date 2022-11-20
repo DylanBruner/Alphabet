@@ -34,9 +34,9 @@ public class Radar {
         //Update the enemy in our database
         if (enemies.containsKey(e.getName())){
             target = enemies.get(e.getName());
-            target.update(e);
+            target.update(e, alphabet);
         } else {
-            target = new Enemy(e, alphabet.myLocation);
+            target = new Enemy(e, alphabet.myLocation, alphabet);
             enemies.put(e.getName(), target);
         }
     }
