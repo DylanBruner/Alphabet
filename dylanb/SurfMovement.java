@@ -8,7 +8,7 @@ import java.util.LinkedList;
 
 public class SurfMovement {
     //Components stuff
-    Alphabet alphabet;
+    Alphabet alphabet; //Parent robot
     AlphabetLogger logger = new AlphabetLogger("SurfMovement");
 
     //Movement stuff
@@ -81,8 +81,7 @@ public class SurfMovement {
         alphabet.radar.target.energy -= Rules.getBulletDamage(e.getBullet().getPower());
     }
     public void onBulletHitBullet(BulletHitBulletEvent e) {
-        logAndRemoveWave(new Point2D.Double(e.getBullet().getX(),
-        e.getBullet().getY()));
+        logAndRemoveWave(new Point2D.Double(e.getBullet().getX(), e.getBullet().getY()));
     }
     public void onCustomEvent(CustomEvent e) {
         alphabet.removeCustomEvent(e.getCondition()); //Remove waves
@@ -136,6 +135,7 @@ public class SurfMovement {
     public void logAndRemoveWave(Point2D.Double hitLocation) {
         Wave w = surfWave;
         int x = 0;
+        System.out.println("Hit at " + hitLocation);
         do {
             try {
                 if (Math.abs(w.distanceToPoint(hitLocation) - w.distance) < 100) {
@@ -145,7 +145,9 @@ public class SurfMovement {
                     return;
                 }
                 w = (Wave)enemyWaves.get(x++);
-            } catch (Exception ex) { }
+            } catch (Exception ex) { 
+                logger.error(ex.getMessage());
+            }
         } while (x <= enemyWaves.size());
     }
 

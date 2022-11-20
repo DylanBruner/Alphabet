@@ -1,7 +1,7 @@
 package dylanb;
 
 import java.util.Hashtable;
-import java.awt.geom.*;
+//import java.awt.geom.*;
 
 import robocode.*;
 import robocode.util.Utils;
@@ -14,18 +14,25 @@ public class Radar {
     //Radar stuff
     public Enemy target;
     public Hashtable<String, Enemy> enemies = new Hashtable<String, Enemy>();
+    public boolean targetLocked = false;
 
     public void init(Alphabet robot){
         alphabet = robot;
         logger.log("Radar initialized");
+
+        target = new Enemy();
     }
 
     public void execute(){
         //alphabet.setTurnRadarRight(Double.POSITIVE_INFINITY);
-        alphabet.turnRadarRightRadians(1);
+        //alphabet.setTurnRadarRight(Double.POSITIVE_INFINITY);
+        if (!targetLocked){
+            alphabet.setTurnRadarRight(Double.POSITIVE_INFINITY);
+        }
     }
 
     public void onScannedRobot(ScannedRobotEvent e) {
+        targetLocked = true;
         double absBearing = e.getBearingRadians() + alphabet.getHeadingRadians();
 
         //Lock the radar on the enemy
@@ -36,8 +43,19 @@ public class Radar {
             target = enemies.get(e.getName());
             target.update(e, alphabet);
         } else {
-            target = new Enemy(e, alphabet.myLocation, alphabet);
+            target = new Enemy();
+            target.populateData(e, alphabet.myLocation, alphabet);
             enemies.put(e.getName(), target);
+        }
+    }
+
+    public void onRobotDeath(RobotDeathEvent e) {
+        if (enemies.containsKey(e.getName())){
+            enemies.get(e.getName()).alive = false;
+        }
+
+        if (target.name.equals(e.getName())){
+            targetLocked = false;
         }
     }
 }

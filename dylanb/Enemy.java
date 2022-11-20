@@ -9,7 +9,9 @@ public class Enemy {
     double bearing, distance, energy, heading, velocity, lastVelocity, lastDistance, absBearing;
     Point2D.Double location, lastLocation;
 
-    public Enemy(ScannedRobotEvent e, Point2D.Double myLocation, Alphabet alphabet){
+    boolean alive = true;
+
+    public void populateData(ScannedRobotEvent e, Point2D.Double myLocation, Alphabet alphabet){
         this.name     = e.getName();
         this.bearing  = e.getBearing();
         this.absBearing = e.getBearingRadians() + alphabet.getHeadingRadians();
