@@ -3,6 +3,7 @@ package dylanb;
 import robocode.*;
 import java.awt.Color;
 import java.awt.geom.*;
+//We could store data about the enemy on the disk to preserve it and maybe already having targeting data for like melee would be good
 
 public class Alphabet extends AdvancedRobot
 {
@@ -51,7 +52,6 @@ public class Alphabet extends AdvancedRobot
 
 	//Events 'n stuff
 	public void onScannedRobot(ScannedRobotEvent e) {
-		if (movementMode == MOVEMENT_MELEE) meleeMove.onScannedRobot(e);
 		radar.onScannedRobot(e);
 		//if (movementMode == MOVEMENT_SURFING) surferMove.onScannedRobot(e);
 		guessFactorGun.onScannedRobot(e);
@@ -77,9 +77,5 @@ public class Alphabet extends AdvancedRobot
 	public void onRobotDeath(RobotDeathEvent e) {
 		radar.onRobotDeath(e);
 		if (movementMode == MOVEMENT_MELEE) meleeMove.onRobotDeath(e);
-	}
-
-	public void onCustomEvent(CustomEvent e) {
-		//if (movementMode == MOVEMENT_SURFING) surferMove.onCustomEvent(e);
 	}
 }

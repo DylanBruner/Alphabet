@@ -11,81 +11,19 @@ public class SurfMovement {
     Alphabet alphabet; //Parent robot
     AlphabetLogger logger = new AlphabetLogger("SurfMovement");
 
-    //Movement stuff
-    static final int GF_ZERO = 23;
-    static final int GF_ONE  = 46;
-
-    static final double WALL_STICK        = 140;
-    private static double surfStats[][][] = new double[4][5][GF_ONE+1];
-    public static LinkedList<Wave> enemyWaves;
-    private static Wave surfWave;
-    private static Wave nextSurfWave;
-    private static double lastLatVel;
-    private static double lastAbsBearingRadians;
-    private static double goAngle;
-    
     public void init(Alphabet robot){
         logger.log("SurfMovment initialized");
         alphabet = robot;
 
-        enemyWaves = new LinkedList<Wave>();
     }
 
     public void execute(){}
 
-    public void onScannedRobot(ScannedRobotEvent e) {
-        Wave newWave;
-        int direction;
+    public void onScannedRobot(ScannedRobotEvent e) {}
 
-        double bulletPower;
-        if ((bulletPower = alphabet.radar.target.energy - e.getEnergy()) <= 3 && bulletPower > 0) {
-            (newWave = nextSurfWave).bulletSpeed = Rules.getBulletSpeed(bulletPower);
-            alphabet.addCustomEvent(newWave);
-            enemyWaves.add(newWave);
-        }
-
-        (nextSurfWave = newWave = new Wave()).directAngle = lastAbsBearingRadians;
-        newWave.alphabet = alphabet; nextSurfWave.alphabet = alphabet;
-        newWave.waveGuessFactors = surfStats[(int)(Math.min((alphabet.radar.target.lastDistance+50)/200, 3))][(int)((Math.abs(lastLatVel)+1)/2)];
-        newWave.orientation = direction = MathUtils.sign(lastLatVel);
-        newWave.sourceLocation = alphabet.radar.target.location = 
-            project((alphabet.myLocation),
-                    alphabet.radar.target.absBearing = alphabet.radar.target.absBearing = alphabet.getHeadingRadians() + e.getBearingRadians(), 
-                    alphabet.radar.target.lastDistance = e.getDistance());
-
-        (newWave = new Wave()).sourceLocation = alphabet.myLocation;
-        newWave.alphabet = alphabet;
-        alphabet.addCustomEvent(newWave);
-
-        //setTurnRadarRightRadians(Utils.normalRelativeAngle((newWave.directAngle = enemyAbsoluteBearing) - getRadarHeadingRadians()) * 2);
-        //Radar locking is already done in Radar.java
-
-        // WaveSurfing
-        try {
-            goAngle = (surfWave = (Wave)(enemyWaves.getFirst()))
-                .absBearing(alphabet.myLocation) +
-                MathUtils.A_LITTLE_LESS_THAN_HALF_PI *
-                    (direction = (MathUtils.sign(checkDanger(-1) - checkDanger(1))));
-        } catch (Exception ex) { }
-
-        double angle;
-        alphabet.setTurnRightRadians(Math.tan(angle=wallSmoothing(alphabet.myLocation, goAngle, direction) - alphabet.getHeadingRadians()));
-        alphabet.setAhead(Math.cos(angle) * Double.POSITIVE_INFINITY);
-    }
-
-    public void onHitByBullet(HitByBulletEvent e) {
-        alphabet.radar.target.energy += e.getBullet().getPower() * 3;
-        logAndRemoveWave(alphabet.myLocation);
-    }
-    public void onBulletHit(BulletHitEvent e) {
-        alphabet.radar.target.energy -= Rules.getBulletDamage(e.getBullet().getPower());
-    }
-    public void onBulletHitBullet(BulletHitBulletEvent e) {
-        logAndRemoveWave(new Point2D.Double(e.getBullet().getX(), e.getBullet().getY()));
-    }
-    public void onCustomEvent(CustomEvent e) {
-        alphabet.removeCustomEvent(e.getCondition()); //Remove waves
-    }
+    public void onHitByBullet(HitByBulletEvent e) {}
+    public void onBulletHit(BulletHitEvent e) {}
+    public void onBulletHitBullet(BulletHitBulletEvent e) {}
 
     //Helpers 'n stuff
     private double checkDanger(int direction) {
