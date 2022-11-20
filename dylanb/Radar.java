@@ -36,7 +36,9 @@ public class Radar {
         double absBearing = e.getBearingRadians() + alphabet.getHeadingRadians();
 
         //Lock the radar on the enemy
-        alphabet.setTurnRadarRightRadians(Utils.normalRelativeAngle(absBearing - alphabet.getRadarHeadingRadians()) * 2);
+        if (alphabet.movementMode != alphabet.MOVEMENT_MELEE){
+            alphabet.setTurnRadarRightRadians(Utils.normalRelativeAngle(absBearing - alphabet.getRadarHeadingRadians()) * 2);
+        }
 
         //Update the enemy in our database
         if (enemies.containsKey(e.getName())){

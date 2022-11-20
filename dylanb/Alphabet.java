@@ -3,6 +3,9 @@ package dylanb;
 import robocode.*;
 import java.awt.Color;
 import java.awt.geom.*;
+
+import java.awt.event.MouseEvent;
+
 //We could store data about the enemy on the disk to preserve it and maybe already having targeting data for like melee would be good
 
 public class Alphabet extends AdvancedRobot
@@ -13,17 +16,18 @@ public class Alphabet extends AdvancedRobot
 	SurfMovement surferMove       = new SurfMovement();
 	MeleeMovement meleeMove       = new MeleeMovement();
 	Radar radar                   = new Radar();
+	Painting debugOverlay         = new Painting();
 	AlphabetLogger logger         = new AlphabetLogger("Main");
 
 	//Auto movement mode
-	public static final int MOVEMENT_SURFING = 0;
-	public static final int MOVEMENT_MELEE   = 1;
-	public static int movementMode = -1;
+	public final int MOVEMENT_SURFING = 0;
+	public final int MOVEMENT_MELEE   = 1;
+	public int movementMode = -1;
 
 	//Auto gun
-	public static final int GUN_GUESS_FACTOR = 0;
-	public static final int GUN_LINEAR       = 1;
-	public static int gunMode = GUN_LINEAR;
+	public final int GUN_GUESS_FACTOR = 0;
+	public final int GUN_LINEAR       = 1;
+	public int selectedGun = GUN_LINEAR;
 
 	//Other public variables
 	public Point2D.Double myLocation;
@@ -38,6 +42,7 @@ public class Alphabet extends AdvancedRobot
 		linearGun.init(this);
 		radar.init(this);
 		meleeMove.init(this);
+		debugOverlay.init(this);
 
 		//Setup robot
 		setAdjustGunForRobotTurn(true);
@@ -46,6 +51,8 @@ public class Alphabet extends AdvancedRobot
 
 		//Main
 		while (true){
+			radar.execute();
+
 			myLocation = new Point2D.Double(getX(), getY());
 			if (getOthers() > 1 && movementMode != MOVEMENT_MELEE) {
 				logger.log("Switching to melee movement");
@@ -59,22 +66,31 @@ public class Alphabet extends AdvancedRobot
 			if (movementMode == MOVEMENT_MELEE) meleeMove.execute();
 			
 			//Auto gun
-			if (gunMode == GUN_GUESS_FACTOR) guessFactorGun.execute();
-			else if (gunMode == GUN_LINEAR) linearGun.execute();
+			if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.execute();
+			else if (selectedGun == GUN_LINEAR) linearGun.execute();
 
-			radar.execute();
+			vGunManager.execute();
 			execute();
 		}
+	}
+
+	//Few helpers i need
+	public double getFirePower(){
+		return Math.min(400 / myLocation.distance(radar.target.location), 3);
 	}
 
 	//Events 'n stuff
 	public void onScannedRobot(ScannedRobotEvent e) {
 		radar.onScannedRobot(e);
+		//update target location
+		//radar.target.location = new Point2D.Double(getX() + Math.sin(Math.toRadians(getHeading() + e.getBearing())) * e.getDistance(), 
+		//										   getY() + Math.cos(Math.toRadians(getHeading() + e.getBearing())) * e.getDistance());
+		
 		if (movementMode == MOVEMENT_SURFING) surferMove.onScannedRobot(e);
 		
 		//Multi-gun
-		if (gunMode == GUN_GUESS_FACTOR) guessFactorGun.onScannedRobot(e);
-		else if (gunMode == GUN_LINEAR) linearGun.onScannedRobot(e);
+		if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.onScannedRobot(e);
+		else if (selectedGun == GUN_LINEAR) linearGun.onScannedRobot(e);
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {
@@ -85,13 +101,13 @@ public class Alphabet extends AdvancedRobot
 		if (movementMode == MOVEMENT_SURFING) surferMove.onBulletHit(e);
 
 		//Multi-gun
-		if (gunMode == GUN_GUESS_FACTOR) guessFactorGun.onBulletHit(e);
+		if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.onBulletHit(e);
 		//else if (gunMode == GUN_LINEAR) linearGun.onBulletHit(e);
 	}
 
 	public void onBulletMissed(BulletMissedEvent e) {
 		//Multi-gun
-		if (gunMode == GUN_GUESS_FACTOR) guessFactorGun.onBulletMissed(e);
+		if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.onBulletMissed(e);
 	}
 
 	public void onBulletHitBullet(BulletHitBulletEvent e) {
@@ -101,5 +117,14 @@ public class Alphabet extends AdvancedRobot
 	public void onRobotDeath(RobotDeathEvent e) {
 		radar.onRobotDeath(e);
 		if (movementMode == MOVEMENT_MELEE) meleeMove.onRobotDeath(e);
+	}
+
+	@Override
+	public void onPaint(java.awt.Graphics2D g) {
+		debugOverlay.onPaint(g);
+	}
+
+	public void onMouseMoved(MouseEvent e) {
+		debugOverlay.onMouseMoved(e);
 	}
 }
