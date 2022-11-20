@@ -69,6 +69,29 @@ public class GuessFactorGun {
             waves.add(newWave);
         }
     }
+    public double doGuessFactorGun(double absBearing, double power){
+        //NOTE: RETURNS RELATIVE RADIANS
+
+        long time = alphabet.getTime();
+        //Return the angle we should turn the gun
+        int[] currentStats = stats;
+        WaveBullet newWave = new WaveBullet(alphabet.myLocation, absBearing, power, direction, time, currentStats);
+
+        //Fire the bullet
+        int bestIndex = 15; //Start with the middle index
+        for (int i=0; i < stats.length; i++){
+            if (currentStats[i] < currentStats[bestIndex]){
+                bestIndex = i;
+            }
+        }
+
+        double guessFactor = (double)(bestIndex - (stats.length - 1) / 2) / ((stats.length - 1) / 2);
+        double angleOffset = direction * guessFactor * newWave.maxEscapeAngle();
+        double gunAdjust = Utils.normalRelativeAngle(absBearing - alphabet.getGunHeadingRadians() + angleOffset);
+
+        return gunAdjust;
+    }
+
     public void onBulletHit(BulletHitEvent e) {}
     public void onBulletMissed(BulletMissedEvent e) {}
 

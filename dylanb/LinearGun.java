@@ -39,8 +39,8 @@ public class LinearGun {
     }
 
     public double doLinearGun(ScannedRobotEvent e, double bulletPower){
+        //NOTE: RETURNS RELATIVE RADIANS
         Point2D.Double predictedEnemyLocation = estimateRobotLocation(e, bulletPower); //Guess location based on current movement
-        
         return Utils.normalRelativeAngle(MathUtils.getAngle(predictedEnemyLocation, alphabet.myLocation) - alphabet.getGunHeadingRadians());
     }
 
