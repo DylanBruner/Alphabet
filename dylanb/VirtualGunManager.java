@@ -2,7 +2,6 @@ package dylanb;
 
 import java.awt.geom.*;
 import java.util.ArrayList;
-import java.util.Hashtable;
 
 public class VirtualGunManager {
     Alphabet alphabet;

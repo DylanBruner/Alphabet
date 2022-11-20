@@ -1,7 +1,6 @@
 package dylanb;
 
 import java.awt.geom.*;
-import robocode.*;
 import java.awt.event.MouseEvent;
 
 
