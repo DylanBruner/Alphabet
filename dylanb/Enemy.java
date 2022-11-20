@@ -1,6 +1,7 @@
 package dylanb;
 
 import java.awt.geom.*;
+import java.util.ArrayList;
 
 import robocode.ScannedRobotEvent;
 
@@ -10,12 +11,26 @@ public class Enemy {
     Point2D.Double location, lastLocation;
     ScannedRobotEvent lastScan;
 
+    //Data gathering
+    public ArrayList<EnemySnapshot> snapshots = new ArrayList<EnemySnapshot>();
+
     //Gun accuracy trackers
     public int tracker_linearGun      = 0;
     public int tracker_guessFactorGun = 0; 
 
     boolean alive = true;
     boolean initialized = false;
+
+    public boolean isIdle(){
+        //check the last 20 snapshots (or less if we don't have that many)
+        int snapshotsWeCanCheck = snapshots.size() < 20 ? snapshots.size() : 20;
+        for (int i = 0; i < snapshotsWeCanCheck; i++){
+            if (snapshots.get(i).velocity != 0){
+                return false;
+            }
+        }
+        return true;
+    }
 
     public void populateData(ScannedRobotEvent e, Point2D.Double myLocation, Alphabet alphabet){
         this.name     = e.getName();

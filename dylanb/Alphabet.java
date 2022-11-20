@@ -10,14 +10,14 @@ import java.awt.event.MouseEvent;
 
 public class Alphabet extends AdvancedRobot
 {
-	VirtualGunManager vGunManager = new VirtualGunManager();
-	GuessFactorGun guessFactorGun = new GuessFactorGun();
-	LinearGun linearGun           = new LinearGun();
-	SurfMovement surferMove       = new SurfMovement();
-	MeleeMovement meleeMove       = new MeleeMovement();
-	Radar radar                   = new Radar();
-	Painting debugOverlay         = new Painting();
-	AlphabetLogger logger         = new AlphabetLogger("Main");
+	VirtualGunManager vGunManager  = new VirtualGunManager();
+	GuessFactorGun guessFactorGun  = new GuessFactorGun();
+	LinearGun linearGun            = new LinearGun();
+	SurfMovement surferMove        = new SurfMovement();
+	MeleeRobot meleeMove           = new MeleeRobot(); //Melee movement basically takes over the whole bot until it's done
+	Radar radar                    = new Radar();
+	Painting debugOverlay          = new Painting();
+	AlphabetLogger logger          = new AlphabetLogger("Main");
 
 	//Auto movement mode
 	public final int MOVEMENT_SURFING = 0;
@@ -57,16 +57,19 @@ public class Alphabet extends AdvancedRobot
 			if (getOthers() > 1 && movementMode != MOVEMENT_MELEE) {
 				logger.log("Switching to melee movement");
 				movementMode = MOVEMENT_MELEE;
+				radar.disableRadarManagement();// Disable radar management it's done ein MeleeRobot.java
 			} else if (getOthers() <= 1 && movementMode != MOVEMENT_SURFING) {
 				logger.log("Switching to surfing");
 				movementMode = MOVEMENT_SURFING;
+				radar.enableRadarManagement(); //Switch back on the radar
 			}
 
 			//Auto movement
 			if (movementMode == MOVEMENT_MELEE) meleeMove.execute();
 			
 			//Auto gun
-			if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.execute();
+			if (movementMode == MOVEMENT_MELEE){}//Guns are handled in MeleeRobot.java during Melee
+			else if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.execute();
 			else if (selectedGun == GUN_LINEAR) linearGun.execute();
 
 			vGunManager.execute();
@@ -87,9 +90,11 @@ public class Alphabet extends AdvancedRobot
 		//										   getY() + Math.cos(Math.toRadians(getHeading() + e.getBearing())) * e.getDistance());
 		
 		if (movementMode == MOVEMENT_SURFING) surferMove.onScannedRobot(e);
+		else if (movementMode == MOVEMENT_MELEE) meleeMove.onScannedRobot(e);
 		
 		//Multi-gun
-		if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.onScannedRobot(e);
+		if (movementMode == MOVEMENT_MELEE) {}//Guns are handled in MeleeRobot.java during Melee
+		else if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.onScannedRobot(e);
 		else if (selectedGun == GUN_LINEAR) linearGun.onScannedRobot(e);
 	}
 
@@ -114,9 +119,11 @@ public class Alphabet extends AdvancedRobot
 		if (movementMode == MOVEMENT_SURFING) surferMove.onBulletHitBullet(e);
 	}
 
+	public void onHitRobot(HitRobotEvent e) {
+	}
+
 	public void onRobotDeath(RobotDeathEvent e) {
 		radar.onRobotDeath(e);
-		if (movementMode == MOVEMENT_MELEE) meleeMove.onRobotDeath(e);
 	}
 
 	@Override
