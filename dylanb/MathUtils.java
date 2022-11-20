@@ -38,4 +38,12 @@ public class MathUtils {
     public static double maxEscapeAngle(double velocity) {
         return Math.asin(8.0/velocity);
     }
+
+    public static double distance(Point2D.Double source, Point2D.Double target) {
+        return source.distance(target);
+    }
+
+    public static double getAngle(Point2D.Double point2, Point2D.Double point1){
+        return Math.atan2(point2.x - point1.x, point2.y - point1.y);
+    }
 }

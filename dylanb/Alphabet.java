@@ -7,15 +7,22 @@ import java.awt.geom.*;
 
 public class Alphabet extends AdvancedRobot
 {
+	GuessFactorGun guessFactorGun = new GuessFactorGun();
+	LinearGun linearGun           = new LinearGun();
 	SurfMovement surferMove       = new SurfMovement();
 	MeleeMovement meleeMove       = new MeleeMovement();
-	GuessFactorGun guessFactorGun = new GuessFactorGun();
 	Radar radar                   = new Radar();
 	AlphabetLogger logger         = new AlphabetLogger("Main");
 
+	//Auto movement mode
 	public static final int MOVEMENT_SURFING = 0;
 	public static final int MOVEMENT_MELEE   = 1;
 	public static int movementMode = -1;
+
+	//Auto gun
+	public static final int GUN_GUESS_FACTOR = 0;
+	public static final int GUN_LINEAR       = 1;
+	public static int gunMode = GUN_LINEAR;
 
 	//Other public variables
 	public Point2D.Double myLocation;
@@ -25,7 +32,8 @@ public class Alphabet extends AdvancedRobot
 
 		//Setup components
 		surferMove.init(this);
-		guessFactorGun.init(this);
+		//guessFactorGun.init(this);
+		linearGun.init(this);
 		radar.init(this);
 		meleeMove.init(this);
 
@@ -45,10 +53,13 @@ public class Alphabet extends AdvancedRobot
 				movementMode = MOVEMENT_SURFING;
 			}
 
-			//if (movementMode == MOVEMENT_SURFING) surferMove.execute(); //Doesn't do anything at the moment
+			//Auto movement
 			if (movementMode == MOVEMENT_MELEE) meleeMove.execute();
 			
-			guessFactorGun.execute();//Doesn't do anything at the moment
+			//Auto gun
+			if (gunMode == GUN_GUESS_FACTOR) guessFactorGun.execute();
+			else if (gunMode == GUN_LINEAR) linearGun.execute();
+
 			radar.execute();
 			execute();
 		}
@@ -58,7 +69,10 @@ public class Alphabet extends AdvancedRobot
 	public void onScannedRobot(ScannedRobotEvent e) {
 		radar.onScannedRobot(e);
 		if (movementMode == MOVEMENT_SURFING) surferMove.onScannedRobot(e);
-		guessFactorGun.onScannedRobot(e);
+		
+		//Multi-gun
+		if (gunMode == GUN_GUESS_FACTOR) guessFactorGun.onScannedRobot(e);
+		else if (gunMode == GUN_LINEAR) linearGun.onScannedRobot(e);
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {
@@ -67,11 +81,15 @@ public class Alphabet extends AdvancedRobot
 
 	public void onBulletHit(BulletHitEvent e) {
 		if (movementMode == MOVEMENT_SURFING) surferMove.onBulletHit(e);
-		guessFactorGun.onBulletHit(e);
+
+		//Multi-gun
+		if (gunMode == GUN_GUESS_FACTOR) guessFactorGun.onBulletHit(e);
+		//else if (gunMode == GUN_LINEAR) linearGun.onBulletHit(e);
 	}
 
 	public void onBulletMissed(BulletMissedEvent e) {
-		guessFactorGun.onBulletMissed(e);
+		//Multi-gun
+		if (gunMode == GUN_GUESS_FACTOR) guessFactorGun.onBulletMissed(e);
 	}
 
 	public void onBulletHitBullet(BulletHitBulletEvent e) {

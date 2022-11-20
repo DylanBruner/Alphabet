@@ -37,6 +37,19 @@ public class MeleeMovement {
         myPos    = alphabet.myLocation;
         myEnergy = alphabet.getEnergy();
 
+        //Update enemy data
+        for (String name : alphabet.radar.enemies.keySet()) {
+            meleeInternalEnemy enemy = enemies.get(name);
+            if (enemy == null) {
+                enemy = new meleeInternalEnemy();
+                enemies.put(name, enemy);
+            }
+
+            enemy.pos    = alphabet.radar.enemies.get(name).location;
+            enemy.energy = alphabet.radar.enemies.get(name).energy;
+            enemy.live   = alphabet.radar.enemies.get(name).alive;
+        }
+
         if (alphabet.radar.target != null){
             meleeTarget = new meleeInternalEnemy();
             meleeTarget.live   = true;
