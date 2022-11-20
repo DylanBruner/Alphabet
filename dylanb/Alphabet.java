@@ -7,6 +7,7 @@ import java.awt.geom.*;
 
 public class Alphabet extends AdvancedRobot
 {
+	VirtualGunManager vGunManager = new VirtualGunManager();
 	GuessFactorGun guessFactorGun = new GuessFactorGun();
 	LinearGun linearGun           = new LinearGun();
 	SurfMovement surferMove       = new SurfMovement();
@@ -30,9 +31,10 @@ public class Alphabet extends AdvancedRobot
 	public void run() {
 		myLocation = new Point2D.Double(getX(), getY());
 
-		//Setup components
+		//Initlize the components
+		vGunManager.init(this);
 		surferMove.init(this);
-		//guessFactorGun.init(this);
+		guessFactorGun.init(this);
 		linearGun.init(this);
 		radar.init(this);
 		meleeMove.init(this);
