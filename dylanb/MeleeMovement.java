@@ -5,6 +5,12 @@ import robocode.util.Utils;
 
 import java.awt.geom.*;
 import java.util.Hashtable;
+/*
+CREDITS
+The melee movement minimum-risk algorithm was heavily inspired by the work by HawkOnFire
+
+CREDITS 
+*/
 
 public class MeleeMovement {
     //Components stuff
@@ -83,36 +89,7 @@ public class MeleeMovement {
 
     //RoboCode events
     public void onScannedRobot(ScannedRobotEvent e){
-        if (true){return;}
-        //We don't actually want to manage targeting here we just convert
-        //To the correct interal data structure
-        meleeInternalEnemy en = new meleeInternalEnemy();
-
-        if (enemies.contains(e.getName())){
-            en = enemies.get(e.getName());
-        } else {
-            en = new meleeInternalEnemy();
-            enemies.put(e.getName(), en);
-        }
-        
-        
-        en.energy = alphabet.radar.target.energy;
-        en.pos    = alphabet.radar.target.location;
-        en.live   = true;
-
-        meleeTarget = en;
-
-        if (meleeTarget == null){
-            logger.warn("For some reason meleeTarget is null, FML");
-            return;
-        }
-        
-        if(!meleeTarget.live || e.getDistance() < myPos.distance(meleeTarget.pos)) {
-            meleeTarget = en;
-		}
-        logger.log("Target: " + meleeTarget);
-        //Radar lock, this is managed by the radar class for us
-		//if(getOthers()==1)	setTurnRadarLeftRadians(getRadarTurnRemainingRadians());
+        //Targeting is now completely handled by the Radar class
     }
 
     public void onRobotDeath(RobotDeathEvent e){
