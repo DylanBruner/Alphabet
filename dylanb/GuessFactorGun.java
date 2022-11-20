@@ -2,18 +2,18 @@ package dylanb;
 
 import robocode.*;
 
-public class SurfMovement {
+public class GuessFactorGun {
     Alphabet alphabet;
-    AlphabetLogger logger = new AlphabetLogger("SurfMovement");
+    AlphabetLogger logger = new AlphabetLogger("GuessFactorGun");
 
     public void init(Alphabet robot){
-        logger.log("SurfMovment initialized");
         alphabet = robot;
+        logger.log("GuessFactorGun initialized");
     }
 
     public void execute(){}
 
     public void onScannedRobot(ScannedRobotEvent e) {}
-    public void onHitByBullet(HitByBulletEvent e) {}
     public void onBulletHit(BulletHitEvent e) {}
+    public void onBulletMissed(BulletMissedEvent e) {}
 }

@@ -3,30 +3,44 @@ package dylanb;
 import robocode.*;
 //import java.awt.Color;
 
-public class Alphabet extends Robot
+public class Alphabet extends AdvancedRobot
 {
-	//public void main(){}
+	SurfMovement surferMove       = new SurfMovement();
+	GuessFactorGun guessFactorGun = new GuessFactorGun();
+	AlphabetLogger logger         = new AlphabetLogger("Main");
+
 	public void run() {
-		SurfMovement surf = new SurfMovement();
-		while(true) {
-			System.out.println("WOAH!");
-			surf.test();
-			ahead(100);
-			turnGunRight(360);
-			back(100);
-			turnGunRight(360);
+		//Setup components
+		surferMove.init(this);
+		guessFactorGun.init(this);
+
+		setAdjustGunForRobotTurn(true);
+		setAdjustRadarForGunTurn(true);
+
+		while (true){
+			surferMove.execute();
+			guessFactorGun.execute();
+			
+			execute(); //Not sure if this is needed yet
 		}
 	}
 
+	//Events 'n stuff
 	public void onScannedRobot(ScannedRobotEvent e) {
-		fire(1);
+		surferMove.onScannedRobot(e);
+		guessFactorGun.onScannedRobot(e);
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {
-		back(10);
+		surferMove.onHitByBullet(e);
 	}
-	
-	public void onHitWall(HitWallEvent e) {
-		back(20);
-	}	
+
+	public void onBulletHit(BulletHitEvent e) {
+		surferMove.onBulletHit(e);
+		guessFactorGun.onBulletHit(e);
+	}
+
+	public void onBulletMissed(BulletMissedEvent e) {
+		guessFactorGun.onBulletMissed(e);
+	}
 }
