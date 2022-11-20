@@ -29,8 +29,8 @@ public class Alphabet extends AdvancedRobot
 		while (true){
 			myLocation = new Point2D.Double(getX(), getY());
 
-			surferMove.execute();
-			guessFactorGun.execute();
+			//surferMove.execute();
+			//guessFactorGun.execute();
 			radar.execute();
 
 			execute();
@@ -40,20 +40,28 @@ public class Alphabet extends AdvancedRobot
 	//Events 'n stuff
 	public void onScannedRobot(ScannedRobotEvent e) {
 		radar.onScannedRobot(e);
-		surferMove.onScannedRobot(e);
+		//surferMove.onScannedRobot(e);
 		guessFactorGun.onScannedRobot(e);
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {
-		surferMove.onHitByBullet(e);
+		//surferMove.onHitByBullet(e);
 	}
 
 	public void onBulletHit(BulletHitEvent e) {
-		surferMove.onBulletHit(e);
+		//surferMove.onBulletHit(e);
 		guessFactorGun.onBulletHit(e);
 	}
 
 	public void onBulletMissed(BulletMissedEvent e) {
 		guessFactorGun.onBulletMissed(e);
+	}
+
+	public void onBulletHitBullet(BulletHitBulletEvent e) {
+		//surferMove.onBulletHitBullet(e);
+	}
+
+	public void onCustomEvent(CustomEvent e) {
+		//surferMove.onCustomEvent(e);
 	}
 }

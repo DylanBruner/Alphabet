@@ -74,7 +74,8 @@ public class GuessFactorGun {
 
     //Helper functions
     public double getOptimalFirePower(Enemy target){
-        return Math.min(3.0, Math.min(400.0 / target.location.distance(alphabet.myLocation), alphabet.getEnergy() - 0.1));
+        return 1;
+        //return Math.min(3.0, Math.min(400.0 / target.location.distance(alphabet.myLocation), alphabet.getEnergy() - 0.1));
     }
 
     //Helper classes
