@@ -15,7 +15,7 @@ public class Alphabet extends AdvancedRobot
 
 	public static final int MOVEMENT_SURFING = 0;
 	public static final int MOVEMENT_MELEE   = 1;
-	int movementMode = 1;
+	public static int movementMode = -1;
 
 	//Other public variables
 	public Point2D.Double myLocation;
@@ -24,7 +24,7 @@ public class Alphabet extends AdvancedRobot
 		myLocation = new Point2D.Double(getX(), getY());
 
 		//Setup components
-		//surferMove.init(this);
+		surferMove.init(this);
 		guessFactorGun.init(this);
 		radar.init(this);
 		meleeMove.init(this);
@@ -37,11 +37,15 @@ public class Alphabet extends AdvancedRobot
 		//Main
 		while (true){
 			myLocation = new Point2D.Double(getX(), getY());
+			if (getOthers() > 1 && movementMode != MOVEMENT_MELEE) {
+				logger.log("Switching to melee movement");
+				movementMode = MOVEMENT_MELEE;
+			} else if (getOthers() <= 1 && movementMode != MOVEMENT_SURFING) {
+				logger.log("Switching to surfing");
+				movementMode = MOVEMENT_SURFING;
+			}
 
-			if (getOthers() > 1) {movementMode = MOVEMENT_MELEE;} 
-			else {movementMode = MOVEMENT_SURFING;}
-
-			//if (movementMode == MOVEMENT_SURFING) surferMove.execute();
+			//if (movementMode == MOVEMENT_SURFING) surferMove.execute(); //Doesn't do anything at the moment
 			if (movementMode == MOVEMENT_MELEE) meleeMove.execute();
 			
 			guessFactorGun.execute();//Doesn't do anything at the moment
@@ -53,16 +57,16 @@ public class Alphabet extends AdvancedRobot
 	//Events 'n stuff
 	public void onScannedRobot(ScannedRobotEvent e) {
 		radar.onScannedRobot(e);
-		//if (movementMode == MOVEMENT_SURFING) surferMove.onScannedRobot(e);
+		if (movementMode == MOVEMENT_SURFING) surferMove.onScannedRobot(e);
 		guessFactorGun.onScannedRobot(e);
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {
-		//if (movementMode == MOVEMENT_SURFING) surferMove.onHitByBullet(e);
+		if (movementMode == MOVEMENT_SURFING) surferMove.onHitByBullet(e);
 	}
 
 	public void onBulletHit(BulletHitEvent e) {
-		//if (movementMode == MOVEMENT_SURFING) surferMove.onBulletHit(e);
+		if (movementMode == MOVEMENT_SURFING) surferMove.onBulletHit(e);
 		guessFactorGun.onBulletHit(e);
 	}
 
@@ -71,7 +75,7 @@ public class Alphabet extends AdvancedRobot
 	}
 
 	public void onBulletHitBullet(BulletHitBulletEvent e) {
-		//if (movementMode == MOVEMENT_SURFING) surferMove.onBulletHitBullet(e);
+		if (movementMode == MOVEMENT_SURFING) surferMove.onBulletHitBullet(e);
 	}
 
 	public void onRobotDeath(RobotDeathEvent e) {
