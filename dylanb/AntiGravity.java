@@ -5,9 +5,10 @@ import robocode.util.Utils;
 
 import java.util.ArrayList;
 
-//List of points that effect the robot "n" negativly and changes based on distance
-//The robot will always be moving
-//Find best location with the least negative charge
+/*
+ * Not used currnetly. At the moment we use MeleeRobot.java & SurfMovement.java 
+ * 
+*/
 
 public class AntiGravity {
     //Components stuff

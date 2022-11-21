@@ -6,19 +6,49 @@ import java.awt.geom.*;
 
 import java.awt.event.MouseEvent;
 
+/*
+ *==============================[OVERVIEW]==============================]
+ * Shooting: (Auto switches)
+ *   - Virtual Guns
+ *   - GuessFactor Targeting and Linear Targeting
+ * Movement: (Auto switches)
+ *   - Melee Minimum Risk Movement
+ *   - 1v1 Wave Surfing
+ * Targeting:
+ *   - Not finished but we store a virtual leaderboard and target the best robot during melee
+ *   - In 1v1 we just target the enemy (duh)
+ * Data Collecting:
+ *   - Virtual Gun Data         (automatic gun switching)
+ *   - Virtual leaderboard data (for melee targetting)
+ *   - When enemies are scanned we store a 'snapshot' of their data
+ *     this will be used for pattern match targeting and whatever 
+ *     else could benefit from it. We could analyze the data and
+ * 	   calculate it into the leaderboard data to make it more accurate. (Energy loss vs Gain or Loss vs time)
+*/
+
 //We could store data about the enemy on the disk to preserve it and maybe already having targeting data for like melee would be good
 
 public class Alphabet extends AdvancedRobot
 {
-	VirtualGunManager vGunManager  = new VirtualGunManager();
-	GuessFactorGun guessFactorGun  = new GuessFactorGun();
-	LinearGun linearGun            = new LinearGun();
-	SurfMovement surferMove        = new SurfMovement();
-	MeleeRobot meleeMove           = new MeleeRobot(); //Melee movement basically takes over the whole bot until it's done
-	Radar radar                    = new Radar();
-	Painting debugOverlay          = new Painting();
-	AlphabetLogger logger          = new AlphabetLogger("Main");
+	//Attacking
+	VirtualGunManager vGunManager = new VirtualGunManager();
+	GuessFactorGun guessFactorGun = new GuessFactorGun();
+	LinearGun linearGun           = new LinearGun();
 
+	//Movement
+	SurfMovement surferMove = new SurfMovement();
+	MeleeRobot meleeMove    = new MeleeRobot(); //Melee movement basically takes over the whole bot until it's done
+	
+	//Data collection
+	Radar radar                                   = new Radar();
+	public static VirtualLeaderboard vLeaderboard = new VirtualLeaderboard();
+
+	//Debug
+	Painting debugOverlay = new Painting();
+	AlphabetLogger logger = new AlphabetLogger("Main");
+
+
+	//Code ================================================================================================================
 	//Auto movement mode
 	public final int MOVEMENT_SURFING = 0;
 	public final int MOVEMENT_MELEE   = 1;
@@ -43,6 +73,7 @@ public class Alphabet extends AdvancedRobot
 		radar.init(this);
 		meleeMove.init(this);
 		debugOverlay.init(this);
+		vLeaderboard.init(this);
 
 		//Setup robot
 		setAdjustGunForRobotTurn(true);
@@ -124,6 +155,7 @@ public class Alphabet extends AdvancedRobot
 
 	public void onRobotDeath(RobotDeathEvent e) {
 		radar.onRobotDeath(e);
+		vLeaderboard.onRobotDeath(e);
 	}
 
 	@Override
@@ -133,5 +165,17 @@ public class Alphabet extends AdvancedRobot
 
 	public void onMouseMoved(MouseEvent e) {
 		debugOverlay.onMouseMoved(e);
+	}
+
+	public void onDeath(DeathEvent e) {
+		vLeaderboard.onDeath(e);
+	}
+
+	public void onRoundEnded(RoundEndedEvent event) {
+		vLeaderboard.onRoundEnded(event);
+	}
+
+	public void onBattleEnded(BattleEndedEvent event) {
+		vLeaderboard.onBattleEnded(event);
 	}
 }
