@@ -13,7 +13,6 @@ public class Painting {
     
     public void init(Alphabet alphabet){
         this.alphabet = alphabet;
-        logger.log("Painting initialized");
     }
 
     public void execute(){}

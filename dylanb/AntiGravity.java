@@ -26,7 +26,6 @@ public class AntiGravity {
 
     public void init(Alphabet robot){
         alphabet = robot;
-        logger.log("MeleeMovement initialized");
     }
     
     public void execute() {}

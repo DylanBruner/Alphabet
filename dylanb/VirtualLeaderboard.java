@@ -23,8 +23,6 @@ public class VirtualLeaderboard {
 
     public void init(Alphabet alphabet){
         this.alphabet = alphabet;
-        logger.log("VirtualLeaderboard initialized");
-        logger.log("Already have " + leaderboard.size() + " entries");
     }
     
     public void execute(){ }

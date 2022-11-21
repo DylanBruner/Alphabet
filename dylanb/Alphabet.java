@@ -47,6 +47,8 @@ public class Alphabet extends AdvancedRobot
 	Painting debugOverlay = new Painting();
 	AlphabetLogger logger = new AlphabetLogger("Main");
 
+	//Fun
+	Themer themer = new Themer();
 
 	//Code ================================================================================================================
 	//Auto movement mode
@@ -74,16 +76,16 @@ public class Alphabet extends AdvancedRobot
 		meleeMove.init(this);
 		debugOverlay.init(this);
 		vLeaderboard.init(this);
+		themer.init(this);
 
 		//Setup robot
 		setAdjustGunForRobotTurn(true);
 		setAdjustRadarForGunTurn(true);
-		setColors(Color.black, Color.blue, Color.red);
 
 		//Main
 		while (true){
 			radar.execute();
-
+			
 			myLocation = new Point2D.Double(getX(), getY());
 			if (getOthers() > 1 && movementMode != MOVEMENT_MELEE) {
 				logger.log("Switching to melee movement");
@@ -94,7 +96,7 @@ public class Alphabet extends AdvancedRobot
 				movementMode = MOVEMENT_SURFING;
 				radar.enableRadarManagement(); //Switch back on the radar
 			}
-
+			
 			//Auto movement
 			if (movementMode == MOVEMENT_MELEE) meleeMove.execute();
 			
@@ -102,9 +104,12 @@ public class Alphabet extends AdvancedRobot
 			if (movementMode == MOVEMENT_MELEE){}//Guns are handled in MeleeRobot.java during Melee
 			else if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.execute();
 			else if (selectedGun == GUN_LINEAR) linearGun.execute();
-
+			
 			vGunManager.execute();
+			
+			themer.execute();//Theme the robot, change colors and stuff
 			execute();
+
 		}
 	}
 

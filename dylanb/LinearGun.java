@@ -11,7 +11,6 @@ public class LinearGun {
     
     public void init(Alphabet alphabet){
         this.alphabet = alphabet;
-        logger.log("Linear gun initialized");
     }
 
     public void execute(){}

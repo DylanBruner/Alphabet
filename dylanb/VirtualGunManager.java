@@ -12,7 +12,6 @@ public class VirtualGunManager {
 
     public void init(Alphabet alphabet){
         this.alphabet = alphabet;
-        logger.log("VirtualGunManager initialized");
     }
 
     public void execute() {

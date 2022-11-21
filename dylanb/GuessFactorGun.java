@@ -18,7 +18,6 @@ public class GuessFactorGun {
 
     public void init(Alphabet robot){
         alphabet = robot;
-        logger.log("GuessFactorGun initialized");
     }
 
     public void execute(){}

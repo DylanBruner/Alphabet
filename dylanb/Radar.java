@@ -22,7 +22,6 @@ public class Radar {
 
     public void init(Alphabet robot){
         alphabet = robot;
-        logger.log("Radar initialized");
 
         target = new Enemy();
     }
