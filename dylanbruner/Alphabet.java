@@ -1,4 +1,4 @@
-package dylanb;
+package dylanbruner;
 
 import robocode.*;
 import java.awt.geom.*;
@@ -123,10 +123,7 @@ public class Alphabet extends AdvancedRobot
 	//Events 'n stuff
 	public void onScannedRobot(ScannedRobotEvent e) {
 		radar.onScannedRobot(e);
-		//update target location
-		//radar.target.location = new Point2D.Double(getX() + Math.sin(Math.toRadians(getHeading() + e.getBearing())) * e.getDistance(), 
-		//										   getY() + Math.cos(Math.toRadians(getHeading() + e.getBearing())) * e.getDistance());
-		
+
 		if (movementMode == MOVEMENT_SURFING) surferMove.onScannedRobot(e);
 		else if (movementMode == MOVEMENT_MELEE) meleeMove.onScannedRobot(e);
 		

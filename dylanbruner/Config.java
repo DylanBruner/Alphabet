@@ -1,4 +1,4 @@
-package dylanb;
+package dylanbruner;
 
 public class Config {
     //Virtual Gun Config
