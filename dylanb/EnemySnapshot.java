@@ -15,4 +15,8 @@ public class EnemySnapshot {
         velocity = e.getVelocity();
         location = new Point2D.Double(myLocation.x + Math.sin(Math.toRadians(e.getBearing())) * e.getDistance(), myLocation.y + Math.cos(Math.toRadians(e.getBearing())) * e.getDistance()); 
     }
+
+    public double getDifference(EnemySnapshot e) {
+        return Math.abs(this.location.distance(e.location)) + Math.abs(this.velocity - e.velocity) + Math.abs(this.heading - e.heading) + Math.abs(this.distance - e.distance) + Math.abs(this.energy - e.energy);
+    }
 }
