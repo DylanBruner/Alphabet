@@ -10,6 +10,7 @@ public class Themer {
 
     Color mintGreen = new Color(152, 251, 152);
     Color bloodRed  = new Color(120, 0, 0);
+    Color tomatoRed = new Color(255, 99, 71);
 
     public final Color[][] BASE_THEMES = {
         {Color.black, Color.blue, Color.red},
@@ -34,14 +35,18 @@ public class Themer {
     // setScanColor(Color)
 
     public void execute(){
-        if (alphabet.getTime() % 10 == 0 && alphabet.getRoundNum() != 0){
-            int myPlacement = Alphabet.vLeaderboard.getMyPlacement();
-            if (myPlacement == 1){
-                //Change base color to mint-green
-                alphabet.setBodyColor(mintGreen);
-            } else {
-                alphabet.setBodyColor(bloodRed);
+        if (alphabet.getOthers() > 1){
+            if (alphabet.getTime() % 10 == 0 && alphabet.getRoundNum() != 0){
+                int myPlacement = Alphabet.vLeaderboard.getMyPlacement();
+                if (myPlacement == 1){
+                    //Change base color to mint-green
+                    alphabet.setBodyColor(mintGreen);
+                } else {
+                    alphabet.setBodyColor(bloodRed);
+                }
             }
+        } else {
+            alphabet.setColors(tomatoRed, tomatoRed, Color.white);
         }
     }
 }

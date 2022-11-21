@@ -69,6 +69,7 @@ public class VirtualLeaderboard {
 
     public void onBattleEnded(BattleEndedEvent e){
         //Display the leaderboard
+        logger.log("My placement: " + getMyPlacement());
         LeaderboardEntry[] entries = getEntriesSorted();
         for (int i = 0; i < entries.length; i++){
             LeaderboardEntry entry = entries[i];
