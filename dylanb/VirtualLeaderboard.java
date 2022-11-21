@@ -18,6 +18,7 @@ public class VirtualLeaderboard {
 
     //                      Name,   Score(s)
     public static ArrayList<LeaderboardEntry> leaderboard = new ArrayList<LeaderboardEntry>();
+    public static ArrayList<Long> myScores = new ArrayList<Long>();
     public ArrayList<String> loggedRobotsThisRound = new ArrayList<String>();
 
     public void init(Alphabet alphabet){
@@ -44,6 +45,7 @@ public class VirtualLeaderboard {
     }
 
     public void iLeaveRoundEvent(){
+        myScores.add(alphabet.getTime());
         //Display the leaderboard
         // LeaderboardEntry[] entries = getEntriesSorted();
         // for (int i = 0; i < entries.length; i++){
@@ -67,7 +69,37 @@ public class VirtualLeaderboard {
         loggedRobotsThisRound.add(e.getName());
     }
 
-    public void onBattleEnded(BattleEndedEvent e){}
+    public void onBattleEnded(BattleEndedEvent e){
+        //Display the leaderboard
+        LeaderboardEntry[] entries = getEntriesSorted();
+        for (int i = 0; i < entries.length; i++){
+            LeaderboardEntry entry = entries[i];
+            logger.log(i + ". " + entry.name + " with score " + entry.getAverageScore());
+        }
+    }
+
+    public int getMyPlacement(){
+        int totalScore = 0;
+        for (long score : myScores){
+            totalScore += score;
+        }
+        if (totalScore <= 0) return -1;
+        double myAverageScore = totalScore / myScores.size();
+
+        LeaderboardEntry[] entries = getEntriesSorted();
+        //Find my placement
+        int myPlacement = 0;
+        //reverse loop
+        for (int i = entries.length - 1; i >= 0; i--){
+            LeaderboardEntry entry = entries[i];
+            if (entry.getAverageScore() > myAverageScore){
+                myPlacement++;
+            }
+        }
+
+        if (myPlacement == 0) return 1;
+        return myPlacement;
+    }
 
     public void onRoundEnded(RoundEndedEvent e) {iLeaveRoundEvent();}
     public void onDeath(DeathEvent e){iLeaveRoundEvent();}
