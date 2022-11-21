@@ -3,6 +3,13 @@ package dylanbruner;
 import java.awt.geom.*;
 import java.util.ArrayList;
 
+/*
+ * Used to virtually benchmark different guns and see which one performs the best
+ * Note this won't really help when robots have adaptive movement because they wont
+ * be reacting to the virtual bullets. But i highly doubt anyone will be using adaptive
+ * movement in the competition. (I hope)
+*/
+
 public class VirtualGunManager {
     Alphabet alphabet;
     AlphabetLogger logger = new AlphabetLogger("VirtualGunManager");
