@@ -16,7 +16,7 @@ import java.awt.geom.Point2D;
 
 public class MeleeRobot {
     Alphabet alphabet;
-    AlphabetLogger logger;
+    AlphabetLogger logger = new AlphabetLogger("MeleeRobot");
 
 	static Hashtable<String, internEnemy> enemies = new Hashtable<String, internEnemy>();
 	static internEnemy target;
@@ -107,13 +107,13 @@ public class MeleeRobot {
 		en.live = true;
 		en.pos = calcPoint(myPos, e.getDistance(), alphabet.getHeadingRadians() + e.getBearingRadians());
 		
-		// will be replaced soon
+		// will be replaced soon, just kidding movement relies on it
 		if(!target.live || e.getDistance() < myPos.distance(target.pos)) {
 			target = en;
 		}
 		
         //This doesn't really matter cause we switch to wave surfing
-		if(alphabet.getOthers()==1)	alphabet.setTurnRadarLeftRadians(alphabet.getRadarTurnRemainingRadians());
+		//if(alphabet.getOthers()==1)	alphabet.setTurnRadarLeftRadians(alphabet.getRadarTurnRemainingRadians());
 	}
 	
 	public void onRobotDeath(RobotDeathEvent e) {

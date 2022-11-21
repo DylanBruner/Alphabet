@@ -23,6 +23,10 @@ import java.awt.event.MouseEvent;
  *     this will be used for pattern match targeting and whatever 
  *     else could benefit from it. We could analyze the data and
  * 	   calculate it into the leaderboard data to make it more accurate. (Energy loss vs Gain or Loss vs time)
+ * 
+ * 
+ * I wont be switching over to the virtual leaderboard just yet as doesn't play well with the current melee movement
+ * Also implementing Keep Distance into the wave surfing would improve performance immensely
 */
 
 //We could store data about the enemy on the disk to preserve it and maybe already having targeting data for like melee would be good
@@ -33,7 +37,7 @@ public class Alphabet extends AdvancedRobot
 	VirtualGunManager vGunManager   = new VirtualGunManager();
 	GuessFactorGun guessFactorGun   = new GuessFactorGun();
 	LinearGun linearGun             = new LinearGun();
-	PatternMatchGun patternMatchGun = new PatternMatchGun();
+	//PatternMatchGun patternMatchGun = new PatternMatchGun();
 
 	//Movement
 	SurfMovement surferMove = new SurfMovement();
@@ -78,7 +82,7 @@ public class Alphabet extends AdvancedRobot
 		debugOverlay.init(this);
 		vLeaderboard.init(this);
 		themer.init(this);
-		patternMatchGun.init(this);
+		// patternMatchGun.init(this);
 
 		//Setup robot
 		setAdjustGunForRobotTurn(true);
@@ -92,11 +96,11 @@ public class Alphabet extends AdvancedRobot
 			if (getOthers() > 1 && movementMode != MOVEMENT_MELEE) {
 				logger.log("Switching to melee movement");
 				movementMode = MOVEMENT_MELEE;
-				radar.disableRadarManagement();// Disable radar management it's done ein MeleeRobot.java
+				//radar.disableRadarManagement(); radar magagement will need to be controlled by radar again
 			} else if (getOthers() <= 1 && movementMode != MOVEMENT_SURFING) {
 				logger.log("Switching to surfing");
 				movementMode = MOVEMENT_SURFING;
-				radar.enableRadarManagement(); //Switch back on the radar
+				//radar.enableRadarManagement(); radar magagement will need to be controlled by radar again
 			}
 			
 			//Auto movement
