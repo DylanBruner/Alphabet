@@ -10,5 +10,5 @@ for file in os.listdir('dylanbruner'):
             totalCharacters += len(data.replace(' ',''))
             totalLines      += len(data.split('\n'))
     
-print(f"Total characters: {totalCharacters}")
-print(f"Total lines:      {totalLines}")
+print(f"Total characters: {totalCharacters:,}")
+print(f"Total lines:      {totalLines:,}")
