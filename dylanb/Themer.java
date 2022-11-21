@@ -26,14 +26,6 @@ public class Themer {
         alphabet.setColors(BASE_THEMES[theme][0], BASE_THEMES[theme][1], BASE_THEMES[theme][2]);
     }
 
-    //setColors(Color, Color, Color)
-    // setColors(Color, Color, Color, Color, Color)
-    // setAllColors(Color)
-    // setBodyColor(Color)
-    // setGunColor(Color)
-    // setBulletColor(Color)
-    // setScanColor(Color)
-
     public void execute(){
         if (alphabet.getOthers() > 1){
             if (alphabet.getTime() % 10 == 0 && alphabet.getRoundNum() != 0){

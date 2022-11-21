@@ -1,7 +1,6 @@
 package dylanb;
 
 import robocode.*;
-import java.awt.Color;
 import java.awt.geom.*;
 
 import java.awt.event.MouseEvent;
@@ -10,12 +9,12 @@ import java.awt.event.MouseEvent;
  *==============================[OVERVIEW]==============================]
  * Shooting: (Auto switches)
  *   - Virtual Guns
- *   - GuessFactor Targeting and Linear Targeting
+ *   - GuessFactor Targeting, Linear Targeting and pattern matching
  * Movement: (Auto switches)
- *   - Melee Minimum Risk Movement
- *   - 1v1 Wave Surfing
+ *   - Melee: Minimum Risk Movement
+ *   - 1v1: Wave Surfing
  * Targeting:
- *   - Not finished but we store a virtual leaderboard and target the best robot during melee
+ *   - Virtual Leaderboard (already implemented) will be used to determine the best bot to target
  *   - In 1v1 we just target the enemy (duh)
  * Data Collecting:
  *   - Virtual Gun Data         (automatic gun switching)
@@ -31,9 +30,10 @@ import java.awt.event.MouseEvent;
 public class Alphabet extends AdvancedRobot
 {
 	//Attacking
-	VirtualGunManager vGunManager = new VirtualGunManager();
-	GuessFactorGun guessFactorGun = new GuessFactorGun();
-	LinearGun linearGun           = new LinearGun();
+	VirtualGunManager vGunManager   = new VirtualGunManager();
+	GuessFactorGun guessFactorGun   = new GuessFactorGun();
+	LinearGun linearGun             = new LinearGun();
+	PatternMatchGun patternMatchGun = new PatternMatchGun();
 
 	//Movement
 	SurfMovement surferMove = new SurfMovement();
@@ -77,6 +77,7 @@ public class Alphabet extends AdvancedRobot
 		debugOverlay.init(this);
 		vLeaderboard.init(this);
 		themer.init(this);
+		patternMatchGun.init(this);
 
 		//Setup robot
 		setAdjustGunForRobotTurn(true);
@@ -106,7 +107,7 @@ public class Alphabet extends AdvancedRobot
 			else if (selectedGun == GUN_LINEAR) linearGun.execute();
 			
 			vGunManager.execute();
-			
+
 			themer.execute();//Theme the robot, change colors and stuff
 			execute();
 
