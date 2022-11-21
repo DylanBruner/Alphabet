@@ -6,6 +6,8 @@ import robocode.util.Utils;
 import java.awt.geom.*;
 import java.util.ArrayList;
 
+//https://robowiki.net/wiki/Wave_Surfing_Tutorial
+
 public class SurfMovement {
     //Components stuff
     Alphabet alphabet; //Parent robot

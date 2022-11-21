@@ -97,29 +97,13 @@ public class Radar {
     public Enemy getOptimalMeleeEnemy(){
         Hashtable<String, Double> enemyScores = new Hashtable<String, Double>();
 
-        //Scores are based on the following:
-        // 1. Distance to enemy (closer is better)
-        // 2. How little energy the enemy has (less is better)
-        for (Enemy enemy : enemies.values()){
-            if (enemy.alive){
-                double score = 0;
-                score += Config.MELEE_TARGETING_DISTANCE_BASE / enemy.distance;
-                score += Config.MELEE_TARGETING_ENERGY_BASE / enemy.energy;
-                score += enemy.isIdle() ? Config.MELEE_IDLE : 0;
-                enemyScores.put(enemy.name, score);
-            }
-        }
-
-        //Find the enemy with the highest score
-        Enemy optimalEnemy  = null;
-        double highestScore = 0;
-        for (String enemyName : enemyScores.keySet()){
-            if (enemyScores.get(enemyName) > highestScore){
-                optimalEnemy = enemies.get(enemyName);
-                highestScore = enemyScores.get(enemyName);
-            }
-        }
-
-        return optimalEnemy;
+        //Scores will now be based on the following:
+        // 1. Distance to enemy (less is better)
+        // 2. Amount of energy the enemy has (less is better)
+        // 3. Virtual leaderboard placement (higher is better) we want to take out the strongest bots first
+        // 4. The last time they shot us (higher is better) we want to take out the bots that are shooting us first
+        
+        //Other info on how this works
+        //If we dont have line of sight to the enemy, we will take the next best enemy 
     }
 }
