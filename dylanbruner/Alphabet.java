@@ -27,6 +27,10 @@ import java.awt.event.MouseEvent;
  * 
  * I wont be switching over to the virtual leaderboard just yet as doesn't play well with the current melee movement
  * Also implementing Keep Distance into the wave surfing would improve performance immensely
+ * 
+ * Really need to get the pattern gun working, it definitely work incredibly well against the other
+ * bots that will be in the competition. Because I HIGHLY doubt anyone will be using anything more advanced
+ * than linear targeting and random movement. (Which is never truly random)
 */
 
 //We could store data about the enemy on the disk to preserve it and maybe already having targeting data for like melee would be good

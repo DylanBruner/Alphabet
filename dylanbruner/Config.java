@@ -11,7 +11,6 @@ public class Config {
     public static final double FORCE_CENTER = 0.0005;
     public static final double FORCE_ENEMY  = 1.2;
 
-
     //Game mode specific ============================================
     //[Melee]
     public static final int MELEE_MAX_RADAR_LOCK_TIME        = 100;

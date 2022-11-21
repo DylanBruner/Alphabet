@@ -70,12 +70,10 @@ public class SurfMovement {
         enemyLocation = MathUtils.project(myLocation, absBearing, e.getDistance());
 
         updateWaves();
-        doSurfing();
+        doSurfing(e);
     }
 
-    public void onHitByBullet(HitByBulletEvent e) {}
-    public void onBulletHit(BulletHitEvent e) {}
-    public void onBulletHitBullet(BulletHitBulletEvent e) {
+    public void onHitByBullet(HitByBulletEvent e) {
         if (!enemyWaves.isEmpty()) {
             Point2D.Double hitBulletLocation = new Point2D.Double(
                 e.getBullet().getX(), e.getBullet().getY());
@@ -83,7 +81,7 @@ public class SurfMovement {
 
             // look through the EnemyWaves, and find one that could've hit us.
             for (int x = 0; x < enemyWaves.size(); x++) {
-                EnemyWave ew = (EnemyWave)enemyWaves.get(x);
+                EnemyWave ew = (EnemyWave) enemyWaves.get(x);
 
                 if (Math.abs(ew.distanceTraveled -
                     myLocation.distance(ew.fireLocation)) < 50
@@ -97,10 +95,13 @@ public class SurfMovement {
             if (hitWave != null) {
                 logHit(hitWave, hitBulletLocation);
 
+                // We can remove this wave now, of course.
                 enemyWaves.remove(enemyWaves.lastIndexOf(hitWave));
             }
         }
     }
+    public void onBulletHit(BulletHitEvent e) {}
+    public void onBulletHitBullet(BulletHitBulletEvent e) {}
 
     //Helpers 'n stuff
     public double checkDanger(EnemyWave surfWave, int direction) {
@@ -110,12 +111,12 @@ public class SurfMovement {
         return surfStats[index];
     }
 
-    public void doSurfing() {
+    public void doSurfing(ScannedRobotEvent e) {
         EnemyWave surfWave = getClosestSurfableWave();
 
-        if (surfWave == null) { return; }
+        if (surfWave == null) {return;}
 
-        double dangerLeft = checkDanger(surfWave, -1);
+        double dangerLeft  = checkDanger(surfWave, -1);
         double dangerRight = checkDanger(surfWave, 1);
 
         double goAngle = MathUtils.absoluteBearing(surfWave.fireLocation, myLocation);
@@ -153,22 +154,17 @@ public class SurfMovement {
 
             // maxTurning is built in like this, you can't turn more then this in one tick
             maxTurning = Math.PI/720d*(40d - 3d*Math.abs(predictedVelocity));
-            predictedHeading = Utils.normalRelativeAngle(predictedHeading
-                + MathUtils.limit(-maxTurning, moveAngle, maxTurning));
+            predictedHeading = Utils.normalRelativeAngle(predictedHeading + MathUtils.limit(-maxTurning, moveAngle, maxTurning));
 
-            predictedVelocity +=
-                (predictedVelocity * moveDir < 0 ? 2*moveDir : moveDir);
+            predictedVelocity += (predictedVelocity * moveDir < 0 ? 2*moveDir : moveDir);
             predictedVelocity = MathUtils.limit(-8, predictedVelocity, 8);
 
             // calculate the new predicted position
-            predictedPosition = MathUtils.project(predictedPosition, predictedHeading,
-                predictedVelocity);
+            predictedPosition = MathUtils.project(predictedPosition, predictedHeading, predictedVelocity);
 
             counter++;
 
-            if (predictedPosition.distance(surfWave.fireLocation) <
-                surfWave.distanceTraveled + (counter * surfWave.bulletVelocity)
-                + surfWave.bulletVelocity) {
+            if (predictedPosition.distance(surfWave.fireLocation) < surfWave.distanceTraveled + (counter * surfWave.bulletVelocity) + surfWave.bulletVelocity) {
                 intercepted = true;
             }
         } while(!intercepted && counter < 500);
@@ -208,14 +204,10 @@ public class SurfMovement {
     }
 
     public static int getFactorIndex(EnemyWave ew, Point2D.Double targetLocation) {
-        double offsetAngle = (MathUtils.absoluteBearing(ew.fireLocation, targetLocation)
-            - ew.directAngle);
-        double factor = Utils.normalRelativeAngle(offsetAngle)
-            / MathUtils.maxEscapeAngle(ew.bulletVelocity) * ew.direction;
+        double offsetAngle = (MathUtils.absoluteBearing(ew.fireLocation, targetLocation) - ew.directAngle);
+        double factor = Utils.normalRelativeAngle(offsetAngle) / MathUtils.maxEscapeAngle(ew.bulletVelocity) * ew.direction;
 
-        return (int)MathUtils.limit(0,
-            (factor * ((BINS - 1) / 2)) + ((BINS - 1) / 2),
-            BINS - 1);
+        return (int) MathUtils.limit(0, (factor * ((BINS - 1) / 2)) + ((BINS - 1) / 2), BINS - 1);
     }
 
     //update our stat array to reflect the danger in that area.
@@ -228,6 +220,7 @@ public class SurfMovement {
     }
 
     public static void setBackAsFront(AdvancedRobot robot, double goAngle) {
+        //Invert movement
         double angle =
             Utils.normalRelativeAngle(goAngle - robot.getHeadingRadians());
         if (Math.abs(angle) > (Math.PI/2)) {
