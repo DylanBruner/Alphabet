@@ -1,0 +1,7 @@
+Credits and stuff
+
+Things that I came up with completly on my own are listed below
+
+
+Things that I used external insperation for are listed below, along with any
+changes I implemented.

@@ -6,6 +6,11 @@ import robocode.util.Utils;
 import java.awt.geom.*;
 import java.util.ArrayList;
 
+//Constructed with the help of this tutorial
+//https://robowiki.net/wiki/GuessFactor_Targeting_Tutorial
+
+//If i have time I really need it to use more factors
+
 public class GuessFactorGun {
     //Component stuff
     Alphabet alphabet;
@@ -64,6 +69,9 @@ public class GuessFactorGun {
 
         alphabet.setTurnGunRightRadians(gunAdjust);
 
+        //This should probably be moved into where it actually shoots
+        //But the GuessFactorGun hardly gets selected (I think) and Linear
+        //Targeting is used most of the time
         if (alphabet.getGunHeat() == 0 && gunAdjust < Math.atan2(9, e.getDistance()) && alphabet.setFireBullet(power) != null){
             waves.add(newWave);
         }

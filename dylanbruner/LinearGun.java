@@ -21,6 +21,7 @@ public class LinearGun {
 
     private Point2D.Double estimateRobotLocation(ScannedRobotEvent robot, double bulletPower)
     {
+        //Estimate the robot's location using basicish math
         double bulletVelocity = Rules.getBulletSpeed(bulletPower);
         double deltaTime = robot.getDistance() / bulletVelocity;
         double robotAngle = alphabet.getHeadingRadians() + robot.getBearingRadians();
