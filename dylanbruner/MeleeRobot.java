@@ -10,6 +10,8 @@ import java.awt.geom.Point2D;
  * This is basically a whole new robot that is automatically controlled by the main robot 
  * it's only purpose is for melee combat and is disabled when there is only one enemy in
  * favor of wave surfing, a virtual gun system and other stuff
+ * 
+ * This movement is HEAVILY inspired by HawkOnFire https://robowiki.net/wiki/HawkOnFire/Code
 */
 
 public class MeleeRobot {
