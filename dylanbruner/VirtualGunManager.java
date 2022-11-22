@@ -47,11 +47,11 @@ public class VirtualGunManager {
 
         bullets.removeAll(bulletsToRemove);
 
-        if (alphabet.radar.target.tracker_linearGun < alphabet.radar.target.tracker_guessFactorGun && alphabet.selectedGun != alphabet.GUN_GUESS_FACTOR){
-            alphabet.selectedGun = alphabet.GUN_GUESS_FACTOR;
-        } else if (alphabet.selectedGun != alphabet.GUN_LINEAR) {
-            alphabet.selectedGun = alphabet.GUN_LINEAR;
-        }
+        // if (alphabet.radar.target.tracker_linearGun < alphabet.radar.target.tracker_guessFactorGun && alphabet.selectedGun != alphabet.GUN_GUESS_FACTOR){
+        //     alphabet.selectedGun = alphabet.GUN_GUESS_FACTOR;
+        // } else if (alphabet.selectedGun != alphabet.GUN_LINEAR) {
+        //     alphabet.selectedGun = alphabet.GUN_LINEAR;
+        // }
     }
 
     public void fireVirtualBullets(){

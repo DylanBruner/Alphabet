@@ -41,6 +41,7 @@ public class Alphabet extends AdvancedRobot
 	VirtualGunManager vGunManager   = new VirtualGunManager();
 	GuessFactorGun guessFactorGun   = new GuessFactorGun();
 	LinearGun linearGun             = new LinearGun();
+	PatternMatchGun patternMatchGun = new PatternMatchGun(); //WIP
 	//PatternMatchGun patternMatchGun = new PatternMatchGun();
 
 	//Movement
@@ -68,7 +69,7 @@ public class Alphabet extends AdvancedRobot
 	public final int GUN_GUESS_FACTOR = 0;
 	public final int GUN_LINEAR       = 1;
 	public final int GUN_PATTERN	  = 2;
-	public int selectedGun = GUN_LINEAR;
+	public int selectedGun = GUN_PATTERN;
 
 	//Other public variables
 	public Point2D.Double myLocation;
@@ -86,7 +87,7 @@ public class Alphabet extends AdvancedRobot
 		debugOverlay.init(this);
 		vLeaderboard.init(this);
 		themer.init(this);
-		// patternMatchGun.init(this);
+		patternMatchGun.init(this);
 
 		//Setup robot
 		setAdjustGunForRobotTurn(true);
@@ -139,6 +140,7 @@ public class Alphabet extends AdvancedRobot
 		if (movementMode == MOVEMENT_MELEE) {}//Guns are handled in MeleeRobot.java during Melee
 		else if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.onScannedRobot(e);
 		else if (selectedGun == GUN_LINEAR) linearGun.onScannedRobot(e);
+		else if (selectedGun == GUN_PATTERN) patternMatchGun.onScannedRobot(e);
 		//else if (selectedGun == GUN_PATTERN) patternMatchGun.onScannedRobot(e);
 	}
 
