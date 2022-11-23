@@ -51,7 +51,7 @@ public class MathUtils {
     //Make a function that resizes a list of any type
     public static Object resizeArray(Object oldArray, int newSize) {
         int oldSize = java.lang.reflect.Array.getLength(oldArray);
-        Class elementType = oldArray.getClass().getComponentType();
+        Class elementType = oldArray.getClass().getComponentType(); //Yeah yeah i know this is a raw type but idk how else to make it work
         Object newArray = java.lang.reflect.Array.newInstance(elementType,newSize);
         int preserveLength = Math.min(oldSize,newSize);
         if (preserveLength > 0)
