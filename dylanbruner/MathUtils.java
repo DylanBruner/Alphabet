@@ -1,7 +1,6 @@
 package dylanbruner;
 
 import java.awt.geom.*;
-import java.util.List;
 
 public class MathUtils {
     public static final double A_LITTLE_LESS_THAN_HALF_PI = 1.25;
@@ -14,6 +13,14 @@ public class MathUtils {
     public static double limit(double min, double value, double max) {
         return Math.max(min, Math.min(value, max));
     }
+
+    public static Point2D.Double calcPoint(Point2D.Double p, double dist, double ang) {
+		return new Point2D.Double(p.x + dist*Math.sin(ang), p.y + dist*Math.cos(ang));
+	}
+	
+	public static double calcAngle(Point2D.Double p2, Point2D.Double p1){
+		return Math.atan2(p2.x - p1.x, p2.y - p1.y);
+	}
 
     public static double wallSmoothing(Point2D.Double botLocation, double angle, int orientation) {
         while (!fieldBox.contains(project(botLocation, angle, WALL_STICK))) {
