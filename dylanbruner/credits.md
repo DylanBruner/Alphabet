@@ -6,8 +6,10 @@ Things that I implemented/thought of completly on my own are listed below
   - Radar code, except for how it actually locks the rotation
   - Linear Gun
   - Painting
+  - Pattern gun (gets used the most, the guess factor gun doesn't use enough parameters)
+  - Anti gravity movement
   - Themer
-  - How we pick targets
+  - How it picks targets
 
 Things that I used external insperation for are listed below, along with any
 changes I implemented.
@@ -20,3 +22,4 @@ https://robowiki.net/wiki/GuessFactor_Targeting_Tutorial
 https://robowiki.net/wiki/Pattern_Matching
 https://robowiki.net/wiki/Wall_Smoothing
 https://robowiki.net/wiki/Virtual_Guns
+https://robowiki.net/wiki/Anti-Gravity_Tutorial

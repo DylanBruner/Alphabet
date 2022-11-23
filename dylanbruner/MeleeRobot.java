@@ -31,6 +31,7 @@ public class MeleeRobot {
 		target = new internEnemy();
 	}
     
+	//Called every tick by the main robot
     public void execute() {
         myPos = alphabet.myLocation;
         myEnergy = alphabet.getEnergy();

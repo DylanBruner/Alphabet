@@ -12,6 +12,10 @@ public class Themer {
     Color bloodRed  = new Color(120, 0, 0);
     Color tomatoRed = new Color(255, 99, 71);
 
+    //Variables
+    boolean flashing  = false;
+    boolean lastFlash = false;
+
     public final Color[][] BASE_THEMES = {
         {Color.black, Color.blue, Color.red},
         //{Color.pink, Color.pink, Color.white},//Stolen from SandboxDT
@@ -27,7 +31,17 @@ public class Themer {
     }
 
     public void execute(){
-        if (alphabet.getOthers() > 1){
+        if (flashing){
+            //If lastFlash flash green else flash red
+            if (lastFlash){
+                alphabet.setColors(mintGreen, mintGreen, mintGreen);
+                lastFlash = false;
+            } else {
+                alphabet.setColors(bloodRed, bloodRed, bloodRed);
+                lastFlash = true;
+            }
+        }
+        else if (alphabet.getOthers() > 1){
             if (alphabet.getTime() % 10 == 0 && alphabet.getRoundNum() != 0){
                 int myPlacement = Alphabet.vLeaderboard.getMyPlacement();
                 if (myPlacement == 1){

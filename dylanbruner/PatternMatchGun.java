@@ -70,6 +70,10 @@ public class PatternMatchGun {
     }
 
     public Point2D.Double doPatternGun(ScannedRobotEvent e, double bulletPower){
+        if (alphabet.radar.target == null || !alphabet.radar.target.initialized){
+            return estimateRobotLocation(e, bulletPower); //If pattern matching failed, use basic estimation math
+        }
+
         Enemy enemy = alphabet.radar.target;
         int snapshotsToUse = (int)(Math.abs(getAverageMovement(enemy) * MathUtils.bulletVelocity(bulletPower)));
         ArrayList<EnemySnapshot> snapshots = alphabet.radar.target.snapshots;
@@ -78,7 +82,8 @@ public class PatternMatchGun {
         ArrayList<EnemySnapshot> pattern = new ArrayList<EnemySnapshot>();
         for (int i = snapshots.size() - 1; i >= 0; i--) {
             if (pattern.size() < snapshotsToUse) {pattern.add(snapshots.get(i));
-            } else {break;}}
+            } else {break;}
+        }
         
         ArrayList<EnemySnapshot> closestPattern = new ArrayList<EnemySnapshot>();
 

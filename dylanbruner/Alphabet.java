@@ -27,10 +27,6 @@ import java.awt.event.MouseEvent;
  * 
  * I wont be switching over to the virtual leaderboard just yet as doesn't play well with the current melee movement
  * Also implementing Keep Distance into the wave surfing would improve performance immensely
- * 
- * Really need to get the pattern gun working, it definitely work incredibly well against the other
- * bots that will be in the competition. Because I HIGHLY doubt anyone will be using anything more advanced
- * than linear targeting and random movement. (Which is never truly random)
 */
 
 //We could store data about the enemy on the disk to preserve it and maybe already having targeting data for like melee would be good
@@ -47,10 +43,14 @@ public class Alphabet extends AdvancedRobot
 	//Movement
 	SurfMovement surferMove = new SurfMovement();
 	MeleeRobot meleeMove    = new MeleeRobot(); //Melee movement basically takes over the whole bot until it's done
-	
+	AntiGravity antiGravMov = new AntiGravity();
+
 	//Data collection
 	Radar radar                                   = new Radar();
 	public static VirtualLeaderboard vLeaderboard = new VirtualLeaderboard();
+
+	//Other
+	UhOhPreventer ohUhPreventer = new UhOhPreventer();
 
 	//Debug
 	Painting debugOverlay = new Painting();
@@ -64,6 +64,7 @@ public class Alphabet extends AdvancedRobot
 	public final int MOVEMENT_SURFING = 0;
 	public final int MOVEMENT_MELEE   = 1;
 	public int movementMode = -1;
+	public boolean forceDisableAutoMovement = false;
 
 	//Auto gun
 	public final int GUN_GUESS_FACTOR = 0;
@@ -80,6 +81,7 @@ public class Alphabet extends AdvancedRobot
 		//Initlize the components
 		vGunManager.init(this);
 		surferMove.init(this);
+		antiGravMov.init(this);
 		guessFactorGun.init(this);
 		linearGun.init(this);
 		radar.init(this);
@@ -88,6 +90,7 @@ public class Alphabet extends AdvancedRobot
 		vLeaderboard.init(this);
 		themer.init(this);
 		patternMatchGun.init(this);
+		ohUhPreventer.init(this);
 
 		//Setup robot
 		setAdjustGunForRobotTurn(true);
@@ -98,18 +101,20 @@ public class Alphabet extends AdvancedRobot
 			radar.execute();
 			
 			myLocation = new Point2D.Double(getX(), getY());
-			if (getOthers() > 1 && movementMode != MOVEMENT_MELEE) {
-				logger.log("Switching to melee movement");
-				movementMode = MOVEMENT_MELEE;
-				//radar.disableRadarManagement(); radar magagement will need to be controlled by radar again
-			} else if (getOthers() <= 1 && movementMode != MOVEMENT_SURFING) {
-				logger.log("Switching to surfing");
-				movementMode = MOVEMENT_SURFING;
-				//radar.enableRadarManagement(); radar magagement will need to be controlled by radar again
+			if (!forceDisableAutoMovement) {//This is really only used by OhUhPreventer
+				if (getOthers() > 1 && movementMode != MOVEMENT_MELEE) {
+					logger.log("Switching to melee movement");
+					movementMode = MOVEMENT_MELEE;
+					//radar.disableRadarManagement(); radar magagement will need to be controlled by radar again
+				} else if (getOthers() <= 1 && movementMode != MOVEMENT_SURFING) {
+					logger.log("Switching to surfing");
+					movementMode = MOVEMENT_SURFING;
+					//radar.enableRadarManagement(); radar magagement will need to be controlled by radar again
+				}
 			}
 			
 			//Auto movement
-			if (movementMode == MOVEMENT_MELEE) meleeMove.execute();
+			//if (movementMode == MOVEMENT_MELEE) meleeMove.execute();
 			
 			//Auto gun
 			if (movementMode == MOVEMENT_MELEE){}//Guns are handled in MeleeRobot.java during Melee
@@ -118,14 +123,15 @@ public class Alphabet extends AdvancedRobot
 			
 			vGunManager.execute();
 
+			ohUhPreventer.execute();
 			themer.execute();//Theme the robot, change colors and stuff
 			execute();
-
 		}
 	}
 
 	//Few helpers i need
 	public double getFirePower(){
+		if (radar.target == null || !radar.target.initialized){return 1;}
 		return Math.min(400 / myLocation.distance(radar.target.location), 3);
 	}
 
@@ -134,14 +140,13 @@ public class Alphabet extends AdvancedRobot
 		radar.onScannedRobot(e);
 
 		if (movementMode == MOVEMENT_SURFING) surferMove.onScannedRobot(e);
-		else if (movementMode == MOVEMENT_MELEE) meleeMove.onScannedRobot(e);
+		else if (movementMode == MOVEMENT_MELEE) antiGravMov.onScannedRobot(e);//meleeMove.onScannedRobot(e);
 		
 		//Multi-gun
-		if (movementMode == MOVEMENT_MELEE) {}//Guns are handled in MeleeRobot.java during Melee
-		else if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.onScannedRobot(e);
+		//if (movementMode == MOVEMENT_MELEE) {}//Guns are handled in MeleeRobot.java during Melee
+		if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.onScannedRobot(e);
 		else if (selectedGun == GUN_LINEAR) linearGun.onScannedRobot(e);
 		else if (selectedGun == GUN_PATTERN) patternMatchGun.onScannedRobot(e);
-		//else if (selectedGun == GUN_PATTERN) patternMatchGun.onScannedRobot(e);
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {
@@ -166,6 +171,7 @@ public class Alphabet extends AdvancedRobot
 	}
 
 	public void onHitRobot(HitRobotEvent e) {
+		if (movementMode == MOVEMENT_MELEE) antiGravMov.onHitRobot(e);
 	}
 
 	public void onRobotDeath(RobotDeathEvent e) {
@@ -173,9 +179,14 @@ public class Alphabet extends AdvancedRobot
 		vLeaderboard.onRobotDeath(e);
 	}
 
+	public void onHitWall(HitWallEvent e) {
+		//logger.warn("Hit wall");
+	}
+
 	@Override
 	public void onPaint(java.awt.Graphics2D g) {
 		debugOverlay.onPaint(g);
+		antiGravMov.onPaint(g);
 	}
 
 	public void onMouseMoved(MouseEvent e) {
