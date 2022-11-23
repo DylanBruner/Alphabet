@@ -30,6 +30,18 @@ public class VirtualLeaderboard {
     public LeaderboardEntry[] getEntriesSorted(){
         //Sort the leaderboard using getAverageScore()
         LeaderboardEntry[] entries = leaderboard.toArray(new LeaderboardEntry[leaderboard.size()]);
+        //Add my entry to the array
+        LeaderboardEntry myEntry = new LeaderboardEntry(alphabet.getName(), 0l);
+        //Convert myScores to an array long[]
+        long[] myScoresArray = new long[myScores.size()];
+        for(int i = 0; i < myScores.size(); i++){myScoresArray[i] = myScores.get(i);}
+
+        myEntry.scores = myScoresArray;
+        //Resize the array using MathUtils.resizeArray() and the type LeaderboardEntry
+        entries = (LeaderboardEntry[]) MathUtils.resizeArray(entries, entries.length + 1);
+        //Add my entry to the end of the array
+        entries[entries.length - 1] = myEntry;
+
         for (int i = 0; i < entries.length; i++){
             for (int j = 0; j < entries.length; j++){
                 if (entries[i].getAverageScore() > entries[j].getAverageScore()){
@@ -44,11 +56,14 @@ public class VirtualLeaderboard {
 
     public void iLeaveRoundEvent(){
         myScores.add(alphabet.getTime());
-        //Display the leaderboard
-        // LeaderboardEntry[] entries = getEntriesSorted();
-        // for (int i = 0; i < entries.length; i++){
-        //     LeaderboardEntry entry = entries[i];
-        //     logger.log("Entry " + i + ": " + entry.name + " with score " + entry.getAverageScore());
+
+        //Im not too sure about if this benefits the trackings or not
+        // for (Enemy enemy : alphabet.radar.enemies.values()){
+        //     if (!loggedRobotsThisRound.contains(enemy.name)){
+        //         loggedRobotsThisRound.add(enemy.name);
+        //         //This isn't a great way to do this but it's kinda the only way to do it
+        //         leaderboard.add(new LeaderboardEntry(enemy.name, alphabet.getTime() + (long) Math.random()*200));
+        //     }
         // }
     }
 
@@ -71,9 +86,14 @@ public class VirtualLeaderboard {
         //Display the leaderboard
         logger.log("My placement: " + getMyPlacement());
         LeaderboardEntry[] entries = getEntriesSorted();
+
+        BattleResults results = e.getResults();
+
         for (int i = 0; i < entries.length; i++){
             LeaderboardEntry entry = entries[i];
-            logger.log(i + ". " + entry.name + " with score " + entry.getAverageScore());
+            if (alphabet.getName() == entry.name && results.getRank() == i + 1){
+                logger.log(i + ". " + entry.name + " with score " + entry.getAverageScore()+" (Correct)");
+            } else {logger.log(i + ". " + entry.name + " with score " + entry.getAverageScore());}
         }
     }
 

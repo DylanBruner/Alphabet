@@ -43,7 +43,7 @@ public class Alphabet extends AdvancedRobot
 	//Movement
 	SurfMovement surferMove = new SurfMovement();
 	MeleeRobot meleeMove    = new MeleeRobot(); //Melee movement basically takes over the whole bot until it's done
-	AntiGravity antiGravMov = new AntiGravity();
+	//AntiGravity antiGravMov = new AntiGravity();
 
 	//Data collection
 	Radar radar                                   = new Radar();
@@ -81,7 +81,7 @@ public class Alphabet extends AdvancedRobot
 		//Initlize the components
 		vGunManager.init(this);
 		surferMove.init(this);
-		antiGravMov.init(this);
+		// antiGravMov.init(this);
 		guessFactorGun.init(this);
 		linearGun.init(this);
 		radar.init(this);
@@ -105,16 +105,16 @@ public class Alphabet extends AdvancedRobot
 				if (getOthers() > 1 && movementMode != MOVEMENT_MELEE) {
 					logger.log("Switching to melee movement");
 					movementMode = MOVEMENT_MELEE;
-					//radar.disableRadarManagement(); radar magagement will need to be controlled by radar again
+					radar.disableRadarManagement();// radar magagement will need to be controlled by radar again
 				} else if (getOthers() <= 1 && movementMode != MOVEMENT_SURFING) {
 					logger.log("Switching to surfing");
 					movementMode = MOVEMENT_SURFING;
-					//radar.enableRadarManagement(); radar magagement will need to be controlled by radar again
+					radar.enableRadarManagement();// radar magagement will need to be controlled by radar again
 				}
 			}
 			
 			//Auto movement
-			//if (movementMode == MOVEMENT_MELEE) meleeMove.execute();
+			if (movementMode == MOVEMENT_MELEE) meleeMove.execute();
 			
 			//Auto gun
 			if (movementMode == MOVEMENT_MELEE){}//Guns are handled in MeleeRobot.java during Melee
@@ -140,7 +140,7 @@ public class Alphabet extends AdvancedRobot
 		radar.onScannedRobot(e);
 
 		if (movementMode == MOVEMENT_SURFING) surferMove.onScannedRobot(e);
-		else if (movementMode == MOVEMENT_MELEE) antiGravMov.onScannedRobot(e);//meleeMove.onScannedRobot(e);
+		else if (movementMode == MOVEMENT_MELEE) meleeMove.onScannedRobot(e);//meleeMove.onScannedRobot(e);
 		
 		//Multi-gun
 		//if (movementMode == MOVEMENT_MELEE) {}//Guns are handled in MeleeRobot.java during Melee
@@ -171,7 +171,7 @@ public class Alphabet extends AdvancedRobot
 	}
 
 	public void onHitRobot(HitRobotEvent e) {
-		if (movementMode == MOVEMENT_MELEE) antiGravMov.onHitRobot(e);
+		// if (movementMode == MOVEMENT_MELEE) antiGravMov.onHitRobot(e);
 	}
 
 	public void onRobotDeath(RobotDeathEvent e) {
@@ -186,7 +186,7 @@ public class Alphabet extends AdvancedRobot
 	@Override
 	public void onPaint(java.awt.Graphics2D g) {
 		debugOverlay.onPaint(g);
-		antiGravMov.onPaint(g);
+		// antiGravMov.onPaint(g);
 	}
 
 	public void onMouseMoved(MouseEvent e) {

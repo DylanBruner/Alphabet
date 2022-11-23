@@ -1,6 +1,7 @@
 package dylanbruner;
 
 import java.awt.geom.*;
+import java.util.List;
 
 public class MathUtils {
     public static final double A_LITTLE_LESS_THAN_HALF_PI = 1.25;
@@ -45,5 +46,16 @@ public class MathUtils {
 
     public static double getAngle(Point2D.Double point2, Point2D.Double point1){
         return Math.atan2(point2.x - point1.x, point2.y - point1.y);
+    }
+
+    //Make a function that resizes a list of any type
+    public static Object resizeArray(Object oldArray, int newSize) {
+        int oldSize = java.lang.reflect.Array.getLength(oldArray);
+        Class elementType = oldArray.getClass().getComponentType();
+        Object newArray = java.lang.reflect.Array.newInstance(elementType,newSize);
+        int preserveLength = Math.min(oldSize,newSize);
+        if (preserveLength > 0)
+            System.arraycopy (oldArray,0,newArray,0,preserveLength);
+        return newArray; 
     }
 }
