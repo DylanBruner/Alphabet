@@ -127,12 +127,6 @@ public class Alphabet extends AdvancedRobot
 			
 			vGunManager.execute();
 
-			try {
-				shadowGun.getBestTarget();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
 			ohUhPreventer.execute();
 			themer.execute();//Theme the robot, change colors and stuff
 			execute();

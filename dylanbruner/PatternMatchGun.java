@@ -132,7 +132,7 @@ public class PatternMatchGun {
 
     public void onScannedRobot(ScannedRobotEvent e){
         double bulletPower = alphabet.getFirePower();
-        Point2D.Double location = doPatternGun(alphabet.radar.target.lastScan, bulletPower);
+        Point2D.Double location = doPatternGun(e, bulletPower);
         //Get the angle to the predicted location
         double angle = MathUtils.absoluteBearing(alphabet.myLocation, location);
         //Turn the gun to the angle
