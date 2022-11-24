@@ -13,7 +13,7 @@ public class Radar {
 
     //Radar stuff
     public Enemy target;
-    public static Hashtable<String, Enemy> enemies = new Hashtable<String, Enemy>();
+    public Hashtable<String, Enemy> enemies = new Hashtable<String, Enemy>();
     
     private boolean disableManagement = false;
     public boolean radarLocked       = false;
