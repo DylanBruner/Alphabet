@@ -5,7 +5,7 @@ import robocode.*;
 
 /*
  * A virtual leaderboard that is used to determine the best bot so we can target it first
- * for melee. This is a very simple implementation and is acurate enough.
+ * for melee. This is a very simple implementation and is acurate *enough*.
  * 
  * How it works (it's very advanced):
  *   - When the robot dies log how long it survived
@@ -37,7 +37,6 @@ public class VirtualLeaderboard {
         for(int i = 0; i < myScores.size(); i++){myScoresArray[i] = myScores.get(i);}
 
         myEntry.scores = myScoresArray;
-        //Resize the array using MathUtils.resizeArray() and the type LeaderboardEntry
         entries = (LeaderboardEntry[]) MathUtils.resizeArray(entries, entries.length + 1);
         //Add my entry to the end of the array
         entries[entries.length - 1] = myEntry;
@@ -57,7 +56,7 @@ public class VirtualLeaderboard {
     public void iLeaveRoundEvent(){
         myScores.add(alphabet.getTime());
 
-        //Im not too sure about if this benefits the trackings or not
+        //Im not too sure about if this benefits the trackings or not, it could be modified to add data based on amount of energy left
         // for (Enemy enemy : alphabet.radar.enemies.values()){
         //     if (!loggedRobotsThisRound.contains(enemy.name)){
         //         loggedRobotsThisRound.add(enemy.name);

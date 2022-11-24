@@ -34,7 +34,8 @@ public class Alphabet extends AdvancedRobot {
 	VirtualGunManager vGunManager   = new VirtualGunManager();
 	GuessFactorGun guessFactorGun   = new GuessFactorGun();
 	LinearGun linearGun             = new LinearGun();
-	PatternMatchGun patternMatchGun = new PatternMatchGun(); //WIP
+	PatternMatchGun patternMatchGun = new PatternMatchGun(); 
+	HeadOnGun headOnGun             = new HeadOnGun();
 	//PatternMatchGun patternMatchGun = new PatternMatchGun();
 
 	//Movement
@@ -67,6 +68,7 @@ public class Alphabet extends AdvancedRobot {
 	public final int GUN_GUESS_FACTOR = 0;
 	public final int GUN_LINEAR       = 1;
 	public final int GUN_PATTERN	  = 2;
+	public final int GUN_HEAD_ON	  = 3;
 	public int selectedGun = GUN_PATTERN;
 
 	//Other public variables
@@ -81,6 +83,7 @@ public class Alphabet extends AdvancedRobot {
 		// antiGravMov.init(this);
 		guessFactorGun.init(this);
 		linearGun.init(this);
+		headOnGun.init(this);
 		radar.init(this);
 		meleeMove.init(this);
 		debugOverlay.init(this);
@@ -144,6 +147,7 @@ public class Alphabet extends AdvancedRobot {
 		if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.onScannedRobot(e);
 		else if (selectedGun == GUN_LINEAR) linearGun.onScannedRobot(e);
 		else if (selectedGun == GUN_PATTERN) patternMatchGun.onScannedRobot(e);
+		else if (selectedGun == GUN_HEAD_ON) headOnGun.onScannedRobot(e);
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {
