@@ -46,7 +46,7 @@ public class LinearGun {
 
     public void onScannedRobot(ScannedRobotEvent e){
         double bulletPower = getOptimalFirePower();
-        double gunRadians = doLinearGun(e, bulletPower);
+        double gunRadians = doLinearGun(alphabet.radar.target.lastScan, bulletPower);
 
         alphabet.setTurnGunRightRadians(gunRadians);
         alphabet.setFire(bulletPower);

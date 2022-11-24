@@ -26,7 +26,7 @@ public class ShadowGun {
     public void execute() {}
 
 
-    public Enemy getBestShotLocation(){
+    public Enemy getBestTarget(){
         if (alphabet.radar.enemies.size() == 0) {logger.log("No enemies"); return null; }
         //First lets make a hashtable of weights
         Hashtable<String, Double> weights = new Hashtable<String, Double>();
@@ -54,6 +54,8 @@ public class ShadowGun {
             weights.put(enemy.name, weights.get(enemy.name) + (0.1 / enemy.energy));
 
             //Do stuff for based on hitting walls
+
+            //Calculate in virtual leaderboard placement also
         }
 
         computedWeights = weights;//This is just for visual debugging
