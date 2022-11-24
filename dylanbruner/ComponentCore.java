@@ -1,6 +1,7 @@
 package dylanbruner;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.awt.event.MouseEvent;
 import robocode.*;
 
@@ -9,22 +10,19 @@ public class ComponentCore {
     AlphabetLogger logger = new AlphabetLogger("ComponentCore");
 
     ArrayList<Component> components = new ArrayList<Component>();
+    Hashtable<String, Component> componentLookup = new Hashtable<String, Component>();
 
     public ComponentCore(Alphabet alphabet){
         this.alphabet = alphabet;
     }
 
     public Component getComponent(String name) {
-        for (Component component : components) {
-            if (component.getClass().getSimpleName().equals(name)) {
-                return component;
-            }
-        }
-        return null;
+        return componentLookup.get(name);
     }
 
     public void registerComponent(Component component) {
         components.add(component);
+        componentLookup.put(component.getClass().getSimpleName(), component);
         try {
             component.init(alphabet);
         } catch (Exception e) {
