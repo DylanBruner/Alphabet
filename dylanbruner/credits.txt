@@ -5,6 +5,7 @@ Things that I implemented/thought of completly on my own are listed below
   - The virtual gun system
   - Radar code, except for how it actually locks the rotation
   - Linear Gun
+  - Head on gun
   - Painting (debug info)
   - Pattern gun (gets used the most, the guess factor gun doesn't use enough parameters)
   - Anti gravity movement

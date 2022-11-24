@@ -9,7 +9,7 @@ import java.awt.event.MouseEvent;
  *==============================[OVERVIEW]==============================]
  * Shooting: (Auto switches)
  *   - Virtual Guns
- *   - GuessFactor Targeting, Linear Targeting and pattern matching
+ *   - GuessFactor, Linear, pattern matching and head on
  * Movement: (Auto switches)
  *   - Melee: Minimum Risk Movement
  *   - 1v1: Wave Surfing
