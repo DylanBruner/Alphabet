@@ -2,6 +2,12 @@ package dylanbruner;
 
 import java.awt.geom.*;
 
+/*
+ * This file is a collection of formulas I've made and found from robowiki.net
+ * If i have a formula in here that's not mine its *probably* listed in the
+ * credits file 
+*/
+
 public class MathUtils {
     public static final double A_LITTLE_LESS_THAN_HALF_PI = 1.25;
     public static final int WALL_STICK = 160;
