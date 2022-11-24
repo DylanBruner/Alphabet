@@ -67,7 +67,7 @@ public class Radar {
 
         enemies.get(e.getName()).snapshots.add(new EnemySnapshot(e, alphabet.myLocation));
         //Log amount of snapshots
-        //logger.log("Enemy " + e.getName() + " has " + enemies.get(e.getName()).snapshots.size() + " snapshots");
+        logger.log("Enemy " + e.getName() + " has " + enemies.get(e.getName()).snapshots.size() + " snapshots");
 
         // Deciding which enemy to target
         if (alphabet.movementMode == alphabet.MOVEMENT_SURFING){

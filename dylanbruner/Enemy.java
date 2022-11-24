@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import robocode.ScannedRobotEvent;
 
+
+//Yeah I know this is a really convoluted way of doing this but It's also the easiest
 public class Enemy {
     String name;
     double bearing, distance, energy, heading, velocity, lastVelocity, lastDistance, absBearing, bearingRadians, absBearingRadians;
@@ -17,7 +19,8 @@ public class Enemy {
 
     //Gun accuracy trackers
     public int tracker_linearGun      = 0;
-    public int tracker_guessFactorGun = 0; 
+    public int tracker_guessFactorGun = 0;
+    public int tracker_patternGun     = 0; 
 
     boolean alive = true;
     boolean initialized = false;

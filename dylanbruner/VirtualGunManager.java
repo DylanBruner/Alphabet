@@ -2,6 +2,9 @@ package dylanbruner;
 
 import java.awt.geom.*;
 import java.util.ArrayList;
+import java.util.Hashtable;
+
+import robocode.RobotDeathEvent;
 
 /*
  * Used to virtually benchmark different guns and see which one performs the best
@@ -16,6 +19,8 @@ public class VirtualGunManager {
 
     //Virtual gun variables 'n stuff
     ArrayList<TrackedBullet> bullets = new ArrayList<TrackedBullet>();
+    //                     Name,              Gun,     Shots hit
+    public static Hashtable<String, Hashtable<Integer, Integer>> gunStats = new Hashtable<String, Hashtable<Integer, Integer>>();
 
     public void init(Alphabet alphabet){
         this.alphabet = alphabet;
@@ -35,23 +40,35 @@ public class VirtualGunManager {
             Point2D.Double bulletLocation = bullet.getLocation(alphabet);
             if (bulletLocation.distance(alphabet.radar.target.location) < 20){
                 //Update the target's stats
-                if (bullet.parentGun == alphabet.GUN_GUESS_FACTOR){
-                    alphabet.radar.target.tracker_guessFactorGun++;
-                } else if (bullet.parentGun == alphabet.GUN_LINEAR){
-                    alphabet.radar.target.tracker_linearGun++;
+                Hashtable<Integer, Integer> targetStats = gunStats.get(alphabet.radar.target.name);
+                if (targetStats == null){
+                    targetStats = new Hashtable<Integer, Integer>();
+                    targetStats.put(alphabet.GUN_GUESS_FACTOR, 0);
+                    targetStats.put(alphabet.GUN_LINEAR, 0);
+                    targetStats.put(alphabet.GUN_PATTERN, 0);
+                    gunStats.put(alphabet.radar.target.name, targetStats);
                 }
-
-                //logger.log("Linear: " + alphabet.radar.target.tracker_linearGun+ " Guess factor:" + alphabet.radar.target.tracker_guessFactorGun);
+                targetStats.put(bullet.parentGun, targetStats.get(bullet.parentGun) + 1); //Increment the gun's hit count
             }
         }
 
         bullets.removeAll(bulletsToRemove);
 
-        // if (alphabet.radar.target.tracker_linearGun < alphabet.radar.target.tracker_guessFactorGun && alphabet.selectedGun != alphabet.GUN_GUESS_FACTOR){
-        //     alphabet.selectedGun = alphabet.GUN_GUESS_FACTOR;
-        // } else if (alphabet.selectedGun != alphabet.GUN_LINEAR) {
-        //     alphabet.selectedGun = alphabet.GUN_LINEAR;
-        // }
+        //Use gun stats to determine which gun to use for alphabet.radar.target.name
+        Hashtable<Integer, Integer> targetStats = gunStats.get(alphabet.radar.target.name);
+        if (targetStats != null){
+            int guessFactorGunHits = targetStats.get(alphabet.GUN_GUESS_FACTOR);
+            int linearGunHits      = targetStats.get(alphabet.GUN_LINEAR);
+            int patternGunHits     = targetStats.get(alphabet.GUN_PATTERN);
+
+            if (guessFactorGunHits > linearGunHits && guessFactorGunHits > patternGunHits){
+                alphabet.selectedGun = alphabet.GUN_GUESS_FACTOR;
+            } else if (linearGunHits > guessFactorGunHits && linearGunHits > patternGunHits){
+                alphabet.selectedGun = alphabet.GUN_LINEAR;
+            } else if (patternGunHits > guessFactorGunHits && patternGunHits > linearGunHits){
+                alphabet.selectedGun = alphabet.GUN_PATTERN;
+            }
+        }
     }
 
     public void fireVirtualBullets(){
@@ -60,7 +77,7 @@ public class VirtualGunManager {
             if (!MathUtils.fieldBox.contains(bullet.getLocation(alphabet))){
                 toRemove.add(bullet);
                 continue;
-            } 
+            }
         }
         bullets.removeAll(toRemove);
 
@@ -75,13 +92,26 @@ public class VirtualGunManager {
         guessFactorBullet.parentGun     = alphabet.GUN_GUESS_FACTOR;
 
         TrackedBullet linearBullet = guessFactorBullet.copy();
+        TrackedBullet patternGun   = guessFactorBullet.copy();
         linearBullet.parentGun = alphabet.GUN_LINEAR;
+        patternGun.parentGun   = alphabet.GUN_PATTERN;
 
         //Do the bullet calculations (They are relative at first)
         guessFactorBullet.absFireRadians = alphabet.guessFactorGun.doGuessFactorGun(absBearing, bulletPower) + absBearing;
         linearBullet.absFireRadians      = alphabet.linearGun.doLinearGun(alphabet.radar.target.lastScan, bulletPower) + absBearing;
+        Point2D.Double location = alphabet.patternMatchGun.doPatternGun(alphabet.radar.target.lastScan, bulletPower);
+        patternGun.absFireRadians = MathUtils.absoluteBearing(alphabet.myLocation, location);
 
         //Add the bullets to the list
-        bullets.add(guessFactorBullet); bullets.add(linearBullet);
+        bullets.add(patternGun); bullets.add(linearBullet); bullets.add(guessFactorBullet);
+    }
+
+    //Events
+    public void onRobotDeath(RobotDeathEvent e){
+        Hashtable<Integer, Integer> targetStats = gunStats.get(e.getName());
+        if (targetStats != null){
+            //Log gun stats like this: LinearGun: 10, GuessFactorGun: 5, PatternGun: 3
+            logger.log("LinearGun: " + targetStats.get(alphabet.GUN_LINEAR) + ", GuessFactorGun: " + targetStats.get(alphabet.GUN_GUESS_FACTOR) + ", PatternGun: " + targetStats.get(alphabet.GUN_PATTERN));
+        }
     }
 }

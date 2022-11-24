@@ -6,10 +6,10 @@ import robocode.util.Utils;
 import java.awt.geom.*;
 import java.util.ArrayList;
 
-//Constructed with the help of this tutorial
-//https://robowiki.net/wiki/GuessFactor_Targeting_Tutorial
-
-//If i have time I really need it to use more factors
+/*
+ * I dont really know how this gun works, i mean i have a rough idea but thats
+ * ok because i never gets used anyway 
+*/
 
 public class GuessFactorGun {
     //Component stuff

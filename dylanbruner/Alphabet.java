@@ -177,6 +177,7 @@ public class Alphabet extends AdvancedRobot
 	public void onRobotDeath(RobotDeathEvent e) {
 		radar.onRobotDeath(e);
 		vLeaderboard.onRobotDeath(e);
+		vGunManager.onRobotDeath(e);
 	}
 
 	public void onHitWall(HitWallEvent e) {
