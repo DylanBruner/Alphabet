@@ -13,18 +13,13 @@ import robocode.RobotDeathEvent;
  * movement in the competition. (I hope)
 */
 
-public class VirtualGunManager {
-    Alphabet alphabet;
+public class VirtualGunManager extends Component {
     AlphabetLogger logger = new AlphabetLogger("VirtualGunManager");
 
     //Virtual gun variables 'n stuff
     ArrayList<TrackedBullet> bullets = new ArrayList<TrackedBullet>();
     //                     Name,              Gun,     Shots hit
     public static Hashtable<String, Hashtable<Integer, Integer>> gunStats = new Hashtable<String, Hashtable<Integer, Integer>>();
-
-    public void init(Alphabet alphabet){
-        this.alphabet = alphabet;
-    }
 
     public void execute() {
         if (!alphabet.radar.target.initialized) return;

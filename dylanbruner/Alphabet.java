@@ -33,7 +33,6 @@ import java.awt.event.MouseEvent;
 
 public class Alphabet extends AdvancedRobot {
 	//Attacking
-	VirtualGunManager vGunManager   = new VirtualGunManager();
 	GuessFactorGun guessFactorGun   = new GuessFactorGun();
 	LinearGun linearGun             = new LinearGun();
 	PatternMatchGun patternMatchGun = new PatternMatchGun(); 
@@ -76,11 +75,11 @@ public class Alphabet extends AdvancedRobot {
 		componentCore.registerComponent(new Painting());
 		componentCore.registerComponent(new Themer());
 		componentCore.registerComponent(new UhOhPreventer());
+		componentCore.registerComponent(new VirtualGunManager());
 
 		myLocation = new Point2D.Double(getX(), getY());
 
 		//Initlize the components
-		vGunManager.init(this);
 		surferMove.init(this);
 		// antiGravMov.init(this);
 		guessFactorGun.init(this);
@@ -120,9 +119,6 @@ public class Alphabet extends AdvancedRobot {
 			if (movementMode == MOVEMENT_MELEE){}//Guns are handled in MeleeRobot.java during Melee
 			else if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.execute();
 			else if (selectedGun == GUN_LINEAR) linearGun.execute();
-			
-			vGunManager.execute();
-
 			
 			execute();
 		}
@@ -185,7 +181,6 @@ public class Alphabet extends AdvancedRobot {
 		componentCore.onRobotDeath(e);
 		radar.onRobotDeath(e);
 		vLeaderboard.onRobotDeath(e);
-		vGunManager.onRobotDeath(e);
 	}
 
 	public void onHitWall(HitWallEvent e) {
