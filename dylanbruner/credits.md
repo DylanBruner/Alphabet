@@ -37,3 +37,7 @@ https://robowiki.net/wiki/Bin_Smoothing
 https://github.com/Voidious/Diamond (Got the idea of how to split up files from his bot)
 
 Basically the whole robowiki website
+
+To Do List
+
+1. Make pattern gun save Config.MAX_SNAPSHOTS_PER each round

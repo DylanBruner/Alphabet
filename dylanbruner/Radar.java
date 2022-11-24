@@ -13,7 +13,7 @@ public class Radar {
 
     //Radar stuff
     public Enemy target;
-    public Hashtable<String, Enemy> enemies = new Hashtable<String, Enemy>();
+    public static Hashtable<String, Enemy> enemies = new Hashtable<String, Enemy>();
     
     private boolean disableManagement = false;
     public boolean radarLocked       = false;
@@ -65,6 +65,10 @@ public class Radar {
             enemies.put(e.getName(), newEnemy);
         }
 
+        if (enemies.get(e.getName()).snapshots.size() > Config.MAX_SNAPSHOTS_PER_ENEMY) {
+            enemies.get(e.getName()).snapshots.remove(0);
+        }
+        
         enemies.get(e.getName()).snapshots.add(new EnemySnapshot(e, alphabet.myLocation));
         //Log amount of snapshots
         //logger.log("Enemy " + e.getName() + " has " + enemies.get(e.getName()).snapshots.size() + " snapshots");
