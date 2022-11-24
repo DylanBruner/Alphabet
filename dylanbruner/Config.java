@@ -5,7 +5,9 @@ public class Config {
     public static final int fireInterval = 25;
     
     //Painting
-    public static final boolean drawTrackedBullets = true;
+    public static final boolean DRAW_VIRTUAL_BULLETS   = true;
+    public static final boolean DRAW_BOX_AROUND_TARGET = true;
+    public static final boolean DRAW_MOUSE_COORDS      = true;
 
     //Uh-Oh Preventer
     public static final int uhOhTriggerTime = 100;

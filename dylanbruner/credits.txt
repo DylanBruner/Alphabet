@@ -18,12 +18,12 @@ Note: lots of the math was borrowed from the internet because math is hard and w
 
       So I will be able to explain everything in this robot save for possibly exactly what some
       math does. Although having said that, given 10-15ish minutes with Google I could tell you
-      more in depth what it does. I just don't see a practical reason trying to cram memorize it.
+      more in depth what it does. I just don't see a practical reason trying to cram memorize it, *right now*.
       (this isn't a math class after all).
 
 Things that I used external insperation for are listed below, along with any
 changes I implemented.
-(Will update this when I'm done (If i dont forget)) otherwise the links *should* be everything
+(Will update this when I'm done (If i dont forget)) otherwise the links *should* be everything needed
 
 Links
 https://robowiki.net/wiki/HawkOnFire
@@ -34,10 +34,19 @@ https://robowiki.net/wiki/Wall_Smoothing
 https://robowiki.net/wiki/Virtual_Guns
 https://robowiki.net/wiki/Anti-Gravity_Tutorial
 https://robowiki.net/wiki/Bin_Smoothing
+https://robowiki.net/wiki/Radar
+https://robowiki.net/wiki/Performance_Enhancing_Bug (I have mixed feelings about this)
 https://github.com/Voidious/Diamond (Got the idea of how to split up files from his bot)
+https://robowiki.net/wiki/Category:Terminology
 
 Basically the whole robowiki website
 
-To Do List
 
-1. Make pattern gun save Config.MAX_SNAPSHOTS_PER each round
+To Do List (Only recently started so most of my stuff hasn't been logged here)
+
+1. Make pattern gun save Config.MAX_SNAPSHOTS_PER each round [DONE] 
+   - Disable saving between rounds because it kills leaderboard performance for some reason
+2. Make the bot be able to do mirror movement for fun
+3. Finding out how to use a K-D tree would be awsome but probably outside my current abilities
+   simply because I don't know enough about how they work. It might be something worth putting into
+   a whole new robot. But idk yet.
