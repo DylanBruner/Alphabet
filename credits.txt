@@ -51,3 +51,9 @@ To Do List (Only recently started so most of my stuff hasn't been logged here)
 3. Finding out how to use a K-D tree would be awsome but probably outside my current abilities
    simply because I don't know enough about how they work. It might be something worth putting into
    a whole new robot. But idk yet.
+
+Changelog i guess
+
+[11/24/22] current_version = v1.4
+  - Made a Component system to make it easier/more readable
+  - Changed some components over to the new componentcore

@@ -48,7 +48,6 @@ public class Alphabet extends AdvancedRobot {
 	public static VirtualLeaderboard vLeaderboard = new VirtualLeaderboard();
 
 	//Debug
-	// Painting debugOverlay = new Painting();
 	AlphabetLogger logger = new AlphabetLogger("Main");
 
 	//New
