@@ -9,17 +9,12 @@ package dylanbruner;
 
 import java.awt.geom.*;
 
-public class UhOhPreventer {
-    Alphabet alphabet;
+public class UhOhPreventer extends Component {
     AlphabetLogger logger = new AlphabetLogger("OhUhPreventer");
 
     long lastMoveTime = 0;
     double lastEngery = 0;
     Point2D.Double lastLocation = new Point2D.Double(0, 0);
-
-    public void init(Alphabet robot){
-        alphabet = robot;
-    }
 
     public void execute() {
         if (alphabet.myLocation.distance(lastLocation) == 0 && alphabet.getTime() - lastMoveTime > Config.uhOhTriggerTime && lastEngery != alphabet.getEnergy()) {
@@ -28,7 +23,7 @@ public class UhOhPreventer {
                 alphabet.movementMode = alphabet.MOVEMENT_MELEE;
                 alphabet.forceDisableAutoMovement = true;
                 logger.warn("I'm not moving! Switching to melee movement");
-                alphabet.themer.flashing = true;//Show that we are in uh-oh mode
+                ((Themer) alphabet.componentCore.getComponent("Themer")).flashing = true;
             }
         } else if (alphabet.myLocation.distance(lastLocation) != 0) {
             lastMoveTime = alphabet.getTime();

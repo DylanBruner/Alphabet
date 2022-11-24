@@ -4,8 +4,7 @@ import java.awt.Color;
 
 //The most unnecessary class in this entire robot
 
-public class Themer {
-    Alphabet alphabet;
+public class Themer extends Component {
     AlphabetLogger logger = new AlphabetLogger("Themer");
 
     Color mintGreen = new Color(152, 251, 152);

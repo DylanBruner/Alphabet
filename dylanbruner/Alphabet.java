@@ -38,7 +38,6 @@ public class Alphabet extends AdvancedRobot {
 	LinearGun linearGun             = new LinearGun();
 	PatternMatchGun patternMatchGun = new PatternMatchGun(); 
 	HeadOnGun headOnGun             = new HeadOnGun();
-	//PatternMatchGun patternMatchGun = new PatternMatchGun();
 
 	//Movement
 	SurfMovement surferMove = new SurfMovement();
@@ -49,15 +48,9 @@ public class Alphabet extends AdvancedRobot {
 	Radar radar                                   = new Radar();
 	public static VirtualLeaderboard vLeaderboard = new VirtualLeaderboard();
 
-	//Other
-	UhOhPreventer ohUhPreventer = new UhOhPreventer();
-
 	//Debug
-	Painting debugOverlay = new Painting();
+	// Painting debugOverlay = new Painting();
 	AlphabetLogger logger = new AlphabetLogger("Main");
-
-	//Fun
-	Themer themer = new Themer();
 
 	//New
 	ComponentCore componentCore = new ComponentCore(this);
@@ -81,6 +74,8 @@ public class Alphabet extends AdvancedRobot {
 
 	public void run() {
 		componentCore.registerComponent(new Painting());
+		componentCore.registerComponent(new Themer());
+		componentCore.registerComponent(new UhOhPreventer());
 
 		myLocation = new Point2D.Double(getX(), getY());
 
@@ -93,11 +88,8 @@ public class Alphabet extends AdvancedRobot {
 		headOnGun.init(this);
 		radar.init(this);
 		meleeMove.init(this);
-		debugOverlay.init(this);
 		vLeaderboard.init(this);
-		themer.init(this);
 		patternMatchGun.init(this);
-		ohUhPreventer.init(this);
 
 		//Setup robot
 		setAdjustGunForRobotTurn(true);
@@ -131,8 +123,7 @@ public class Alphabet extends AdvancedRobot {
 			
 			vGunManager.execute();
 
-			ohUhPreventer.execute();
-			themer.execute();//Theme the robot, change colors and stuff
+			
 			execute();
 		}
 	}
@@ -204,12 +195,10 @@ public class Alphabet extends AdvancedRobot {
 	@Override
 	public void onPaint(java.awt.Graphics2D g) {
 		componentCore.onPaint(g);
-		debugOverlay.onPaint(g);
 	}
 
 	public void onMouseMoved(MouseEvent e) {
 		componentCore.onMouseMoved(e);
-		debugOverlay.onMouseMoved(e);
 	}
 
 	public void onDeath(DeathEvent e) {

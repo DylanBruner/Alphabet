@@ -14,6 +14,15 @@ public class ComponentCore {
         this.alphabet = alphabet;
     }
 
+    public Component getComponent(String name) {
+        for (Component component : components) {
+            if (component.getClass().getSimpleName().equals(name)) {
+                return component;
+            }
+        }
+        return null;
+    }
+
     public void registerComponent(Component component) {
         components.add(component);
         try {
@@ -46,6 +55,16 @@ public class ComponentCore {
                     component.onHitWall((HitWallEvent) e);
                 } else if (e instanceof DeathEvent) {
                     component.onDeath((DeathEvent) e);
+                } else if (e instanceof WinEvent) {
+                    component.onWin((WinEvent) e);
+                } else if (e instanceof RoundEndedEvent) {
+                    component.onRoundEnded((RoundEndedEvent) e);
+                } else if (e instanceof BattleEndedEvent) {
+                    component.onBattleEnded((BattleEndedEvent) e);
+                } else if (e instanceof SkippedTurnEvent) {
+                    component.onSkippedTurn((SkippedTurnEvent) e);
+                } else if (e instanceof StatusEvent) {
+                    component.onStatus((StatusEvent) e);
                 } else {
                     logger.error("unknown event type: " + e.getClass().getSimpleName());
                 }
