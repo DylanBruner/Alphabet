@@ -19,7 +19,7 @@ import java.awt.event.MouseEvent;
  * Data Collecting:
  *   - Virtual Gun Data         (automatic gun switching)
  *   - Virtual leaderboard data (for melee targetting)
- *   - When enemies are scanned we store a 'snapshot' of their data
+ *   - When enemies are scanned we store a 'snapshot' of their data, max set in Config.java
  *     this will be used for pattern match targeting and whatever 
  *     else could benefit from it. We could analyze the data and
  * 	   calculate it into the leaderboard data to make it more accurate. (Energy loss vs Gain or Loss vs time)
@@ -27,6 +27,8 @@ import java.awt.event.MouseEvent;
  * 
  * I wont be switching over to the virtual leaderboard just yet as doesn't play well with the current melee movement
  * Also implementing Keep Distance into the wave surfing would improve performance immensely
+ * 
+ * The guns need to be moved over to targeting the target set by the radar not just the last scanned robot
 */
 
 public class Alphabet extends AdvancedRobot {
