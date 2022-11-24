@@ -29,10 +29,7 @@ import java.awt.event.MouseEvent;
  * Also implementing Keep Distance into the wave surfing would improve performance immensely
 */
 
-//We could store data about the enemy on the disk to preserve it and maybe already having targeting data for like melee would be good
-
-public class Alphabet extends AdvancedRobot
-{
+public class Alphabet extends AdvancedRobot {
 	//Attacking
 	VirtualGunManager vGunManager   = new VirtualGunManager();
 	GuessFactorGun guessFactorGun   = new GuessFactorGun();
