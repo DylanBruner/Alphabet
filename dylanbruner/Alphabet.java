@@ -59,6 +59,9 @@ public class Alphabet extends AdvancedRobot {
 	//Fun
 	Themer themer = new Themer();
 
+	//New
+	ComponentCore componentCore = new ComponentCore(this);
+
 	//Code ================================================================================================================
 	//Auto movement mode
 	public final int MOVEMENT_SURFING = 0;
@@ -77,6 +80,8 @@ public class Alphabet extends AdvancedRobot {
 	public Point2D.Double myLocation;
 
 	public void run() {
+		componentCore.registerComponent(new Painting());
+
 		myLocation = new Point2D.Double(getX(), getY());
 
 		//Initlize the components
@@ -100,6 +105,7 @@ public class Alphabet extends AdvancedRobot {
 
 		//Main
 		while (true){
+			componentCore.execute();
 			radar.execute();
 			
 			myLocation = new Point2D.Double(getX(), getY());
@@ -139,6 +145,8 @@ public class Alphabet extends AdvancedRobot {
 
 	//Events 'n stuff
 	public void onScannedRobot(ScannedRobotEvent e) {
+		componentCore.onScannedRobot(e);
+
 		radar.onScannedRobot(e);
 
 		if (movementMode == MOVEMENT_SURFING) surferMove.onScannedRobot(e);
@@ -153,10 +161,12 @@ public class Alphabet extends AdvancedRobot {
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {
+		componentCore.onHitByBullet(e);
 		if (movementMode == MOVEMENT_SURFING) surferMove.onHitByBullet(e);
 	}
 
 	public void onBulletHit(BulletHitEvent e) {
+		componentCore.onBulletHit(e);
 		if (movementMode == MOVEMENT_SURFING) surferMove.onBulletHit(e);
 
 		//Multi-gun
@@ -165,47 +175,55 @@ public class Alphabet extends AdvancedRobot {
 	}
 
 	public void onBulletMissed(BulletMissedEvent e) {
+		componentCore.onBulletMissed(e);
 		//Multi-gun
 		if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.onBulletMissed(e);
 	}
 
 	public void onBulletHitBullet(BulletHitBulletEvent e) {
+		componentCore.onBulletHitBullet(e);
 		if (movementMode == MOVEMENT_SURFING) surferMove.onBulletHitBullet(e);
 	}
 
 	public void onHitRobot(HitRobotEvent e) {
+		componentCore.onHitRobot(e);
 		// if (movementMode == MOVEMENT_MELEE) antiGravMov.onHitRobot(e);
 	}
 
 	public void onRobotDeath(RobotDeathEvent e) {
+		componentCore.onRobotDeath(e);
 		radar.onRobotDeath(e);
 		vLeaderboard.onRobotDeath(e);
 		vGunManager.onRobotDeath(e);
 	}
 
 	public void onHitWall(HitWallEvent e) {
-		//logger.warn("Hit wall");
+		componentCore.onHitWall(e);
 	}
 
 	@Override
 	public void onPaint(java.awt.Graphics2D g) {
+		componentCore.onPaint(g);
 		debugOverlay.onPaint(g);
-		// antiGravMov.onPaint(g);
 	}
 
 	public void onMouseMoved(MouseEvent e) {
+		componentCore.onMouseMoved(e);
 		debugOverlay.onMouseMoved(e);
 	}
 
 	public void onDeath(DeathEvent e) {
+		componentCore.onDeath(e);
 		vLeaderboard.onDeath(e);
 	}
 
 	public void onRoundEnded(RoundEndedEvent event) {
+		componentCore.onRoundEnded(event);
 		vLeaderboard.onRoundEnded(event);
 	}
 
 	public void onBattleEnded(BattleEndedEvent event) {
+		componentCore.onBattleEnded(event);
 		vLeaderboard.onBattleEnded(event);
 	}
 }

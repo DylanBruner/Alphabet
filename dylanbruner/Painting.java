@@ -3,20 +3,10 @@ package dylanbruner;
 import java.awt.geom.*;
 import java.awt.event.MouseEvent;
 
-
-public class Painting {
-    Alphabet alphabet;
-    AlphabetLogger logger = new AlphabetLogger("Painting");
-
+public class Painting extends Component {
     //Debug values
     Point2D.Double mouseLocation = new Point2D.Double(0, 0);
     
-    public void init(Alphabet alphabet){
-        this.alphabet = alphabet;
-    }
-
-    public void execute(){}
-
     public void onPaint(java.awt.Graphics2D g){
         //Draw the tracked virtual bullets
         if (Config.DRAW_VIRTUAL_BULLETS){
