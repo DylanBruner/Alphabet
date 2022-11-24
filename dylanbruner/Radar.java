@@ -74,7 +74,7 @@ public class Radar {
             //It's a easy choice, just target most recently scanned enemy
             target = enemies.get(e.getName());
         } else if (alphabet.movementMode == alphabet.MOVEMENT_MELEE && !radarLocked){
-            target = getOptimalMeleeTarget();//alphabet.shadowGun.getBestTarget();
+            target = getOptimalMeleeTarget();
         }
     }
 
