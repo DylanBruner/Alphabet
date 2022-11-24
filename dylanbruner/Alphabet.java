@@ -128,7 +128,7 @@ public class Alphabet extends AdvancedRobot
 			vGunManager.execute();
 
 			try {
-				shadowGun.getBestShotLocation();
+				shadowGun.getBestTarget();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
