@@ -37,7 +37,8 @@ public class Alphabet extends AdvancedRobot
 	VirtualGunManager vGunManager   = new VirtualGunManager();
 	GuessFactorGun guessFactorGun   = new GuessFactorGun();
 	LinearGun linearGun             = new LinearGun();
-	PatternMatchGun patternMatchGun = new PatternMatchGun(); //WIP
+	PatternMatchGun patternMatchGun = new PatternMatchGun();
+	ShadowGun shadowGun             = new ShadowGun();
 	//PatternMatchGun patternMatchGun = new PatternMatchGun();
 
 	//Movement
@@ -80,16 +81,19 @@ public class Alphabet extends AdvancedRobot
 
 		//Initlize the components
 		vGunManager.init(this);
-		surferMove.init(this);
-		// antiGravMov.init(this);
-		guessFactorGun.init(this);
-		linearGun.init(this);
-		radar.init(this);
-		meleeMove.init(this);
-		debugOverlay.init(this);
 		vLeaderboard.init(this);
-		themer.init(this);
+
+		guessFactorGun.init(this);
 		patternMatchGun.init(this);
+		linearGun.init(this);
+		shadowGun.init(this);
+		
+		surferMove.init(this);
+		meleeMove.init(this);
+		radar.init(this);
+		
+		debugOverlay.init(this);
+		themer.init(this);
 		ohUhPreventer.init(this);
 
 		//Setup robot
@@ -105,11 +109,11 @@ public class Alphabet extends AdvancedRobot
 				if (getOthers() > 1 && movementMode != MOVEMENT_MELEE) {
 					logger.log("Switching to melee movement");
 					movementMode = MOVEMENT_MELEE;
-					radar.disableRadarManagement();// radar magagement will need to be controlled by radar again
+					//radar.disableRadarManagement();// radar magagement will need to be controlled by radar again
 				} else if (getOthers() <= 1 && movementMode != MOVEMENT_SURFING) {
 					logger.log("Switching to surfing");
 					movementMode = MOVEMENT_SURFING;
-					radar.enableRadarManagement();// radar magagement will need to be controlled by radar again
+					//radar.enableRadarManagement();// radar magagement will need to be controlled by radar again
 				}
 			}
 			
@@ -122,6 +126,7 @@ public class Alphabet extends AdvancedRobot
 			else if (selectedGun == GUN_LINEAR) linearGun.execute();
 			
 			vGunManager.execute();
+
 
 			ohUhPreventer.execute();
 			themer.execute();//Theme the robot, change colors and stuff

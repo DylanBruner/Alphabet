@@ -35,5 +35,12 @@ https://robowiki.net/wiki/Virtual_Guns
 https://robowiki.net/wiki/Anti-Gravity_Tutorial
 https://robowiki.net/wiki/Bin_Smoothing
 https://github.com/Voidious/Diamond (Got the idea of how to split up files from his bot)
+https://robowiki.net/wiki/Shadow/Melee_Gun
 
 Basically the whole robowiki website
+
+
+This doubles as a todo list for me to make sure I don't forget anything
+
+1. Shadow gun [WIP]
+2. Make the compontent system cleaner [TODO]

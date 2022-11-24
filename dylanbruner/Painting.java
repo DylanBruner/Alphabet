@@ -34,6 +34,20 @@ public class Painting {
         //Draw text in the top left that says mouseLocation
         g.setColor(java.awt.Color.WHITE);
         g.drawString("Mouse location: " + mouseLocation, 10, 10);
+
+        for (Enemy enemy : alphabet.radar.enemies.values()){
+            if (!alphabet.shadowGun.computedWeights.containsKey(enemy.name)) continue;
+            double weight = alphabet.shadowGun.computedWeights.get(enemy.name);
+
+            g.setColor(java.awt.Color.BLACK);
+            g.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 16));
+            //Draw a black background behind the text
+            
+            //Set the color to mint green
+            g.setColor(new java.awt.Color(0, 255, 127));
+            //Draw the text like 20 pixels above the enemy
+            g.drawString(String.format("%.2f", weight), (int)enemy.location.x-20, (int)enemy.location.y + 40);
+        }
     }
 
     public void onMouseMoved(MouseEvent e){
