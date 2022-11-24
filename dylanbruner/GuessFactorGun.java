@@ -72,7 +72,7 @@ public class GuessFactorGun {
         //This should probably be moved into where it actually shoots
         //But the GuessFactorGun hardly gets selected (I think) and Linear
         //Targeting is used most of the time
-        if (alphabet.getGunHeat() == 0 && gunAdjust < Math.atan2(9, target.lastScan.getDistance()) && alphabet.setFireBullet(power) != null){
+        if (alphabet.getGunHeat() == 0 && gunAdjust < Math.atan2(9, e.getDistance()) && alphabet.setFireBullet(power) != null){
             waves.add(newWave);
         }
     }

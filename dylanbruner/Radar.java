@@ -43,7 +43,7 @@ public class Radar {
     }
 
     public void onScannedRobot(ScannedRobotEvent e) {
-        //if (disableManagement) return; we still want to observe stuff
+        if (disableManagement) return;
         double absBearing = e.getBearingRadians() + alphabet.getHeadingRadians();
 
         if (!radarLockCooldown && !radarLocked){
@@ -51,7 +51,7 @@ public class Radar {
             radarLockStarted = alphabet.getTime();
         }
 
-        if (radarLocked && !disableManagement){
+        if (radarLocked){
             alphabet.setTurnRadarRightRadians(Utils.normalRelativeAngle(absBearing - alphabet.getRadarHeadingRadians()) * 2);
         }
 
