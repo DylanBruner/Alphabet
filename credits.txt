@@ -70,4 +70,4 @@ Changelog i guess
   - Add execution conditionals to the Component system
   - Changed the following things over to the new component system (All Guns)
     - PatternGunV2, LinearGun, HeadOnGun, PatternMatchGun, GueessFactorGun
-      MeleeRobot
+      MeleeRobot, SurfMovement, VirtualLeaderboard

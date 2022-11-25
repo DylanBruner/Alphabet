@@ -32,8 +32,7 @@ import java.awt.event.MouseEvent;
 
 public class Alphabet extends AdvancedRobot {
 	//Data collection
-	Radar radar                                   = new Radar();
-	public static VirtualLeaderboard vLeaderboard = new VirtualLeaderboard();
+	Radar radar = new Radar();
 
 	//Debug
 	AlphabetLogger logger = new AlphabetLogger("Main");
@@ -73,6 +72,7 @@ public class Alphabet extends AdvancedRobot {
 		componentCore.registerComponent(new PatternMatchGun());
 		componentCore.registerComponent(new MeleeRobot());
 		componentCore.registerComponent(new SurfMovement());
+		componentCore.registerComponent(new VirtualLeaderboard());
 
 		//Shooting =======================================================
 
@@ -122,7 +122,6 @@ public class Alphabet extends AdvancedRobot {
 
 		//Initlize the components
 		radar.init(this);
-		vLeaderboard.init(this);
 
 		//Setup robot
 		setAdjustGunForRobotTurn(true);
@@ -146,12 +145,6 @@ public class Alphabet extends AdvancedRobot {
 				}
 			}
 			
-			//Auto movement
-			
-			//Auto gun
-			if (movementMode == MOVEMENT_MELEE){}//Guns are handled in MeleeRobot.java during Melee
-
-			
 			execute();
 		}
 	}
@@ -168,57 +161,21 @@ public class Alphabet extends AdvancedRobot {
 		radar.onScannedRobot(e);
 	}
 
-	public void onHitByBullet(HitByBulletEvent e) {
-		componentCore.onHitByBullet(e);
-	}
-
-	public void onBulletHit(BulletHitEvent e) {
-		componentCore.onBulletHit(e);
-	}
-
-	public void onBulletMissed(BulletMissedEvent e) {
-		componentCore.onBulletMissed(e);
-	}
-
-	public void onBulletHitBullet(BulletHitBulletEvent e) {
-		componentCore.onBulletHitBullet(e);
-	}
-
-	public void onHitRobot(HitRobotEvent e) {
-		componentCore.onHitRobot(e);
-	}
-
+	
 	public void onRobotDeath(RobotDeathEvent e) {
 		componentCore.onRobotDeath(e);
 		radar.onRobotDeath(e);
-		vLeaderboard.onRobotDeath(e);
 	}
-
-	public void onHitWall(HitWallEvent e) {
-		componentCore.onHitWall(e);
-	}
-
+	public void onHitByBullet(HitByBulletEvent e) {componentCore.onHitByBullet(e);}
+	public void onBulletHit(BulletHitEvent e) {componentCore.onBulletHit(e);}
+	public void onBulletMissed(BulletMissedEvent e) {componentCore.onBulletMissed(e);}
+	public void onBulletHitBullet(BulletHitBulletEvent e) {componentCore.onBulletHitBullet(e);}
+	public void onHitRobot(HitRobotEvent e) {componentCore.onHitRobot(e);}
+	public void onHitWall(HitWallEvent e) {componentCore.onHitWall(e);}
+	public void onMouseMoved(MouseEvent e) {componentCore.onMouseMoved(e);}
+	public void onDeath(DeathEvent e) {componentCore.onDeath(e);}
+	public void onRoundEnded(RoundEndedEvent event) {componentCore.onRoundEnded(event);}
+	public void onBattleEnded(BattleEndedEvent event) {componentCore.onBattleEnded(event);}
 	@Override
-	public void onPaint(java.awt.Graphics2D g) {
-		componentCore.onPaint(g);
-	}
-
-	public void onMouseMoved(MouseEvent e) {
-		componentCore.onMouseMoved(e);
-	}
-
-	public void onDeath(DeathEvent e) {
-		componentCore.onDeath(e);
-		vLeaderboard.onDeath(e);
-	}
-
-	public void onRoundEnded(RoundEndedEvent event) {
-		componentCore.onRoundEnded(event);
-		vLeaderboard.onRoundEnded(event);
-	}
-
-	public void onBattleEnded(BattleEndedEvent event) {
-		componentCore.onBattleEnded(event);
-		vLeaderboard.onBattleEnded(event);
-	}
+	public void onPaint(java.awt.Graphics2D g) {componentCore.onPaint(g);}
 }

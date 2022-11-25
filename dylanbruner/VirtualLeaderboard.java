@@ -12,20 +12,13 @@ import robocode.*;
  *   - that's it ....
 */
 
-public class VirtualLeaderboard {
-    Alphabet alphabet;
+public class VirtualLeaderboard extends Component {
     AlphabetLogger logger = new AlphabetLogger("VirtualLeaderboard");
 
     //                      Name,   Score(s)
     public static ArrayList<LeaderboardEntry> leaderboard = new ArrayList<LeaderboardEntry>();
     public static ArrayList<Long> myScores = new ArrayList<Long>();
     public ArrayList<String> loggedRobotsThisRound = new ArrayList<String>();
-
-    public void init(Alphabet alphabet){
-        this.alphabet = alphabet;
-    }
-    
-    public void execute(){ }
 
     public LeaderboardEntry[] getEntriesSorted(){
         //Sort the leaderboard using getAverageScore()

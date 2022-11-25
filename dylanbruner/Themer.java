@@ -42,7 +42,7 @@ public class Themer extends Component {
         }
         else if (alphabet.getOthers() > 1){
             if (alphabet.getTime() % 10 == 0 && alphabet.getRoundNum() != 0){
-                int myPlacement = Alphabet.vLeaderboard.getMyPlacement();
+                int myPlacement = ((VirtualLeaderboard) alphabet.componentCore.getComponent("VirtualLeaderboard")).getMyPlacement();
                 if (myPlacement == 1){
                     //Change base color to mint-green
                     alphabet.setColors(Color.black, Color.black, new Color(255, 255, 170));
