@@ -11,20 +11,45 @@ import java.util.Hashtable;
  * and the idea of the gun comes from the bot called "Shadow"
 */
 
-public class ShadowGun {
+public class ShadowGun extends Component {
     //Components
-    Alphabet alphabet;
     AlphabetLogger logger = new AlphabetLogger("ShadowGun");
     
     //Code
     Hashtable<String, Double> computedWeights = new Hashtable<String, Double>();//Used mostly for visual debugging right now
 
-    public void init(Alphabet alphabet){
-        this.alphabet = alphabet;
+    public void execute(){ }//This might be used
+
+    public int getRobotPlacement(String name){
+        if (!computedWeights.containsKey(name)) return -1;
+        //Use computed weights to determine where the robot is in the leaderboard
+        
+        //First store computed weights into a sorted array
+        double[] sortedWeights = new double[computedWeights.size()];
+        int i = 0;
+        for(String key : computedWeights.keySet()){
+            sortedWeights[i] = computedWeights.get(key);
+            i++;
+        }
+        //Sort the array
+        for(int j = 0; j < sortedWeights.length; j++){
+            for(int k = 0; k < sortedWeights.length; k++){
+                if(sortedWeights[j] > sortedWeights[k]){
+                    double temp = sortedWeights[j];
+                    sortedWeights[j] = sortedWeights[k];
+                    sortedWeights[k] = temp;
+                }
+            }
+        }
+
+        //Now we have a sorted array of weights, we can use this to determine the placement of the robot
+        for(int j = 0; j < sortedWeights.length; j++){
+            if(computedWeights.get(name) == sortedWeights[j]){
+                return j;
+            }
+        }
+        return -1;
     }
-
-    public void execute() {}
-
 
     public Enemy getBestTarget(){
         if (alphabet.radar.enemies.size() == 0) {logger.log("No enemies"); return null; }

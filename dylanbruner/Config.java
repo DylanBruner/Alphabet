@@ -9,6 +9,7 @@ public class Config {
     public static final boolean DRAW_VIRTUAL_BULLETS   = true;
     public static final boolean DRAW_BOX_AROUND_TARGET = true;
     public static final boolean DRAW_MOUSE_COORDS      = true;
+    public static final boolean DRAW_SHADOW_GUN_DATA   = true; //Draw targeting data for the shadow gun
 
     //Uh-Oh Preventer
     public static final int uhOhTriggerTime = 100;

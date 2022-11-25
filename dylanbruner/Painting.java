@@ -4,6 +4,8 @@ import java.awt.geom.*;
 import java.awt.event.MouseEvent;
 
 public class Painting extends Component {
+    AlphabetLogger logger = new AlphabetLogger("Painting");
+
     //Debug values
     Point2D.Double mouseLocation = new Point2D.Double(0, 0);
     
@@ -29,6 +31,26 @@ public class Painting extends Component {
         if (Config.DRAW_VIRTUAL_BULLETS){
             g.setColor(java.awt.Color.WHITE);
             g.drawString("Mouse location: " + mouseLocation, 10, 10);
+        }
+
+        if (Config.DRAW_SHADOW_GUN_DATA){
+            ShadowGun shadowGun = (ShadowGun) alphabet.componentCore.getComponent("ShadowGun");
+
+            for (String robotName : shadowGun.computedWeights.keySet()){
+                int placement = shadowGun.getRobotPlacement(robotName);
+                if (placement >= 0){
+                    //Draw a box around the robot, and write it's placement above it
+                    if (placement == 0){
+                        g.setColor(java.awt.Color.ORANGE);
+                    } else {
+                        g.setColor(java.awt.Color.WHITE);
+                    }
+                    g.drawRect((int)alphabet.radar.enemies.get(robotName).location.x-40, (int)alphabet.radar.enemies.get(robotName).location.y-40, 40, 40);
+                    g.drawString("" + placement, (int)alphabet.radar.enemies.get(robotName).location.x-40, (int)alphabet.radar.enemies.get(robotName).location.y-40);
+                } else {
+                    logger.warn("Could not find placement for robot " + robotName);
+                }
+            }
         }
     }
 

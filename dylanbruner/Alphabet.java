@@ -53,6 +53,7 @@ public class Alphabet extends AdvancedRobot {
 		componentCore.registerComponent(new MeleeRobot());
 		componentCore.registerComponent(new SurfMovement());
 		componentCore.registerComponent(new VirtualLeaderboard());
+		componentCore.registerComponent(new ShadowGun());
 
 		radar = (Radar) componentCore.getComponent("Radar");//Go to where i create the variable radar to see why I'm doing this
 
