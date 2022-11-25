@@ -62,7 +62,7 @@ public class MeleeRobot {
 		double bulletPower = Math.min(Math.min(myEnergy/6d, 1300d/distanceToTarget), target.energy/3d);
 		Enemy enemy = alphabet.radar.enemies.get(target.name);
 		if (enemy != null && enemy.initialized && enemy.lastScan != null){
-			Point2D.Double predictedLocation = alphabet.patternMatchGun.doPatternGun(enemy.lastScan, bulletPower);
+			Point2D.Double predictedLocation = ((PatternMatchGun) alphabet.componentCore.getComponent("PatternMatchGun")).doPatternGun(enemy.lastScan, bulletPower);
 			if (predictedLocation != null){
 				double angle = MathUtils.calcAngle(predictedLocation, myPos);
 				double gunTurn = Utils.normalRelativeAngle(angle - alphabet.getGunHeadingRadians());

@@ -108,9 +108,9 @@ public class VirtualGunManager extends Component {
         patternGunV2.parentGun = alphabet.GUN_PATTERN_V2;
 
         //Do the bullet calculations (They are relative at first)
-        guessFactorBullet.absFireRadians = alphabet.guessFactorGun.doGuessFactorGun(absBearing, bulletPower) + absBearing;
+        guessFactorBullet.absFireRadians = ((GuessFactorGun) alphabet.componentCore.getComponent("GuessFactorGun")).doGuessFactorGun(absBearing, bulletPower) + absBearing;
         linearBullet.absFireRadians      = ((LinearGun) alphabet.componentCore.getComponent("LinearGun")).doLinearGun(alphabet.radar.target.lastScan, bulletPower) + absBearing;
-        Point2D.Double location = alphabet.patternMatchGun.doPatternGun(alphabet.radar.target.lastScan, bulletPower);
+        Point2D.Double location = ((PatternMatchGun) alphabet.componentCore.getComponent("PatternMatchGun")).doPatternGun(alphabet.radar.target.lastScan, bulletPower);
         patternGun.absFireRadians = MathUtils.absoluteBearing(alphabet.myLocation, location);
 
         Point2D.Double headOnLocation = ((HeadOnGun) alphabet.componentCore.getComponent("HeadOnGun")).doHeadOnGun(alphabet.radar.target, bulletPower);

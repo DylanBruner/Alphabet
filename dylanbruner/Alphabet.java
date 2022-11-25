@@ -31,10 +31,6 @@ import java.awt.event.MouseEvent;
 */
 
 public class Alphabet extends AdvancedRobot {
-	//Attacking
-	GuessFactorGun guessFactorGun   = new GuessFactorGun();
-	PatternMatchGun patternMatchGun = new PatternMatchGun();
-
 	//Movement
 	SurfMovement surferMove = new SurfMovement();
 	MeleeRobot meleeMove    = new MeleeRobot(); //Melee movement basically takes over the whole bot until it's done
@@ -62,7 +58,7 @@ public class Alphabet extends AdvancedRobot {
 	public final int GUN_PATTERN	  = 2; //21.59, 21.56
 	public final int GUN_HEAD_ON	  = 3; //30.42, 25.61
 	public final int GUN_PATTERN_V2   = 4;
-	public int selectedGun = GUN_HEAD_ON;// ^ For some reason starting with this gun gives the best results
+	public int selectedGun = GUN_PATTERN;// ^ For some reason starting with this gun gives the best results
 
 	//Other public variables
 	public Point2D.Double myLocation;
@@ -77,24 +73,35 @@ public class Alphabet extends AdvancedRobot {
 		componentCore.registerComponent(new PatternGunV2());
 		componentCore.registerComponent(new LinearGun());
 		componentCore.registerComponent(new HeadOnGun());
+		componentCore.registerComponent(new GuessFactorGun());
+		componentCore.registerComponent(new PatternMatchGun());
 
 		//Setup event conditionals
 		//These determine if the events are called for x component, it's needed so we don't shoot all guns at once
 		
+		//Guns shoot if (selectedGun == x && movementMode == MOVE_SURFING)
 		//Only shoot the PatternGunV2 if it's selected
 		componentCore.setEventConditional("PatternGunV2", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_PATTERN_V2;
+			return alphabet.selectedGun == alphabet.GUN_PATTERN_V2 && alphabet.movementMode == alphabet.MOVEMENT_SURFING;
 		});
-
 		//Only shoot the LinearGun if it's selected
 		componentCore.setEventConditional("LinearGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_LINEAR;
+			return alphabet.selectedGun == alphabet.GUN_LINEAR && alphabet.movementMode == alphabet.MOVEMENT_SURFING;
 		});
-
 		//Only shoot the HeadOnGun if it's selected
 		componentCore.setEventConditional("HeadOnGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_HEAD_ON;
+			return alphabet.selectedGun == alphabet.GUN_HEAD_ON && alphabet.movementMode == alphabet.MOVEMENT_SURFING;
 		});
+		//Only shoot the GuessFactorGun if it's selected
+		componentCore.setEventConditional("GuessFactorGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
+			return alphabet.selectedGun == alphabet.GUN_GUESS_FACTOR && alphabet.movementMode == alphabet.MOVEMENT_SURFING;
+		});
+		//Only shoot the PatternGun if it's selected
+		componentCore.setEventConditional("PatternMatchGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
+			return alphabet.selectedGun == alphabet.GUN_PATTERN && alphabet.movementMode == alphabet.MOVEMENT_SURFING;
+		});
+
+		//Movement
 
 		//=======================================================[Robot]=======================================================
 
@@ -103,11 +110,9 @@ public class Alphabet extends AdvancedRobot {
 		//Initlize the components
 		surferMove.init(this);
 		// antiGravMov.init(this);
-		guessFactorGun.init(this);
 		radar.init(this);
 		meleeMove.init(this);
 		vLeaderboard.init(this);
-		patternMatchGun.init(this);
 
 		//Setup robot
 		setAdjustGunForRobotTurn(true);
@@ -136,7 +141,6 @@ public class Alphabet extends AdvancedRobot {
 			
 			//Auto gun
 			if (movementMode == MOVEMENT_MELEE){}//Guns are handled in MeleeRobot.java during Melee
-			else if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.execute();
 
 			
 			execute();
@@ -156,12 +160,7 @@ public class Alphabet extends AdvancedRobot {
 		radar.onScannedRobot(e);
 
 		if (movementMode == MOVEMENT_SURFING) surferMove.onScannedRobot(e);
-		else if (movementMode == MOVEMENT_MELEE) meleeMove.onScannedRobot(e);//meleeMove.onScannedRobot(e);
-		
-		//Multi-gun
-		//if (movementMode == MOVEMENT_MELEE) {}//Guns are handled in MeleeRobot.java during Melee
-		if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.onScannedRobot(e);
-		else if (selectedGun == GUN_PATTERN) patternMatchGun.onScannedRobot(e);
+		else if (movementMode == MOVEMENT_MELEE) meleeMove.onScannedRobot(e);
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {
@@ -172,16 +171,10 @@ public class Alphabet extends AdvancedRobot {
 	public void onBulletHit(BulletHitEvent e) {
 		componentCore.onBulletHit(e);
 		if (movementMode == MOVEMENT_SURFING) surferMove.onBulletHit(e);
-
-		//Multi-gun
-		if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.onBulletHit(e);
-		//else if (gunMode == GUN_LINEAR) linearGun.onBulletHit(e);
 	}
 
 	public void onBulletMissed(BulletMissedEvent e) {
 		componentCore.onBulletMissed(e);
-		//Multi-gun
-		if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.onBulletMissed(e);
 	}
 
 	public void onBulletHitBullet(BulletHitBulletEvent e) {
@@ -191,7 +184,6 @@ public class Alphabet extends AdvancedRobot {
 
 	public void onHitRobot(HitRobotEvent e) {
 		componentCore.onHitRobot(e);
-		// if (movementMode == MOVEMENT_MELEE) antiGravMov.onHitRobot(e);
 	}
 
 	public void onRobotDeath(RobotDeathEvent e) {

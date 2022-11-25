@@ -11,16 +11,11 @@ import java.util.ArrayList;
  * This gun needs to be reworked to properly predict the amount of snapshots we should skip 
 */
 
-public class PatternMatchGun {
-    Alphabet alphabet;
+public class PatternMatchGun extends Component {
     AlphabetLogger logger = new AlphabetLogger("PatternMatchGun");
 
     //Stuff
     Point2D.Double guessLocation = new Point2D.Double(0, 0);
-
-    public void init(Alphabet alphabet){
-        this.alphabet = alphabet;
-    }
 
     public double getAverageMovement(Enemy enemy){
         double average = 0;

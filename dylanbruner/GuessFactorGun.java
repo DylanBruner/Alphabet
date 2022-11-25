@@ -6,14 +6,13 @@ import robocode.util.Utils;
 import java.awt.geom.*;
 import java.util.ArrayList;
 
-/*
+/*                           (I have a fairly good understanding of it now)
  * I dont really know how this gun works, i mean i have a rough idea but thats
  * ok because i never gets used anyway 
 */
 
-public class GuessFactorGun {
+public class GuessFactorGun extends Component {
     //Component stuff
-    Alphabet alphabet;
     AlphabetLogger logger = new AlphabetLogger("GuessFactorGun");
 
     //Gun stuff
@@ -21,12 +20,6 @@ public class GuessFactorGun {
     ArrayList<WaveBullet> waves = new ArrayList<WaveBullet>();
     static int[][] stats          = new int[8][NUM_BINS];
     int direction               = 1;
-
-    public void init(Alphabet robot){
-        alphabet = robot;
-    }
-
-    public void execute(){}
 
     //Events 'n stuff
     public void onScannedRobot(ScannedRobotEvent e) {
@@ -44,7 +37,7 @@ public class GuessFactorGun {
             }
         }
 
-        double power = getOptimalFirePower(target);
+        double power = alphabet.getFirePower();
         if (target.velocity != 0){
             if (Math.sin(e.getHeadingRadians() - absBearing) * target.velocity < 0){
                 direction = -1;
@@ -100,14 +93,7 @@ public class GuessFactorGun {
         return gunAdjust;
     }
 
-    public void onBulletHit(BulletHitEvent e) {}
-    public void onBulletMissed(BulletMissedEvent e) {}
-
     //Helper functions
-    public double getOptimalFirePower(Enemy target){
-        return 1;
-        //return Math.min(3.0, Math.min(400.0 / target.location.distance(alphabet.myLocation), alphabet.getEnergy() - 0.1));
-    }
 
     //Helper classes
     public class WaveBullet {

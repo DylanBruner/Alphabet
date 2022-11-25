@@ -68,7 +68,9 @@ Changelog i guess
       
   - I moved all the tools into their own folder and made a singular batch file 'robo.bat' to run them
   - Add execution conditionals to the Component system
-  - Changed the following things over to the new component system
+  - Changed the following things over to the new component system (All Guns)
     - PatternGunV2
     - LinearGun
     - HeadOnGun
+    - PatternMatchGun
+    - GueessFactorGun
