@@ -36,7 +36,7 @@ public class Alphabet extends AdvancedRobot {
 	GuessFactorGun guessFactorGun    = new GuessFactorGun();
 	LinearGun linearGun              = new LinearGun();
 	PatternMatchGun patternMatchGun  = new PatternMatchGun();
-	static PatternGunV2 patternGunV2 = new PatternGunV2(); //So we can preserve data, or at least i think that's how it works
+	PatternGunV2 patternGunV2        = new PatternGunV2(); //It shouldn't need to be static here
 	HeadOnGun headOnGun              = new HeadOnGun();
 
 	//Movement

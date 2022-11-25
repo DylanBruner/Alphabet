@@ -116,7 +116,7 @@ public class VirtualGunManager extends Component {
         Point2D.Double headOnLocation = alphabet.headOnGun.doHeadOnGun(alphabet.radar.target, bulletPower);
         headOnGun.absFireRadians = MathUtils.absoluteBearing(alphabet.myLocation, headOnLocation);
 
-        patternGunV2.absFireRadians = alphabet.patternGunV2.doPatternGunV2(alphabet.radar.target.lastScan);
+        patternGunV2.absFireRadians = alphabet.patternGunV2.doPatternGunV2(alphabet.radar.target.lastScan, bulletPower);
 
         //Add the bullets to the list
         bullets.add(patternGun); bullets.add(linearBullet); bullets.add(guessFactorBullet); 

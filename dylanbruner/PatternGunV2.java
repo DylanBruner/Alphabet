@@ -4,6 +4,14 @@ import java.util.Hashtable;
 
 import robocode.*;
 import robocode.util.Utils;
+/*
+ * Modified from https://robowiki.net/wiki/Assertive
+ * 
+ * List of modoifications:
+ *   - Increase history size
+ *   - Gets the bullet power from Alphabet
+ *   - Store history in a hashtable per robot, this gun was originally for 1v1
+*/
 
 /*
  * New pattern gun, this thing is nuts
@@ -13,7 +21,6 @@ import robocode.util.Utils;
  * The location history is stored in a single string, each character represents a "snapshot" of the enemy
  * It's stored by doing: `(char)(int)(Math.sin(e.getHeadingRadians() - absoluteBearing) * e.getVelocity())`
  * this first does some math and then casts it to a int and finally to a char so it can be stored in the history string
- * 
 */
 
 public class PatternGunV2 {
@@ -24,20 +31,20 @@ public class PatternGunV2 {
     static StringBuffer history_base = new StringBuffer("00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
     static Hashtable<String, StringBuffer> patterns = new Hashtable<String, StringBuffer>();
     //This should modify it to work in melee
-    static final double FIREPOWER = 2.5;
-    static final double BULLETVEL = 12.5;
     static final int PATTERN_DEPTH = 30;
 
     public void init(Alphabet robot){alphabet = robot;}
     public void execute(){}
 
     public void onScannedRobot(ScannedRobotEvent e){
-        double absBearing = doPatternGunV2(e);
+        double bulletPower = alphabet.getFirePower();
+        double absBearing = doPatternGunV2(e, bulletPower);
         alphabet.setTurnGunRightRadians(Utils.normalRelativeAngle(absBearing - alphabet.getGunHeadingRadians()));
-        alphabet.setFire(FIREPOWER);
+        alphabet.setFire(bulletPower);
     }
     
-    public double doPatternGunV2(ScannedRobotEvent e){
+    public double doPatternGunV2(ScannedRobotEvent e, double bulletPower){
+        double bulletVelocity = 20 - bulletPower * 3;
         double distance = e.getDistance();
         double absoluteBearing = e.getBearingRadians() + alphabet.getHeadingRadians();
 
@@ -63,7 +70,7 @@ public class PatternGunV2 {
         while((index = history.toString().indexOf(history.substring(0, matchLength--), 1)) < 0);
 
         //This plays the pattern for however long we need to aka (distance / bullet velocity)
-        matchLength = index - (int)(distance / BULLETVEL);
+        matchLength = index - (int)(distance / bulletVelocity);
         while (index >= Math.max(0, matchLength)){
             absoluteBearing += Math.asin((double)(byte)history.charAt(index--) / distance);
         }
