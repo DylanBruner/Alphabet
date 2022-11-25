@@ -27,6 +27,8 @@ public class MeleeRobot extends Component {
 	static Point2D.Double lastPosition;
 	static Point2D.Double myPos;
 	static double myEnergy;
+
+	public boolean firingGun = false;
 	
 	//Called every tick by the main robot
     public void execute() {
@@ -50,33 +52,31 @@ public class MeleeRobot extends Component {
 	
 	public void moveAndShoot() {
 		double distanceToTarget = alphabet.myLocation.distance(target.pos);
-		
-		// if(alphabet.getGunTurnRemaining() == 0 && myEnergy > 1) {
-		// 	alphabet.setFire( Math.min(Math.min(myEnergy/6d, 1300d/distanceToTarget), target.energy/3d) );
-		// }
-		
-		// alphabet.setTurnGunRightRadians(Utils.normalRelativeAngle(MathUtils.calcAngle(target.pos, myPos) - alphabet.getGunHeadingRadians()));
 
-		//Because the radar is still in 'overview' mode we should be able to use pattern matching which is by far the best gun I've added
-		//First we need to get the enemies last scanned event because thats what the pattern gun uses
-		double bulletPower = Math.min(Math.min(myEnergy/6d, 1300d/distanceToTarget), target.energy/3d);
-		Enemy enemy = alphabet.radar.enemies.get(target.name);
-		if (enemy != null && enemy.initialized && enemy.lastScan != null){
-			Point2D.Double predictedLocation = ((PatternMatchGun) alphabet.componentCore.getComponent("PatternMatchGun")).doPatternGun(enemy.lastScan, bulletPower);
-			if (predictedLocation != null){
-				double angle = MathUtils.calcAngle(predictedLocation, myPos);
-				double gunTurn = Utils.normalRelativeAngle(angle - alphabet.getGunHeadingRadians());
-				alphabet.setTurnGunRightRadians(gunTurn);
-				if (Math.abs(gunTurn) < 0.1){
-					alphabet.setFire(bulletPower);
-				}
-			}
-		} else {
-			//head on targeting will be switched to linear targeting later
-			alphabet.setTurnGunRightRadians(Utils.normalRelativeAngle(MathUtils.calcAngle(target.pos, myPos) - alphabet.getGunHeadingRadians()));
-			alphabet.setFire(bulletPower);
-		}
-		
+		// Original Melee Gun Code
+		// double bulletPower = Math.min(Math.min(myEnergy/6d, 1300d/distanceToTarget), target.energy/3d);
+		// Enemy enemy = alphabet.radar.enemies.get(target.name);
+		// if (enemy != null && enemy.initialized && enemy.lastScan != null){
+		// 	Point2D.Double predictedLocation = ((PatternMatchGun) alphabet.componentCore.getComponent("PatternMatchGun")).doPatternGun(enemy.lastScan, bulletPower);
+		// 	if (predictedLocation != null){
+		// 		double angle = MathUtils.calcAngle(predictedLocation, myPos);
+		// 		double gunTurn = Utils.normalRelativeAngle(angle - alphabet.getGunHeadingRadians());
+		// 		alphabet.setTurnGunRightRadians(gunTurn);
+		// 		if (Math.abs(gunTurn) < 0.1){
+		// 			alphabet.setFire(bulletPower);
+		// 		}
+		// 	}
+		// } else {
+		// 	//head on targeting will be switched to linear targeting later
+		// 	alphabet.setTurnGunRightRadians(Utils.normalRelativeAngle(MathUtils.calcAngle(target.pos, myPos) - alphabet.getGunHeadingRadians()));
+		// 	alphabet.setFire(bulletPower);
+		// }
+
+		// if (firingGun && alphabet.getGunHeat() != 0){
+		// }
+
+		// ((MeleeGun) alphabet.componentCore.getComponent("MeleeGun")).fireGun();
+
 		double distanceToNextDestination = alphabet.myLocation.distance(nextDestination);
 		
 		if(distanceToNextDestination < 15) {

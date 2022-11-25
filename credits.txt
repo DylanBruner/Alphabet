@@ -55,6 +55,7 @@ for (i : 0 to 100)
     a whole new robot. But idk yet.
   i+1. Move files off into their own folders like (movement, guns, etc).
     - I need to figure out how to make the compiler work with this first
+  i+1. Change component registering into a list
 
 
 Changelog I guess

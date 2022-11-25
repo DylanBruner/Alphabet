@@ -52,6 +52,15 @@ public class Painting extends Component {
                 }
             }
         }
+
+        if (Config.DRAW_LINE_OF_SIGHT){
+            g.setColor(java.awt.Color.WHITE);
+            for (Enemy enemy : alphabet.radar.enemies.values()){
+                if (alphabet.radar.hasLineOfSight(enemy)){
+                    g.drawLine((int)alphabet.myLocation.x, (int)alphabet.myLocation.y, (int)enemy.location.x, (int)enemy.location.y);
+                }
+            }
+        }
     }
 
     public void onMouseMoved(MouseEvent e){

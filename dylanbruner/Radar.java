@@ -1,7 +1,7 @@
 package dylanbruner;
 
 import java.util.Hashtable;
-//import java.awt.geom.*;
+import java.awt.geom.*;
 
 import robocode.*;
 import robocode.util.Utils;
@@ -15,9 +15,11 @@ public class Radar extends Component {
     public Hashtable<String, Enemy> enemies = new Hashtable<String, Enemy>();
     
     private boolean disableManagement = false;
-    public boolean radarLocked       = false;
-    public boolean radarLockCooldown = false;
-    public long radarLockStarted     = 0;
+    public boolean radarLocked        = false;
+    public boolean radarLockCooldown  = false;
+    public long radarLockStarted      = 0;
+
+    public String manualRadarLockName = null;
 
     public void execute(){
         if (disableManagement) return;
@@ -35,11 +37,23 @@ public class Radar extends Component {
         }
     }
 
+    public void setRadarLock(String targetName){manualRadarLockName = targetName;}
+    public void clearRadarLock(){
+        manualRadarLockName = null;
+        radarLocked = false;
+        radarLockCooldown = false;
+        alphabet.setTurnRadarRight(Double.POSITIVE_INFINITY);
+    }
+
     public void onScannedRobot(ScannedRobotEvent e) {
+        if (Config.CLR_MAN_RADAR_LOCK_ON_SWTCH && alphabet.movementMode != alphabet.MOVEMENT_MELEE){
+            manualRadarLockName = null;
+        }
+
         if (disableManagement) return;
         double absBearing = e.getBearingRadians() + alphabet.getHeadingRadians();
 
-        if (!radarLockCooldown && !radarLocked){
+        if (!radarLockCooldown && !radarLocked && (manualRadarLockName == null || manualRadarLockName.equals(e.getName()))){
             radarLocked = true;
             radarLockStarted = alphabet.getTime();
         }
@@ -97,6 +111,19 @@ public class Radar extends Component {
 
     public void disableRadarManagement(){disableManagement = true; logger.warn("Radar management disabled");}
     public void enableRadarManagement(){disableManagement = false; logger.warn("Radar management enabled");}
+
+    public boolean hasLineOfSight(Enemy enemy){
+        if (!enemy.alive) return false;
+        //Use a line to see if we have line of sight to the enemy
+        Line2D.Double line = new Line2D.Double(alphabet.myLocation, enemy.location);
+        for (Enemy e : enemies.values()){
+            if (e.name.equals(enemy.name)) continue;
+            if (line.intersects(e.location.getX() - 18, e.location.getY() - 18, 36, 36)){
+                return false;
+            }
+        }
+        return true;
+    }
 
     public Enemy getOptimalMeleeTarget(){        
         //Scores will now be based on the following:

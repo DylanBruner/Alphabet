@@ -10,15 +10,16 @@ public class Config {
     public static final boolean DRAW_BOX_AROUND_TARGET = true;
     public static final boolean DRAW_MOUSE_COORDS      = true;
     public static final boolean DRAW_SHADOW_GUN_DATA   = true; //Draw targeting data for the shadow gun
+    public static final boolean DRAW_LINE_OF_SIGHT     = true; //Draw a line from the robot to any robots it can see
 
     //Uh-Oh Preventer
     public static final int uhOhTriggerTime = 100;
 
     //Radar
-    public static final int MAX_SNAPSHOTS_PER_ENEMY = 4000; //May have to be lowered if we start getting turn skips
-
+    public static final int MAX_SNAPSHOTS_PER_ENEMY         = 4000; //May have to be lowered if we start getting turn skips
+    public static final boolean CLR_MAN_RADAR_LOCK_ON_SWTCH = true; //When we switch to 1v1 clear any manual radar lock
 
     //Game mode specific ============================================
     //[Melee]
-    public static final int MELEE_MAX_RADAR_LOCK_TIME = 15;
+    public static final int MELEE_MAX_RADAR_LOCK_TIME = 100;
 }
