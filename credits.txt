@@ -46,16 +46,18 @@ https://robowiki.net/wiki/Assertive
 Basically the whole robowiki website
 
 
-To Do List (Only recently started so most of my stuff hasn't been logged here)
+To Do List
 
-1. Make pattern gun save Config.MAX_SNAPSHOTS_PER each round [DONE] 
-   - Disable saving between rounds because it kills leaderboard performance for some reason
-2. Make the bot be able to do mirror movement for fun
-3. Finding out how to use a K-D tree would be awsome but probably outside my current abilities
-   simply because I don't know enough about how they work. It might be something worth putting into
-   a whole new robot. But idk yet.
+for (i : 0 to 100)
+  i+1. Make the bot be able to do mirror movement for fun
+  i+1. Finding out how to use a K-D tree would be awsome but probably outside my current abilities
+    simply because I don't know enough about how they work. It might be something worth putting into
+    a whole new robot. But idk yet.
+  i+1. Move files off into their own folders like (movement, guns, etc).
+    - I need to figure out how to make the compiler work with this first
 
-Changelog i guess
+
+Changelog I guess
 
 [11/24/22] current_version = v1.4
   - Made a Component system to make it easier/more readable
