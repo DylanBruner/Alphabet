@@ -23,14 +23,17 @@ if os.path.exists(OUTPUT_FILE) and input("File already exists. Overwrite? (y/n):
 
 print("Writing...")
 with zipfile.ZipFile(OUTPUT_FILE, "w") as jar:
-    #Write a new file to /META-INF/MANIFEST.MF
-    jar.writestr("META-INF/MANIFEST.MF", f"Manifest-Version: 1.0\nrobots: {CLASS_NAME}")
-    print(f"[INFO] Wrote manifest")
-    #Copy all files from /bin/{CLASS_NAME.split(".")[0]} to {CLASS_NAME.split(".")[0]}
-    for file in os.listdir(f"bin/{CLASS_NAME.split('.')[0]}"):
-        jar.write(f"bin/{CLASS_NAME.split('.')[0]}/{file}", f"{CLASS_NAME.split('.')[0]}/{file}")
-    print("[INFO] Wrote class files")
-    #Write the properties file into {CLASS_NAME.split(".")[0]}/Alphabet.properties
-    jar.write("Alphabet.properties", f"{CLASS_NAME.split('.')[0]}/Alphabet.properties")
-    print("[INFO] Wrote properties file")
+    try:
+        #Write a new file to /META-INF/MANIFEST.MF
+        jar.writestr("META-INF/MANIFEST.MF", f"Manifest-Version: 1.0\nrobots: {CLASS_NAME}")
+        print(f"[INFO] Wrote manifest")
+        #Copy all files from /bin/{CLASS_NAME.split(".")[0]} to {CLASS_NAME.split(".")[0]}
+        for file in os.listdir(f"bin/{CLASS_NAME.split('.')[0]}"):
+            jar.write(f"bin/{CLASS_NAME.split('.')[0]}/{file}", f"{CLASS_NAME.split('.')[0]}/{file}")
+        print("[INFO] Wrote class files")
+        #Write the properties file into {CLASS_NAME.split(".")[0]}/Alphabet.properties
+        jar.write("Alphabet.properties", f"{CLASS_NAME.split('.')[0]}/Alphabet.properties")
+        print("[INFO] Wrote properties file")
+    except Exception as e:
+        print("[ERROR] Failed to write to jar file: " + str(e)); exit()
     print("Robot packaged successfully!")
