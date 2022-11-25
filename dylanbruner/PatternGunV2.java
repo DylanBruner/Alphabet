@@ -11,6 +11,7 @@ import robocode.util.Utils;
  *   - Increase history size
  *   - Gets the bullet power from Alphabet
  *   - Store history in a hashtable per robot, this gun was originally for 1v1
+ *   - Convert to a component
 */
 
 /*
@@ -23,8 +24,7 @@ import robocode.util.Utils;
  * this first does some math and then casts it to a int and finally to a char so it can be stored in the history string
 */
 
-public class PatternGunV2 {
-    Alphabet alphabet;
+public class PatternGunV2 extends Component {
     AlphabetLogger logger = new AlphabetLogger("PatternGunV2");
     
     //Gun stuff
@@ -32,9 +32,6 @@ public class PatternGunV2 {
     static Hashtable<String, StringBuffer> patterns = new Hashtable<String, StringBuffer>();
     //This should modify it to work in melee
     static final int PATTERN_DEPTH = 30;
-
-    public void init(Alphabet robot){alphabet = robot;}
-    public void execute(){}
 
     public void onScannedRobot(ScannedRobotEvent e){
         double bulletPower = alphabet.getFirePower();

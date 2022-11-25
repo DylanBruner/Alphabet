@@ -67,3 +67,5 @@ Changelog i guess
       robocode editor version. I'm not sure why this is but it's not a big deal.
       
   - I moved all the tools into their own folder and made a singular batch file 'robo.bat' to run them
+  - Add execution conditionals to the Component system
+  - Change PatternGunV2 over to the new component system

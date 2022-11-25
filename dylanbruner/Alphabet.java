@@ -36,7 +36,6 @@ public class Alphabet extends AdvancedRobot {
 	GuessFactorGun guessFactorGun    = new GuessFactorGun();
 	LinearGun linearGun              = new LinearGun();
 	PatternMatchGun patternMatchGun  = new PatternMatchGun();
-	PatternGunV2 patternGunV2        = new PatternGunV2(); //It shouldn't need to be static here
 	HeadOnGun headOnGun              = new HeadOnGun();
 
 	//Movement
@@ -72,11 +71,22 @@ public class Alphabet extends AdvancedRobot {
 	public Point2D.Double myLocation;
 
 	public void run() {
+		//=======================================================[Components]=======================================================
 		componentCore.registerComponent(new Painting());
 		componentCore.registerComponent(new Themer());
 		componentCore.registerComponent(new UhOhPreventer());
 		componentCore.registerComponent(new VirtualGunManager());
 		componentCore.registerComponent(new Statistics());
+		componentCore.registerComponent(new PatternGunV2());
+
+		//Setup event conditionals
+		
+		//Only shoot the PatternGunV2 if it's selected
+		componentCore.setEventConditional("PatternGunV2", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
+			return alphabet.selectedGun == alphabet.GUN_PATTERN_V2;
+		});
+
+		//=======================================================[Robot]=======================================================
 
 		myLocation = new Point2D.Double(getX(), getY());
 
@@ -90,7 +100,6 @@ public class Alphabet extends AdvancedRobot {
 		meleeMove.init(this);
 		vLeaderboard.init(this);
 		patternMatchGun.init(this);
-		patternGunV2.init(this);
 
 		//Setup robot
 		setAdjustGunForRobotTurn(true);
@@ -121,7 +130,6 @@ public class Alphabet extends AdvancedRobot {
 			if (movementMode == MOVEMENT_MELEE){}//Guns are handled in MeleeRobot.java during Melee
 			else if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.execute();
 			else if (selectedGun == GUN_LINEAR) linearGun.execute();
-			else if (selectedGun == GUN_PATTERN_V2) patternGunV2.execute();
 
 			
 			execute();
@@ -149,7 +157,6 @@ public class Alphabet extends AdvancedRobot {
 		else if (selectedGun == GUN_LINEAR) linearGun.onScannedRobot(e);
 		else if (selectedGun == GUN_PATTERN) patternMatchGun.onScannedRobot(e);
 		else if (selectedGun == GUN_HEAD_ON) headOnGun.onScannedRobot(e);
-		else if (selectedGun == GUN_PATTERN_V2) patternGunV2.onScannedRobot(e);
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {
