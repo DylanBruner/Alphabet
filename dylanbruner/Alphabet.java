@@ -31,14 +31,13 @@ import java.awt.event.MouseEvent;
 */
 
 public class Alphabet extends AdvancedRobot {
-	//Data collection
-	Radar radar = new Radar();
-
-	//Debug
-	AlphabetLogger logger = new AlphabetLogger("Main");
-
-	//New
+	AlphabetLogger logger       = new AlphabetLogger("Main");
 	ComponentCore componentCore = new ComponentCore(this);
+
+	Radar radar;//This is the only component that is accessable without using the componentCore.getComponent() method
+	            //I'm doing this because the radar is used in nearly every file LOTS of times and I dont want to change it over lol
+				//TLDR: I'm lazy and I dont want to change it over
+
 	//Code ================================================================================================================
 	//Auto movement mode
 	public final int MOVEMENT_SURFING = 0;
@@ -73,6 +72,9 @@ public class Alphabet extends AdvancedRobot {
 		componentCore.registerComponent(new MeleeRobot());
 		componentCore.registerComponent(new SurfMovement());
 		componentCore.registerComponent(new VirtualLeaderboard());
+		componentCore.registerComponent(new Radar());
+
+		radar = (Radar) componentCore.getComponent("Radar");//Go to where i create the variable radar to see why I'm doing this
 
 		//Shooting =======================================================
 
@@ -118,30 +120,23 @@ public class Alphabet extends AdvancedRobot {
 
 		//=======================================================[Robot]=======================================================
 
-		myLocation = new Point2D.Double(getX(), getY());
-
-		//Initlize the components
-		radar.init(this);
-
 		//Setup robot
 		setAdjustGunForRobotTurn(true);
 		setAdjustRadarForGunTurn(true);
-
+		
+		myLocation = new Point2D.Double(getX(), getY());
 		//Main
 		while (true){
 			componentCore.execute();
-			radar.execute();
 			
 			myLocation = new Point2D.Double(getX(), getY());
 			if (!forceDisableAutoMovement) {//This is really only used by OhUhPreventer
 				if (getOthers() > 1 && movementMode != MOVEMENT_MELEE) {
 					logger.log("Switching to melee movement");
 					movementMode = MOVEMENT_MELEE;
-					// radar.disableRadarManagement();// radar magagement will need to be controlled by radar again
 				} else if (getOthers() <= 1 && movementMode != MOVEMENT_SURFING) {
 					logger.log("Switching to surfing");
 					movementMode = MOVEMENT_SURFING;
-					// radar.enableRadarManagement();// radar magagement will need to be controlled by radar again
 				}
 			}
 			

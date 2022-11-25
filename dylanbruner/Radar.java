@@ -6,25 +6,18 @@ import java.util.Hashtable;
 import robocode.*;
 import robocode.util.Utils;
 
-public class Radar {
+public class Radar extends Component {
     //Component stuff
-    Alphabet alphabet;
     AlphabetLogger logger = new AlphabetLogger("Radar");
 
     //Radar stuff
-    public Enemy target;
+    public Enemy target = new Enemy();
     public Hashtable<String, Enemy> enemies = new Hashtable<String, Enemy>();
     
     private boolean disableManagement = false;
     public boolean radarLocked       = false;
     public boolean radarLockCooldown = false;
     public long radarLockStarted     = 0;
-
-    public void init(Alphabet robot){
-        alphabet = robot;
-
-        target = new Enemy();
-    }
 
     public void execute(){
         if (disableManagement) return;
