@@ -33,11 +33,11 @@ import java.awt.event.MouseEvent;
 
 public class Alphabet extends AdvancedRobot {
 	//Attacking
-	GuessFactorGun guessFactorGun   = new GuessFactorGun();
-	LinearGun linearGun             = new LinearGun();
-	PatternMatchGun patternMatchGun = new PatternMatchGun();
-	PatternGunV2 patternGunV2       = new PatternGunV2();
-	HeadOnGun headOnGun             = new HeadOnGun();
+	GuessFactorGun guessFactorGun    = new GuessFactorGun();
+	LinearGun linearGun              = new LinearGun();
+	PatternMatchGun patternMatchGun  = new PatternMatchGun();
+	static PatternGunV2 patternGunV2 = new PatternGunV2(); //So we can preserve data, or at least i think that's how it works
+	HeadOnGun headOnGun              = new HeadOnGun();
 
 	//Movement
 	SurfMovement surferMove = new SurfMovement();
@@ -106,11 +106,11 @@ public class Alphabet extends AdvancedRobot {
 				if (getOthers() > 1 && movementMode != MOVEMENT_MELEE) {
 					logger.log("Switching to melee movement");
 					movementMode = MOVEMENT_MELEE;
-					radar.disableRadarManagement();// radar magagement will need to be controlled by radar again
+					// radar.disableRadarManagement();// radar magagement will need to be controlled by radar again
 				} else if (getOthers() <= 1 && movementMode != MOVEMENT_SURFING) {
 					logger.log("Switching to surfing");
 					movementMode = MOVEMENT_SURFING;
-					radar.enableRadarManagement();// radar magagement will need to be controlled by radar again
+					// radar.enableRadarManagement();// radar magagement will need to be controlled by radar again
 				}
 			}
 			

@@ -19,5 +19,5 @@ public class Config {
 
     //Game mode specific ============================================
     //[Melee]
-    public static final int MELEE_MAX_RADAR_LOCK_TIME = 50;
+    public static final int MELEE_MAX_RADAR_LOCK_TIME = 15;
 }

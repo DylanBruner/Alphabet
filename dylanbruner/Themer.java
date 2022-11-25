@@ -45,7 +45,7 @@ public class Themer extends Component {
                 int myPlacement = Alphabet.vLeaderboard.getMyPlacement();
                 if (myPlacement == 1){
                     //Change base color to mint-green
-                    alphabet.setBodyColor(mintGreen);
+                    alphabet.setColors(Color.black, Color.black, new Color(255, 255, 170));
                 } else {
                     alphabet.setBodyColor(bloodRed);
                 }

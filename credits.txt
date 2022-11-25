@@ -40,6 +40,7 @@ https://robowiki.net/wiki/Radar
 https://robowiki.net/wiki/Performance_Enhancing_Bug (I have mixed feelings about this)
 https://github.com/Voidious/Diamond (Got the idea of how to split up files from his bot)
 https://robowiki.net/wiki/Category:Terminology
+https://robowiki.net/wiki/Assertive
 
 Basically the whole robowiki website
 
