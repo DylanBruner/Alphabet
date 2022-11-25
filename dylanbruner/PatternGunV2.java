@@ -68,7 +68,8 @@ public class PatternGunV2 {
         int index;
         //This finds the index of the last occurance of the pattern in the history
         while((index = history.toString().indexOf(history.substring(0, matchLength--), 1)) < 0);
-
+        
+        //This is the part i screwed up in my original implementation
         //This plays the pattern for however long we need to aka (distance / bullet velocity)
         matchLength = index - (int)(distance / bulletVelocity);
         while (index >= Math.max(0, matchLength)){
