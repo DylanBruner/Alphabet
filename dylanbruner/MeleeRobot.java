@@ -30,13 +30,17 @@ public class MeleeRobot extends Component {
 	
 	//Called every tick by the main robot
     public void execute() {
+		myPos = alphabet.myLocation;
 		if (target == null){
 			nextDestination = lastPosition = myPos = alphabet.myLocation;
 			target = new internEnemy();
+			target.live = false;//So it doesn't try to shoot
 		}
-        myPos = alphabet.myLocation;
+		if (nextDestination == null){
+			nextDestination = lastPosition = myPos = alphabet.myLocation;
+		}
         myEnergy = alphabet.getEnergy();
-        
+
 		//If the target is not alive, wait for the next scan
 		//If the time is less than 9, wait so all the enemies can be scanned before we start moving
         if(target.live && alphabet.getTime() > 9) {
@@ -45,7 +49,7 @@ public class MeleeRobot extends Component {
     }
 	
 	public void moveAndShoot() {
-		double distanceToTarget = myPos.distance(target.pos);
+		double distanceToTarget = alphabet.myLocation.distance(target.pos);
 		
 		// if(alphabet.getGunTurnRemaining() == 0 && myEnergy > 1) {
 		// 	alphabet.setFire( Math.min(Math.min(myEnergy/6d, 1300d/distanceToTarget), target.energy/3d) );
@@ -54,7 +58,6 @@ public class MeleeRobot extends Component {
 		// alphabet.setTurnGunRightRadians(Utils.normalRelativeAngle(MathUtils.calcAngle(target.pos, myPos) - alphabet.getGunHeadingRadians()));
 
 		//Because the radar is still in 'overview' mode we should be able to use pattern matching which is by far the best gun I've added
-		
 		//First we need to get the enemies last scanned event because thats what the pattern gun uses
 		double bulletPower = Math.min(Math.min(myEnergy/6d, 1300d/distanceToTarget), target.energy/3d);
 		Enemy enemy = alphabet.radar.enemies.get(target.name);
@@ -74,7 +77,7 @@ public class MeleeRobot extends Component {
 			alphabet.setFire(bulletPower);
 		}
 		
-		double distanceToNextDestination = myPos.distance(nextDestination);
+		double distanceToNextDestination = alphabet.myLocation.distance(nextDestination);
 		
 		if(distanceToNextDestination < 15) {
 			double addLast = 1 - Math.rint(Math.pow(Math.random(), alphabet.getOthers()));			
@@ -130,15 +133,15 @@ public class MeleeRobot extends Component {
 			enemies.put(e.getName(), enemy);
 		}
 
-		
 		enemy.live = true;
 		enemy.name = e.getName();
 		enemy.energy = e.getEnergy();
-		enemy.pos = MathUtils.calcPoint(myPos, e.getDistance(), alphabet.getHeadingRadians() + e.getBearingRadians());
+		enemy.pos = MathUtils.calcPoint(alphabet.myLocation, e.getDistance(), alphabet.getHeadingRadians() + e.getBearingRadians());
 		
 		// will be replaced soon, just kidding movement relies on it but when ever i feel like it i wanna
 		// replace it with a better target selection system that uses the virtual leaderboard
-		if(!target.live || e.getDistance() < myPos.distance(target.pos)) {
+		if (target == null){target = enemy;}
+		if(!target.live || e.getDistance() < alphabet.myLocation.distance(target.pos)) {
 			target = enemy;
 		}		
 	}
