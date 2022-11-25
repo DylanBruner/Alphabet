@@ -2,7 +2,8 @@ package dylanbruner;
 
 public class Config {
     //Virtual Gun Config
-    public static final int fireInterval = 25;
+    public static final int fireInterval         = 25;
+    public static final boolean DISABLE_AUTO_GUN = false;
     
     //Painting
     public static final boolean DRAW_VIRTUAL_BULLETS   = true;

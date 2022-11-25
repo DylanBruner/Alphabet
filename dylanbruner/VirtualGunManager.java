@@ -59,16 +59,18 @@ public class VirtualGunManager extends Component {
             int headOnGunHits      = targetStats.get(alphabet.GUN_HEAD_ON);
 
             //Select the gun with the most hits
-            if (guessFactorGunHits > linearGunHits && guessFactorGunHits > patternGunHits && guessFactorGunHits > headOnGunHits){
-                alphabet.selectedGun = alphabet.GUN_GUESS_FACTOR;
-            } else if (linearGunHits > guessFactorGunHits && linearGunHits > patternGunHits && linearGunHits > headOnGunHits){
-                alphabet.selectedGun = alphabet.GUN_LINEAR;
-            } else if (patternGunHits > guessFactorGunHits && patternGunHits > linearGunHits && patternGunHits > headOnGunHits){
-                alphabet.selectedGun = alphabet.GUN_PATTERN;
-            } else if (headOnGunHits > guessFactorGunHits && headOnGunHits > linearGunHits && headOnGunHits > patternGunHits){
-                alphabet.selectedGun = alphabet.GUN_HEAD_ON;
-            } else {
-                alphabet.selectedGun = alphabet.GUN_LINEAR;
+            if (!Config.DISABLE_AUTO_GUN){
+                if (guessFactorGunHits > linearGunHits && guessFactorGunHits > patternGunHits && guessFactorGunHits > headOnGunHits){
+                    alphabet.selectedGun = alphabet.GUN_GUESS_FACTOR;
+                } else if (linearGunHits > guessFactorGunHits && linearGunHits > patternGunHits && linearGunHits > headOnGunHits){
+                    alphabet.selectedGun = alphabet.GUN_LINEAR;
+                } else if (patternGunHits > guessFactorGunHits && patternGunHits > linearGunHits && patternGunHits > headOnGunHits){
+                    alphabet.selectedGun = alphabet.GUN_PATTERN;
+                } else if (headOnGunHits > guessFactorGunHits && headOnGunHits > linearGunHits && headOnGunHits > patternGunHits){
+                    alphabet.selectedGun = alphabet.GUN_HEAD_ON;
+                } else {
+                    alphabet.selectedGun = alphabet.GUN_LINEAR;
+                }
             }
         }
     }

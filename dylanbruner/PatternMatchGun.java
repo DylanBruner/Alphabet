@@ -8,8 +8,7 @@ import java.util.ArrayList;
 // import java.awt.geom.*;
 
 /*
- * Going to remake this from scratch
- * 
+ * This gun needs to be reworked to properly predict the amount of snapshots we should skip 
 */
 
 public class PatternMatchGun {
