@@ -129,10 +129,11 @@ public class MeleeRobot extends Component {
 			enemy = new internEnemy();
 			enemies.put(e.getName(), enemy);
 		}
+
 		
-		enemy.energy = e.getEnergy();
 		enemy.live = true;
 		enemy.name = e.getName();
+		enemy.energy = e.getEnergy();
 		enemy.pos = MathUtils.calcPoint(myPos, e.getDistance(), alphabet.getHeadingRadians() + e.getBearingRadians());
 		
 		// will be replaced soon, just kidding movement relies on it but when ever i feel like it i wanna

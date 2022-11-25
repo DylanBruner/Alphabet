@@ -57,6 +57,8 @@ public class Alphabet extends AdvancedRobot {
 	public Point2D.Double myLocation;
 
 	public void run() {
+		myLocation = new Point2D.Double(getX(), getY());
+
 		//=======================================================[Components]=======================================================
 		//Register components (calls init() on each component which gives them access to the robot)
 		componentCore.registerComponent(new Painting());
@@ -124,12 +126,11 @@ public class Alphabet extends AdvancedRobot {
 		setAdjustGunForRobotTurn(true);
 		setAdjustRadarForGunTurn(true);
 		
-		myLocation = new Point2D.Double(getX(), getY());
 		//Main
 		while (true){
+			myLocation = new Point2D.Double(getX(), getY());
 			componentCore.execute();
 			
-			myLocation = new Point2D.Double(getX(), getY());
 			if (!forceDisableAutoMovement) {//This is really only used by OhUhPreventer
 				if (getOthers() > 1 && movementMode != MOVEMENT_MELEE) {
 					logger.log("Switching to melee movement");
