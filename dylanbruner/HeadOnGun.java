@@ -4,13 +4,8 @@ import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 import java.awt.geom.*;
 
-public class HeadOnGun {
-    Alphabet alphabet;
+public class HeadOnGun extends Component {
     AlphabetLogger logger = new AlphabetLogger("HeadOnGun");
-
-    public void init(Alphabet alphabet) {
-        this.alphabet = alphabet;
-    }
 
     public Point2D.Double doHeadOnGun(Enemy enemy, double bulletPower){
         double bulletSpeed = 20 - bulletPower * 3;
