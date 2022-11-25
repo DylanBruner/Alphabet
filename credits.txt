@@ -67,7 +67,7 @@ Changelog I guess
 [11/25/22] current_version = v1.4
   - Made a packaging tool so now the robocode editor is not needed for anything
     It should be noted though that for some reason the resulting jar file is 2x the size of the
-      robocode editor version. I'm not sure why this is but it's not a big deal.
+     robocode editor version. I'm not sure why this is but it's not a big deal.
       
   - I moved all the tools into their own folder and made a singular batch file 'robo.bat' to run them
   - Add execution conditionals to the Component system
@@ -75,7 +75,7 @@ Changelog I guess
      Note radar can still be accessed via alphabet.radar because I didn't want to change it in
      nearly every file to ((Radar) alphabet.componentCore.getComponent("radar"))
   - Attempted to get the shadow gun target selection working.
-    I was able to get it working but this robot wasn't programmed
-    with target selection in mind so it doesn't integrate well.
-    I think with some changes it could work but I'm not sure and
-    I'm getting great results with the current target selection.
+     I was able to get it working but this robot wasn't programmed
+     with target selection in mind so it doesn't integrate well.
+     I think with some changes it could work but I'm not sure and
+     I'm getting great results with the current target selection.

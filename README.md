@@ -40,3 +40,7 @@
     ```
   - **MathUtils** (A collection of *mostly* common math functions)
   - **Statistics** (At the end of battle it will print some helpful stats used for measuring performance)
+  - **ShadowGun**
+    <br>I really wanted this to work but it doesn't integrate well with the rest of the robot.
+    <br>Mainly because the robot wasn't designed to shoot at a selected target instead it
+    <br>Just shoots at the last scanned enemy. I might try to fix this in the future.
