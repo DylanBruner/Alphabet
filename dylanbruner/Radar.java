@@ -121,10 +121,10 @@ public class Radar extends Component {
             double score = enemyScores.get(enemy.name); //I have no clue why this wouldn't be 0, there are no duplicats in radar.enemies
             //Start calculation (calculated seperate for debugging and readability)
             //                                            The higher this is the more it will affect the outcome
-            double distanceWeight    = 1 / (enemy.distance / 1000);
-            double energyWeight      = 1 / (enemy.energy   / 500);
+            double distanceWeight    = 1 / Math.max(enemy.distance / 1000, 1);
+            double energyWeight      = 1 / Math.max(enemy.energy   / 50, 1);
             //                                                                         Prevents devide by 0 errors
-            double lastHitTimeWeight = Math.min(0, Math.max(0.45, 1 / (750 / Math.max(1, enemy.lastHitTime)))); //Limit to 0 -> 0.45
+            double lastHitTimeWeight = Math.min(0, Math.max(0.45, 1 / Math.max(750 / Math.max(1, Math.max(enemy.lastHitTime, 1)), 1))); //Limit to 0 -> 0.45
             score += (distanceWeight + energyWeight + lastHitTimeWeight);
 
             enemyScores.put(enemy.name, score);
