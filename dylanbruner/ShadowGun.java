@@ -70,7 +70,7 @@ public class ShadowGun extends Component {
 
                 //Add strength based on distance
                 double distance = enemy.location.distance(e2.location);
-                strength += 1 / distance; //The closer the bots are the more strength they get
+                strength += 2 / distance; //The closer the bots are the more strength they get
             }
             weights.put(enemy.name, strength);
 
@@ -90,8 +90,10 @@ public class ShadowGun extends Component {
         for (String name : weights.keySet()) {
             if (weights.get(name) > bestWeight) {
                 //Check if any robots are between us and the target
-                bestBot = name;
-                bestWeight = weights.get(name);
+                if (alphabet.radar.hasLineOfSight(alphabet.radar.enemies.get(name)) && alphabet.radar.enemies.get(name).alive) {
+                    bestBot = name;
+                    bestWeight = weights.get(name);
+                }
             }
         }
 

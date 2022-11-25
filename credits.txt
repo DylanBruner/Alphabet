@@ -74,3 +74,8 @@ Changelog I guess
   - Changed everything over to the new component system
      Note radar can still be accessed via alphabet.radar because I didn't want to change it in
      nearly every file to ((Radar) alphabet.componentCore.getComponent("radar"))
+  - Attempted to get the shadow gun target selection working.
+    I was able to get it working but this robot wasn't programmed
+    with target selection in mind so it doesn't integrate well.
+    I think with some changes it could work but I'm not sure and
+    I'm getting great results with the current target selection.

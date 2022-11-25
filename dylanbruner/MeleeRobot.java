@@ -54,28 +54,24 @@ public class MeleeRobot extends Component {
 		double distanceToTarget = alphabet.myLocation.distance(target.pos);
 
 		// Original Melee Gun Code
-		// double bulletPower = Math.min(Math.min(myEnergy/6d, 1300d/distanceToTarget), target.energy/3d);
-		// Enemy enemy = alphabet.radar.enemies.get(target.name);
-		// if (enemy != null && enemy.initialized && enemy.lastScan != null){
-		// 	Point2D.Double predictedLocation = ((PatternMatchGun) alphabet.componentCore.getComponent("PatternMatchGun")).doPatternGun(enemy.lastScan, bulletPower);
-		// 	if (predictedLocation != null){
-		// 		double angle = MathUtils.calcAngle(predictedLocation, myPos);
-		// 		double gunTurn = Utils.normalRelativeAngle(angle - alphabet.getGunHeadingRadians());
-		// 		alphabet.setTurnGunRightRadians(gunTurn);
-		// 		if (Math.abs(gunTurn) < 0.1){
-		// 			alphabet.setFire(bulletPower);
-		// 		}
-		// 	}
-		// } else {
-		// 	//head on targeting will be switched to linear targeting later
-		// 	alphabet.setTurnGunRightRadians(Utils.normalRelativeAngle(MathUtils.calcAngle(target.pos, myPos) - alphabet.getGunHeadingRadians()));
-		// 	alphabet.setFire(bulletPower);
-		// }
+		double bulletPower = Math.min(Math.min(myEnergy/6d, 1300d/distanceToTarget), target.energy/3d);
+		Enemy enemy = alphabet.radar.enemies.get(target.name);
+		if (enemy != null && enemy.initialized && enemy.lastScan != null){
+			Point2D.Double predictedLocation = ((PatternMatchGun) alphabet.componentCore.getComponent("PatternMatchGun")).doPatternGun(enemy.lastScan, bulletPower);
+			if (predictedLocation != null){
+				double angle = MathUtils.calcAngle(predictedLocation, myPos);
+				double gunTurn = Utils.normalRelativeAngle(angle - alphabet.getGunHeadingRadians());
+				alphabet.setTurnGunRightRadians(gunTurn);
+				if (Math.abs(gunTurn) < 0.1){
+					alphabet.setFire(bulletPower);
+				}
+			}
+		} else {
+			//head on targeting will be switched to linear targeting later
+			alphabet.setTurnGunRightRadians(Utils.normalRelativeAngle(MathUtils.calcAngle(target.pos, myPos) - alphabet.getGunHeadingRadians()));
+			alphabet.setFire(bulletPower);
+		}
 
-		// if (firingGun && alphabet.getGunHeat() != 0){
-		// }
-
-		// ((MeleeGun) alphabet.componentCore.getComponent("MeleeGun")).fireGun();
 
 		double distanceToNextDestination = alphabet.myLocation.distance(nextDestination);
 		

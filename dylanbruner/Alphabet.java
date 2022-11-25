@@ -53,8 +53,6 @@ public class Alphabet extends AdvancedRobot {
 		componentCore.registerComponent(new MeleeRobot());
 		componentCore.registerComponent(new SurfMovement());
 		componentCore.registerComponent(new VirtualLeaderboard());
-		componentCore.registerComponent(new ShadowGun());
-		componentCore.registerComponent(new MeleeGun());
 
 		radar = (Radar) componentCore.getComponent("Radar");//Go to where i create the variable radar to see why I'm doing this
 
@@ -74,9 +72,6 @@ public class Alphabet extends AdvancedRobot {
 		});
 		componentCore.setEventConditional("PatternMatchGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
 			return alphabet.selectedGun == alphabet.GUN_PATTERN && alphabet.movementMode == alphabet.MOVEMENT_SURFING;
-		});
-		componentCore.setEventConditional("MeleeGun", componentCore.ON_EXECUTE, (Alphabet alphabet) -> {
-			return alphabet.movementMode == alphabet.MOVEMENT_MELEE;
 		});
 
 		//Movement =======================================================

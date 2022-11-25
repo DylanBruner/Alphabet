@@ -9,7 +9,7 @@ public class Config {
     public static final boolean DRAW_VIRTUAL_BULLETS   = true;
     public static final boolean DRAW_BOX_AROUND_TARGET = true;
     public static final boolean DRAW_MOUSE_COORDS      = true;
-    public static final boolean DRAW_SHADOW_GUN_DATA   = true; //Draw targeting data for the shadow gun
+    public static final boolean DRAW_SHADOW_GUN_DATA   = false; //Draw targeting data for the shadow gun
     public static final boolean DRAW_LINE_OF_SIGHT     = true; //Draw a line from the robot to any robots it can see
 
     //Uh-Oh Preventer
@@ -21,5 +21,5 @@ public class Config {
 
     //Game mode specific ============================================
     //[Melee]
-    public static final int MELEE_MAX_RADAR_LOCK_TIME = 100;
+    public static final int MELEE_MAX_RADAR_LOCK_TIME = 15;//Warning this number has a massive impact the robot's physical performance
 }
