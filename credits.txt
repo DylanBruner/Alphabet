@@ -65,3 +65,5 @@ Changelog i guess
   - Made a packaging tool so now the robocode editor is not needed for anything
     It should be noted though that for some reason the resulting jar file is 2x the size of the
       robocode editor version. I'm not sure why this is but it's not a big deal.
+      
+  - I moved all the tools into their own folder and made a singular batch file 'robo.bat' to run them
