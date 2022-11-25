@@ -11,6 +11,7 @@ Things that I implemented/thought of completly on my own are listed below
   - Anti gravity movement
   - Themer
   - How it picks targets
+  - Component system
 
 
 Note: lots of the math was borrowed from the internet because math is hard and we haven't 

@@ -62,10 +62,10 @@ public class Alphabet extends AdvancedRobot {
 
 	//Auto gun
 	public final int GUN_GUESS_FACTOR = 0;
-	public final int GUN_LINEAR       = 1;
-	public final int GUN_PATTERN	  = 2;
-	public final int GUN_HEAD_ON	  = 3;
-	public int selectedGun = GUN_LINEAR;
+	public final int GUN_LINEAR       = 1; //24.91, 26.84
+	public final int GUN_PATTERN	  = 2; //21.59, 21.56
+	public final int GUN_HEAD_ON	  = 3; //30.42, 25.61
+	public int selectedGun = GUN_HEAD_ON;//For some reason starting with this gun gives the best results
 
 	//Other public variables
 	public Point2D.Double myLocation;
