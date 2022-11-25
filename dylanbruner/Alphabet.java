@@ -65,7 +65,7 @@ public class Alphabet extends AdvancedRobot {
 	public final int GUN_LINEAR       = 1;
 	public final int GUN_PATTERN	  = 2;
 	public final int GUN_HEAD_ON	  = 3;
-	public int selectedGun = GUN_PATTERN;
+	public int selectedGun = GUN_LINEAR;
 
 	//Other public variables
 	public Point2D.Double myLocation;
@@ -75,6 +75,7 @@ public class Alphabet extends AdvancedRobot {
 		componentCore.registerComponent(new Themer());
 		componentCore.registerComponent(new UhOhPreventer());
 		componentCore.registerComponent(new VirtualGunManager());
+		componentCore.registerComponent(new Statistics());
 
 		myLocation = new Point2D.Double(getX(), getY());
 

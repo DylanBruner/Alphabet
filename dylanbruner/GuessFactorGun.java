@@ -17,8 +17,9 @@ public class GuessFactorGun {
     AlphabetLogger logger = new AlphabetLogger("GuessFactorGun");
 
     //Gun stuff
+    public static final int NUM_BINS = 31;
     ArrayList<WaveBullet> waves = new ArrayList<WaveBullet>();
-    static int[] stats          = new int[31];
+    static int[][] stats          = new int[8][NUM_BINS];
     int direction               = 1;
 
     public void init(Alphabet robot){
@@ -52,7 +53,7 @@ public class GuessFactorGun {
             }
         }
 
-        int[] currentStats = stats;
+        int[] currentStats = stats[(int)(e.getDistance() / 200)];
         WaveBullet newWave = new WaveBullet(alphabet.myLocation, absBearing, power, direction, time, currentStats);
 
         //Fire the bullet
@@ -63,7 +64,7 @@ public class GuessFactorGun {
             }
         }
 
-        double guessFactor = (double)(bestIndex - (stats.length - 1) / 2) / ((stats.length - 1) / 2);
+        double guessFactor = (double)(bestIndex - (NUM_BINS - 1) / 2) / ((NUM_BINS - 1) / 2);
         double angleOffset = direction * guessFactor * newWave.maxEscapeAngle();
         double gunAdjust = Utils.normalRelativeAngle(absBearing - alphabet.getGunHeadingRadians() + angleOffset);
 
@@ -81,7 +82,7 @@ public class GuessFactorGun {
 
         long time = alphabet.getTime();
         //Return the angle we should turn the gun
-        int[] currentStats = stats;
+        int[] currentStats = stats[(int)(alphabet.radar.target.distance / 200)];
         WaveBullet newWave = new WaveBullet(alphabet.myLocation, absBearing, power, direction, time, currentStats);
 
         //Fire the bullet
@@ -92,7 +93,7 @@ public class GuessFactorGun {
             }
         }
 
-        double guessFactor = (double)(bestIndex - (stats.length - 1) / 2) / ((stats.length - 1) / 2);
+        double guessFactor = (double)(bestIndex - (NUM_BINS - 1) / 2) / ((NUM_BINS - 1) / 2);
         double angleOffset = direction * guessFactor * newWave.maxEscapeAngle();
         double gunAdjust = Utils.normalRelativeAngle(absBearing - alphabet.getGunHeadingRadians() + angleOffset);
 
