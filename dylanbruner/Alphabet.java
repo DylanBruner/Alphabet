@@ -33,7 +33,6 @@ import java.awt.event.MouseEvent;
 public class Alphabet extends AdvancedRobot {
 	//Movement
 	SurfMovement surferMove = new SurfMovement();
-	MeleeRobot meleeMove    = new MeleeRobot(); //Melee movement basically takes over the whole bot until it's done
 	//AntiGravity antiGravMov = new AntiGravity();
 
 	//Data collection
@@ -75,6 +74,7 @@ public class Alphabet extends AdvancedRobot {
 		componentCore.registerComponent(new HeadOnGun());
 		componentCore.registerComponent(new GuessFactorGun());
 		componentCore.registerComponent(new PatternMatchGun());
+		componentCore.registerComponent(new MeleeRobot());
 
 		//Setup event conditionals
 		//These determine if the events are called for x component, it's needed so we don't shoot all guns at once
@@ -101,7 +101,15 @@ public class Alphabet extends AdvancedRobot {
 			return alphabet.selectedGun == alphabet.GUN_PATTERN && alphabet.movementMode == alphabet.MOVEMENT_SURFING;
 		});
 
-		//Movement
+		//Movement =======================================================
+
+		//Melee movement
+		componentCore.setEventConditional("MeleeRobot", componentCore.ON_EXECUTE, (Alphabet alphabet) -> {
+			return alphabet.movementMode == alphabet.MOVEMENT_MELEE;
+		});
+		componentCore.setEventConditional("MeleeRobot", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
+			return alphabet.movementMode == alphabet.MOVEMENT_MELEE;
+		});
 
 		//=======================================================[Robot]=======================================================
 
@@ -111,7 +119,6 @@ public class Alphabet extends AdvancedRobot {
 		surferMove.init(this);
 		// antiGravMov.init(this);
 		radar.init(this);
-		meleeMove.init(this);
 		vLeaderboard.init(this);
 
 		//Setup robot
@@ -137,7 +144,6 @@ public class Alphabet extends AdvancedRobot {
 			}
 			
 			//Auto movement
-			if (movementMode == MOVEMENT_MELEE) meleeMove.execute();
 			
 			//Auto gun
 			if (movementMode == MOVEMENT_MELEE){}//Guns are handled in MeleeRobot.java during Melee
@@ -160,7 +166,6 @@ public class Alphabet extends AdvancedRobot {
 		radar.onScannedRobot(e);
 
 		if (movementMode == MOVEMENT_SURFING) surferMove.onScannedRobot(e);
-		else if (movementMode == MOVEMENT_MELEE) meleeMove.onScannedRobot(e);
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {

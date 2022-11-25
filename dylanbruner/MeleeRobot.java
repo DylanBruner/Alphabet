@@ -18,8 +18,7 @@ import java.awt.geom.Point2D;
  * over to the virtual gun system yet (this will probably be done before the competition) [Did it!]
 */
 
-public class MeleeRobot {
-    Alphabet alphabet;
+public class MeleeRobot extends Component {
     AlphabetLogger logger = new AlphabetLogger("MeleeRobot");
 
 	static Hashtable<String, internEnemy> enemies = new Hashtable<String, internEnemy>();
@@ -29,14 +28,12 @@ public class MeleeRobot {
 	static Point2D.Double myPos;
 	static double myEnergy;
 	
-	public void init(Alphabet alphabet) {
-        this.alphabet = alphabet;		
-		nextDestination = lastPosition = myPos = alphabet.myLocation;
-		target = new internEnemy();
-	}
-    
 	//Called every tick by the main robot
     public void execute() {
+		if (target == null){
+			nextDestination = lastPosition = myPos = alphabet.myLocation;
+			target = new internEnemy();
+		}
         myPos = alphabet.myLocation;
         myEnergy = alphabet.getEnergy();
         
