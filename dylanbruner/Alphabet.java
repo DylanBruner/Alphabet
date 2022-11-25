@@ -5,29 +5,7 @@ import java.awt.geom.*;
 import java.awt.event.MouseEvent;
 
 /*
- *==============================[OVERVIEW]==============================]
- * Shooting: (Auto switches)
- *   - Virtual Guns
- *   - GuessFactor, Linear, pattern matching and head on
- * Movement: (Auto switches)
- *   - Melee: Minimum Risk Movement
- *   - 1v1: Wave Surfing
- * Targeting:
- *   - Virtual Leaderboard (already implemented) will be used to determine the best bot to target
- *   - In 1v1 we just target the enemy (duh)
- * Data Collecting:
- *   - Virtual Gun Data         (automatic gun switching)
- *   - Virtual leaderboard data (for melee targetting)
- *   - When enemies are scanned we store a 'snapshot' of their data, max set in Config.java
- *     this will be used for pattern match targeting and whatever 
- *     else could benefit from it. We could analyze the data and
- * 	   calculate it into the leaderboard data to make it more accurate. (Energy loss vs Gain or Loss vs time)
- * 
- * 
- * I wont be switching over to the virtual leaderboard just yet as doesn't play well with the current melee movement
- * Also implementing Keep Distance into the wave surfing would improve performance immensely
- * 
- * The guns need to be moved over to targeting the target set by the radar not just the last scanned robot
+ * Overview: Moved to README.md 
 */
 
 public class Alphabet extends AdvancedRobot {
