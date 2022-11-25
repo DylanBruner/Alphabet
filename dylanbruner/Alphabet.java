@@ -60,6 +60,7 @@ public class Alphabet extends AdvancedRobot {
 
 	public void run() {
 		//=======================================================[Components]=======================================================
+		//Register components (calls init() on each component which gives them access to the robot)
 		componentCore.registerComponent(new Painting());
 		componentCore.registerComponent(new Themer());
 		componentCore.registerComponent(new UhOhPreventer());
@@ -73,27 +74,20 @@ public class Alphabet extends AdvancedRobot {
 		componentCore.registerComponent(new MeleeRobot());
 		componentCore.registerComponent(new SurfMovement());
 
-		//Setup event conditionals
-		//These determine if the events are called for x component, it's needed so we don't shoot all guns at once
-		
-		//Guns shoot if (selectedGun == x && movementMode == MOVE_SURFING)
-		//Only shoot the PatternGunV2 if it's selected
+		//Shooting =======================================================
+
 		componentCore.setEventConditional("PatternGunV2", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
 			return alphabet.selectedGun == alphabet.GUN_PATTERN_V2 && alphabet.movementMode == alphabet.MOVEMENT_SURFING;
 		});
-		//Only shoot the LinearGun if it's selected
 		componentCore.setEventConditional("LinearGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
 			return alphabet.selectedGun == alphabet.GUN_LINEAR && alphabet.movementMode == alphabet.MOVEMENT_SURFING;
 		});
-		//Only shoot the HeadOnGun if it's selected
 		componentCore.setEventConditional("HeadOnGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
 			return alphabet.selectedGun == alphabet.GUN_HEAD_ON && alphabet.movementMode == alphabet.MOVEMENT_SURFING;
 		});
-		//Only shoot the GuessFactorGun if it's selected
 		componentCore.setEventConditional("GuessFactorGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
 			return alphabet.selectedGun == alphabet.GUN_GUESS_FACTOR && alphabet.movementMode == alphabet.MOVEMENT_SURFING;
 		});
-		//Only shoot the PatternGun if it's selected
 		componentCore.setEventConditional("PatternMatchGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
 			return alphabet.selectedGun == alphabet.GUN_PATTERN && alphabet.movementMode == alphabet.MOVEMENT_SURFING;
 		});
