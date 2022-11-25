@@ -31,10 +31,6 @@ import java.awt.event.MouseEvent;
 */
 
 public class Alphabet extends AdvancedRobot {
-	//Movement
-	SurfMovement surferMove = new SurfMovement();
-	//AntiGravity antiGravMov = new AntiGravity();
-
 	//Data collection
 	Radar radar                                   = new Radar();
 	public static VirtualLeaderboard vLeaderboard = new VirtualLeaderboard();
@@ -75,6 +71,7 @@ public class Alphabet extends AdvancedRobot {
 		componentCore.registerComponent(new GuessFactorGun());
 		componentCore.registerComponent(new PatternMatchGun());
 		componentCore.registerComponent(new MeleeRobot());
+		componentCore.registerComponent(new SurfMovement());
 
 		//Setup event conditionals
 		//These determine if the events are called for x component, it's needed so we don't shoot all guns at once
@@ -111,13 +108,25 @@ public class Alphabet extends AdvancedRobot {
 			return alphabet.movementMode == alphabet.MOVEMENT_MELEE;
 		});
 
+		//Surfing movement (lots of events)
+		componentCore.setEventConditional("SurfMovement", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
+			return alphabet.movementMode == alphabet.MOVEMENT_SURFING;
+		});
+		componentCore.setEventConditional("SurfMovement", componentCore.ON_HIT_BY_BULLET, (Alphabet alphabet) -> {
+			return alphabet.movementMode == alphabet.MOVEMENT_SURFING;
+		});
+		componentCore.setEventConditional("SurfMovement", componentCore.ON_BULLET_HIT, (Alphabet alphabet) -> {
+			return alphabet.movementMode == alphabet.MOVEMENT_SURFING;
+		});
+		componentCore.setEventConditional("SurfMovement", componentCore.ON_BULLET_HIT_BULLET, (Alphabet alphabet) -> {
+			return alphabet.movementMode == alphabet.MOVEMENT_SURFING;
+		});
+
 		//=======================================================[Robot]=======================================================
 
 		myLocation = new Point2D.Double(getX(), getY());
 
 		//Initlize the components
-		surferMove.init(this);
-		// antiGravMov.init(this);
 		radar.init(this);
 		vLeaderboard.init(this);
 
@@ -162,20 +171,15 @@ public class Alphabet extends AdvancedRobot {
 	//Events 'n stuff
 	public void onScannedRobot(ScannedRobotEvent e) {
 		componentCore.onScannedRobot(e);
-
 		radar.onScannedRobot(e);
-
-		if (movementMode == MOVEMENT_SURFING) surferMove.onScannedRobot(e);
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {
 		componentCore.onHitByBullet(e);
-		if (movementMode == MOVEMENT_SURFING) surferMove.onHitByBullet(e);
 	}
 
 	public void onBulletHit(BulletHitEvent e) {
 		componentCore.onBulletHit(e);
-		if (movementMode == MOVEMENT_SURFING) surferMove.onBulletHit(e);
 	}
 
 	public void onBulletMissed(BulletMissedEvent e) {
@@ -184,7 +188,6 @@ public class Alphabet extends AdvancedRobot {
 
 	public void onBulletHitBullet(BulletHitBulletEvent e) {
 		componentCore.onBulletHitBullet(e);
-		if (movementMode == MOVEMENT_SURFING) surferMove.onBulletHitBullet(e);
 	}
 
 	public void onHitRobot(HitRobotEvent e) {

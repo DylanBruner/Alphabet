@@ -6,12 +6,8 @@ import robocode.util.Utils;
 import java.awt.geom.*;
 import java.util.ArrayList;
 
-public class SurfMovement {
-    //Components stuff
-    Alphabet alphabet;
+public class SurfMovement extends Component {
     AlphabetLogger logger = new AlphabetLogger("SurfMovement");
-
-    //Surfing stuff
 
     //This stores how often the gun shoots at us from a certain angle
     public static int BINS = 47;
@@ -20,21 +16,11 @@ public class SurfMovement {
     public Point2D.Double myLocation;     
     public Point2D.Double enemyLocation;
 
-    public ArrayList<EnemyWave> enemyWaves;
-    public ArrayList<Integer> surfDirections;
-    public ArrayList<Double> surfAbsBearings;
+    public ArrayList<EnemyWave> enemyWaves = new ArrayList<EnemyWave>();
+    public ArrayList<Integer> surfDirections = new ArrayList<Integer>();
+    public ArrayList<Double> surfAbsBearings = new ArrayList<Double>();
 
     public static double oppEnergy = 100.0;
-
-    public void init(Alphabet robot){
-        alphabet = robot;
-
-        enemyWaves      = new ArrayList<EnemyWave>();
-        surfDirections  = new ArrayList<Integer>();
-        surfAbsBearings = new ArrayList<Double>();
-    }
-
-    public void execute(){}
 
     public void onScannedRobot(ScannedRobotEvent e) {
         myLocation = alphabet.myLocation;
