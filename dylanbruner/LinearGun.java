@@ -5,22 +5,10 @@ import robocode.util.Utils;
 
 import java.awt.geom.*;
 
-public class LinearGun {
-    Alphabet alphabet;
+public class LinearGun extends Component {
     AlphabetLogger logger = new AlphabetLogger("LinearGun");
     
-    public void init(Alphabet alphabet){
-        this.alphabet = alphabet;
-    }
-
-    public void execute(){}
-
-    public int getOptimalFirePower(){
-        return 1;
-    }
-
-    private Point2D.Double estimateRobotLocation(ScannedRobotEvent robot, double bulletPower)
-    {
+    private Point2D.Double estimateRobotLocation(ScannedRobotEvent robot, double bulletPower) {
         //Estimate the robot's location using basicish math
         double bulletVelocity = Rules.getBulletSpeed(bulletPower);
         double deltaTime = robot.getDistance() / bulletVelocity;
@@ -45,7 +33,7 @@ public class LinearGun {
     }
 
     public void onScannedRobot(ScannedRobotEvent e){
-        double bulletPower = getOptimalFirePower();
+        double bulletPower = alphabet.getFirePower();
         double gunRadians = doLinearGun(e, bulletPower);
 
         alphabet.setTurnGunRightRadians(gunRadians);

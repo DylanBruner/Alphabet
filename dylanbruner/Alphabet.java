@@ -34,7 +34,6 @@ import java.awt.event.MouseEvent;
 public class Alphabet extends AdvancedRobot {
 	//Attacking
 	GuessFactorGun guessFactorGun    = new GuessFactorGun();
-	LinearGun linearGun              = new LinearGun();
 	PatternMatchGun patternMatchGun  = new PatternMatchGun();
 	HeadOnGun headOnGun              = new HeadOnGun();
 
@@ -78,12 +77,18 @@ public class Alphabet extends AdvancedRobot {
 		componentCore.registerComponent(new VirtualGunManager());
 		componentCore.registerComponent(new Statistics());
 		componentCore.registerComponent(new PatternGunV2());
+		componentCore.registerComponent(new LinearGun());
 
 		//Setup event conditionals
 		
 		//Only shoot the PatternGunV2 if it's selected
 		componentCore.setEventConditional("PatternGunV2", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
 			return alphabet.selectedGun == alphabet.GUN_PATTERN_V2;
+		});
+
+		//Only shoot the LinearGun if it's selected
+		componentCore.setEventConditional("LinearGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
+			return alphabet.selectedGun == alphabet.GUN_LINEAR;
 		});
 
 		//=======================================================[Robot]=======================================================
@@ -94,7 +99,6 @@ public class Alphabet extends AdvancedRobot {
 		surferMove.init(this);
 		// antiGravMov.init(this);
 		guessFactorGun.init(this);
-		linearGun.init(this);
 		headOnGun.init(this);
 		radar.init(this);
 		meleeMove.init(this);
@@ -129,7 +133,6 @@ public class Alphabet extends AdvancedRobot {
 			//Auto gun
 			if (movementMode == MOVEMENT_MELEE){}//Guns are handled in MeleeRobot.java during Melee
 			else if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.execute();
-			else if (selectedGun == GUN_LINEAR) linearGun.execute();
 
 			
 			execute();
@@ -154,7 +157,6 @@ public class Alphabet extends AdvancedRobot {
 		//Multi-gun
 		//if (movementMode == MOVEMENT_MELEE) {}//Guns are handled in MeleeRobot.java during Melee
 		if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.onScannedRobot(e);
-		else if (selectedGun == GUN_LINEAR) linearGun.onScannedRobot(e);
 		else if (selectedGun == GUN_PATTERN) patternMatchGun.onScannedRobot(e);
 		else if (selectedGun == GUN_HEAD_ON) headOnGun.onScannedRobot(e);
 	}
