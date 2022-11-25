@@ -7,8 +7,8 @@ import java.awt.geom.Point2D;
 
 /*
  * This is basically a whole new robot that is automatically controlled by the main robot 
- * it's only purpose is for melee combat and is disabled when there is only one enemy in
- * favor of wave surfing, a virtual gun system and other stuff
+ * it's only purpose is for melee combat and is disabled in 1v1 combat in favor of wave surfing, 
+ * a virtual gun system and other stuff
  * 
  * Only reason i did this was because I found my bot that worked GREAT in 1v1 was terrible in melee
  * And I didn't want to figure out how to do multi-bot wave surfing so I just made a whole new bot

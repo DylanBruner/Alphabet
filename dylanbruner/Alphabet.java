@@ -61,6 +61,7 @@ public class Alphabet extends AdvancedRobot {
 
 		//=======================================================[Components]=======================================================
 		//Register components (calls init() on each component which gives them access to the robot)
+		componentCore.registerComponent(new Radar()); //This *should* give the radar the first execution
 		componentCore.registerComponent(new Painting());
 		componentCore.registerComponent(new Themer());
 		componentCore.registerComponent(new UhOhPreventer());
@@ -74,7 +75,6 @@ public class Alphabet extends AdvancedRobot {
 		componentCore.registerComponent(new MeleeRobot());
 		componentCore.registerComponent(new SurfMovement());
 		componentCore.registerComponent(new VirtualLeaderboard());
-		componentCore.registerComponent(new Radar());
 
 		radar = (Radar) componentCore.getComponent("Radar");//Go to where i create the variable radar to see why I'm doing this
 
@@ -152,16 +152,8 @@ public class Alphabet extends AdvancedRobot {
 	}
 
 	//Events 'n stuff
-	public void onScannedRobot(ScannedRobotEvent e) {
-		componentCore.onScannedRobot(e);
-		radar.onScannedRobot(e);
-	}
-
-	
-	public void onRobotDeath(RobotDeathEvent e) {
-		componentCore.onRobotDeath(e);
-		radar.onRobotDeath(e);
-	}
+	public void onScannedRobot(ScannedRobotEvent e) {componentCore.onScannedRobot(e);}
+	public void onRobotDeath(RobotDeathEvent e) {componentCore.onRobotDeath(e);}
 	public void onHitByBullet(HitByBulletEvent e) {componentCore.onHitByBullet(e);}
 	public void onBulletHit(BulletHitEvent e) {componentCore.onBulletHit(e);}
 	public void onBulletMissed(BulletMissedEvent e) {componentCore.onBulletMissed(e);}
@@ -172,6 +164,7 @@ public class Alphabet extends AdvancedRobot {
 	public void onDeath(DeathEvent e) {componentCore.onDeath(e);}
 	public void onRoundEnded(RoundEndedEvent event) {componentCore.onRoundEnded(event);}
 	public void onBattleEnded(BattleEndedEvent event) {componentCore.onBattleEnded(event);}
+	public void onWin(WinEvent event) {componentCore.onWin(event);}
 	@Override
 	public void onPaint(java.awt.Graphics2D g) {componentCore.onPaint(g);}
 }

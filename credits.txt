@@ -68,6 +68,6 @@ Changelog i guess
       
   - I moved all the tools into their own folder and made a singular batch file 'robo.bat' to run them
   - Add execution conditionals to the Component system
-  - Changed the following things over to the new component system (All Guns)
-    - PatternGunV2, LinearGun, HeadOnGun, PatternMatchGun, GueessFactorGun
-      MeleeRobot, SurfMovement, VirtualLeaderboard
+  - Changed everything over to the new component system
+     Note radar can still be accessed via alphabet.radar because I didn't want to change it in
+     nearly every file to ((Radar) alphabet.componentCore.getComponent("radar"))
