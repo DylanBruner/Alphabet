@@ -35,7 +35,8 @@ public class Alphabet extends AdvancedRobot {
 	//Attacking
 	GuessFactorGun guessFactorGun   = new GuessFactorGun();
 	LinearGun linearGun             = new LinearGun();
-	PatternMatchGun patternMatchGun = new PatternMatchGun(); 
+	PatternMatchGun patternMatchGun = new PatternMatchGun();
+	PatternGunV2 patternGunV2       = new PatternGunV2();
 	HeadOnGun headOnGun             = new HeadOnGun();
 
 	//Movement
@@ -52,7 +53,6 @@ public class Alphabet extends AdvancedRobot {
 
 	//New
 	ComponentCore componentCore = new ComponentCore(this);
-
 	//Code ================================================================================================================
 	//Auto movement mode
 	public final int MOVEMENT_SURFING = 0;
@@ -65,7 +65,8 @@ public class Alphabet extends AdvancedRobot {
 	public final int GUN_LINEAR       = 1; //24.91, 26.84
 	public final int GUN_PATTERN	  = 2; //21.59, 21.56
 	public final int GUN_HEAD_ON	  = 3; //30.42, 25.61
-	public int selectedGun = GUN_HEAD_ON;//For some reason starting with this gun gives the best results
+	public final int GUN_PATTERN_V2   = 4;
+	public int selectedGun = GUN_PATTERN_V2;// ^ For some reason starting with this gun gives the best results
 
 	//Other public variables
 	public Point2D.Double myLocation;
@@ -89,6 +90,7 @@ public class Alphabet extends AdvancedRobot {
 		meleeMove.init(this);
 		vLeaderboard.init(this);
 		patternMatchGun.init(this);
+		patternGunV2.init(this);
 
 		//Setup robot
 		setAdjustGunForRobotTurn(true);
@@ -119,6 +121,8 @@ public class Alphabet extends AdvancedRobot {
 			if (movementMode == MOVEMENT_MELEE){}//Guns are handled in MeleeRobot.java during Melee
 			else if (selectedGun == GUN_GUESS_FACTOR) guessFactorGun.execute();
 			else if (selectedGun == GUN_LINEAR) linearGun.execute();
+			else if (selectedGun == GUN_PATTERN_V2) patternGunV2.execute();
+
 			
 			execute();
 		}
@@ -145,6 +149,7 @@ public class Alphabet extends AdvancedRobot {
 		else if (selectedGun == GUN_LINEAR) linearGun.onScannedRobot(e);
 		else if (selectedGun == GUN_PATTERN) patternMatchGun.onScannedRobot(e);
 		else if (selectedGun == GUN_HEAD_ON) headOnGun.onScannedRobot(e);
+		else if (selectedGun == GUN_PATTERN_V2) patternGunV2.onScannedRobot(e);
 	}
 
 	public void onHitByBullet(HitByBulletEvent e) {

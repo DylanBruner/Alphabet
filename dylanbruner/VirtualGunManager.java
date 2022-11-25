@@ -42,6 +42,7 @@ public class VirtualGunManager extends Component {
                     targetStats.put(alphabet.GUN_LINEAR, 0);
                     targetStats.put(alphabet.GUN_PATTERN, 0);
                     targetStats.put(alphabet.GUN_HEAD_ON, 0);
+                    targetStats.put(alphabet.GUN_PATTERN_V2, 0);
                     gunStats.put(alphabet.radar.target.name, targetStats);
                 }
                 targetStats.put(bullet.parentGun, targetStats.get(bullet.parentGun) + 1); //Increment the gun's hit count
@@ -57,19 +58,20 @@ public class VirtualGunManager extends Component {
             int linearGunHits      = targetStats.get(alphabet.GUN_LINEAR);
             int patternGunHits     = targetStats.get(alphabet.GUN_PATTERN);
             int headOnGunHits      = targetStats.get(alphabet.GUN_HEAD_ON);
+            int patterGunV2Hits    = targetStats.get(alphabet.GUN_PATTERN_V2);
 
             //Select the gun with the most hits
             if (!Config.DISABLE_AUTO_GUN){
-                if (guessFactorGunHits > linearGunHits && guessFactorGunHits > patternGunHits && guessFactorGunHits > headOnGunHits){
+                if (guessFactorGunHits > linearGunHits && guessFactorGunHits > patternGunHits && guessFactorGunHits > headOnGunHits && guessFactorGunHits > patterGunV2Hits){
                     alphabet.selectedGun = alphabet.GUN_GUESS_FACTOR;
-                } else if (linearGunHits > guessFactorGunHits && linearGunHits > patternGunHits && linearGunHits > headOnGunHits){
+                } else if (linearGunHits > patternGunHits && linearGunHits > headOnGunHits && linearGunHits > patterGunV2Hits){
                     alphabet.selectedGun = alphabet.GUN_LINEAR;
-                } else if (patternGunHits > guessFactorGunHits && patternGunHits > linearGunHits && patternGunHits > headOnGunHits){
+                } else if (patternGunHits > headOnGunHits && patternGunHits > patterGunV2Hits){
                     alphabet.selectedGun = alphabet.GUN_PATTERN;
-                } else if (headOnGunHits > guessFactorGunHits && headOnGunHits > linearGunHits && headOnGunHits > patternGunHits){
+                } else if (headOnGunHits > patterGunV2Hits){
                     alphabet.selectedGun = alphabet.GUN_HEAD_ON;
                 } else {
-                    alphabet.selectedGun = alphabet.GUN_LINEAR;
+                    alphabet.selectedGun = alphabet.GUN_PATTERN_V2;
                 }
             }
         }
@@ -98,9 +100,12 @@ public class VirtualGunManager extends Component {
         TrackedBullet linearBullet = guessFactorBullet.copy();
         TrackedBullet patternGun   = guessFactorBullet.copy();
         TrackedBullet headOnGun    = guessFactorBullet.copy();
+        TrackedBullet patternGunV2 = guessFactorBullet.copy();
+
         linearBullet.parentGun = alphabet.GUN_LINEAR;
         patternGun.parentGun   = alphabet.GUN_PATTERN;
         headOnGun.parentGun    = alphabet.GUN_HEAD_ON;
+        patternGunV2.parentGun = alphabet.GUN_PATTERN_V2;
 
         //Do the bullet calculations (They are relative at first)
         guessFactorBullet.absFireRadians = alphabet.guessFactorGun.doGuessFactorGun(absBearing, bulletPower) + absBearing;
@@ -111,8 +116,11 @@ public class VirtualGunManager extends Component {
         Point2D.Double headOnLocation = alphabet.headOnGun.doHeadOnGun(alphabet.radar.target, bulletPower);
         headOnGun.absFireRadians = MathUtils.absoluteBearing(alphabet.myLocation, headOnLocation);
 
+        patternGunV2.absFireRadians = alphabet.patternGunV2.doPatternGunV2(alphabet.radar.target.lastScan);
+
         //Add the bullets to the list
-        bullets.add(patternGun); bullets.add(linearBullet); bullets.add(guessFactorBullet); bullets.add(headOnGun);
+        bullets.add(patternGun); bullets.add(linearBullet); bullets.add(guessFactorBullet); 
+        bullets.add(headOnGun);  bullets.add(patternGunV2);
     }
 
     //Events
@@ -120,7 +128,7 @@ public class VirtualGunManager extends Component {
         Hashtable<Integer, Integer> targetStats = gunStats.get(e.getName());
         if (targetStats != null){
             //Log gun stats like this: LinearGun: 10, GuessFactorGun: 5, PatternGun: 3, HeadOnGun: 2
-            System.out.println("LinearGun: " + targetStats.get(alphabet.GUN_LINEAR) + ", GuessFactorGun: " + targetStats.get(alphabet.GUN_GUESS_FACTOR) + ", PatternGun: " + targetStats.get(alphabet.GUN_PATTERN) + ", HeadOnGun: " + targetStats.get(alphabet.GUN_HEAD_ON));
+            System.out.println("LinearGun: " + targetStats.get(alphabet.GUN_LINEAR) + ", GuessFactorGun: " + targetStats.get(alphabet.GUN_GUESS_FACTOR) + ", PatternGun: " + targetStats.get(alphabet.GUN_PATTERN) + ", HeadOnGun: " + targetStats.get(alphabet.GUN_HEAD_ON)+ ", PatternGunV2: " + targetStats.get(alphabet.GUN_PATTERN_V2));
         }
     }
 }
