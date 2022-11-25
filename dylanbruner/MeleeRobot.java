@@ -143,7 +143,18 @@ public class MeleeRobot extends Component {
 	}
 	
 	public void onRobotDeath(RobotDeathEvent e) {
-		enemies.get(e.getName()).live = false;
+		//This event isn't blocked when in surfing mode so we might not of actually
+		//scanned the enemy when this event is called so we need to check if the enemy
+		//is in the enemies list first
+		if (enemies.containsKey(e.getName())){
+			enemies.get(e.getName()).live = false;
+		} else {
+			internEnemy enemy = new internEnemy();
+			enemy.name = e.getName();
+			enemy.live = false;
+			enemy.pos = new Point2D.Double(0,0);
+			enemies.put(e.getName(), enemy);
+		}
 	}
 	
     // classes =================================================================
