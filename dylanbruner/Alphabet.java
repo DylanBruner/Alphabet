@@ -25,11 +25,11 @@ public class Alphabet extends AdvancedRobot {
 
 	//Auto gun
 	public final int GUN_GUESS_FACTOR = 0;
-	public final int GUN_LINEAR       = 1; //24.91, 26.84
-	public final int GUN_PATTERN	  = 2; //21.59, 21.56
-	public final int GUN_HEAD_ON	  = 3; //30.42, 25.61
+	public final int GUN_LINEAR       = 1;
+	public final int GUN_PATTERN	  = 2;
+	public final int GUN_HEAD_ON	  = 3;
 	public final int GUN_PATTERN_V2   = 4;
-	public int selectedGun = GUN_PATTERN;// ^ For some reason starting with this gun gives the best results
+	public int selectedGun = GUN_PATTERN_V2;
 
 	//Other public variables
 	public Point2D.Double myLocation;
@@ -38,21 +38,13 @@ public class Alphabet extends AdvancedRobot {
 		myLocation = new Point2D.Double(getX(), getY());
 
 		//=======================================================[Components]=======================================================
-		//Register components (calls init() on each component which gives them access to the robot)
-		componentCore.registerComponent(new Radar()); //This *should* give the radar the first execution
-		componentCore.registerComponent(new Painting());
-		componentCore.registerComponent(new Themer());
-		componentCore.registerComponent(new UhOhPreventer());
-		componentCore.registerComponent(new VirtualGunManager());
-		componentCore.registerComponent(new Statistics());
-		componentCore.registerComponent(new PatternGunV2());
-		componentCore.registerComponent(new LinearGun());
-		componentCore.registerComponent(new HeadOnGun());
-		componentCore.registerComponent(new GuessFactorGun());
-		componentCore.registerComponent(new PatternMatchGun());
-		componentCore.registerComponent(new MeleeRobot());
-		componentCore.registerComponent(new SurfMovement());
-		componentCore.registerComponent(new VirtualLeaderboard());
+		componentCore.registerComponents(new Component[] {
+			new Radar(), new Painting(), new Themer(),
+			new UhOhPreventer(), new VirtualGunManager(), new Statistics(),
+			new PatternGunV2(), new LinearGun(), new HeadOnGun(),
+			new GuessFactorGun(), new PatternMatchGun(), new MeleeRobot(),
+			new SurfMovement(), new VirtualLeaderboard()
+		});
 
 		radar = (Radar) componentCore.getComponent("Radar");//Go to where i create the variable radar to see why I'm doing this
 

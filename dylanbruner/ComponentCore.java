@@ -64,6 +64,12 @@ public class ComponentCore {
         }
     }
 
+    public void registerComponents(Component[] components) {
+        for (Component component : components) {
+            registerComponent(component);
+        }
+    }
+
     public boolean shouldExecute(String componentName, String eventName){
         if (executionConditionals.containsKey(componentName)){
             if (executionConditionals.get(componentName).containsKey(eventName)){
