@@ -12,7 +12,7 @@ Things that I implemented/thought of completly on my own are listed below
   - Themer
   - How it picks targets
   - Component system
-  - The following python tools: filestats, package, compile
+  - The following python tools: filestats, package, compile, clean
 
 
 Note: lots of the math was borrowed from the internet because math is hard and we haven't 

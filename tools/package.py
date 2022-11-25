@@ -2,7 +2,7 @@ import zipfile, os
 
 
 print("=====================================[Compiling]=====================================")
-os.system('python compile.py')
+os.system('python tools/compile.py')
 print("=====================================[Packaging]=====================================")
 with open("Alphabet.properties", "r") as f:
     properties = f.read().splitlines()
