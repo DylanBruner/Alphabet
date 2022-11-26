@@ -15,9 +15,11 @@ public class Config {
 
     //Fun
     public static final boolean USE_MIRROR_MODE = true;//If we are gauranteed to win, we can use mirror mode to make the fight more interesting
+                                                       //Currently this config value does nothing, it will be adjusted when I figure out how scoring
+                                                       //TODO: Mirror Movement Toggling
 
     //Uh-Oh Preventer
-    public static final int uhOhTriggerTime = 100;
+    public static final int UHOH_TRIGGER_TIME = 100;
 
     //Radar
     public static final int MAX_SNAPSHOTS_PER_ENEMY         = 4000; //May have to be lowered if we start getting turn skips
@@ -26,4 +28,7 @@ public class Config {
     //Game mode specific ============================================
     //[Melee]
     public static final int MELEE_MAX_RADAR_LOCK_TIME = 15;//Warning this number has a massive impact the robot's physical performance
+
+    //Don't worry about this :)
+    public static final String SUPER_SECRET_STRING = "TmljZSB0cnk6IGQ3MGNmN2YyZDg1MGExZmI2MDE1ODE3OTQzNjM1NTBiNGQxZjRkOTM5M2I4NDllZWRkNWM1MzYzODljODgzZDM=";
 }

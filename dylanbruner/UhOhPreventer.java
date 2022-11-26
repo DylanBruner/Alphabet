@@ -19,7 +19,7 @@ public class UhOhPreventer extends Component {
     Point2D.Double lastLocation = new Point2D.Double(0, 0);
 
     public void execute() {
-        if (alphabet.myLocation.distance(lastLocation) == 0 && alphabet.getTime() - lastMoveTime > Config.uhOhTriggerTime 
+        if (alphabet.myLocation.distance(lastLocation) == 0 && alphabet.getTime() - lastMoveTime > Config.UHOH_TRIGGER_TIME 
             && lastEngery != alphabet.getEnergy() && alphabet.getOthers() >= 1) {
                 
             lastMoveTime = alphabet.getTime();

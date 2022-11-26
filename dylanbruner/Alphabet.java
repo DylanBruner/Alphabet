@@ -5,6 +5,9 @@ import java.awt.geom.*;
 import java.util.function.Function;
 import java.awt.event.MouseEvent;
 
+//TODO: Seperate files into folders
+//I need to ask how I should compile this before I can do it
+
 /*
  * Overview: Moved to README.md 
 */
@@ -13,9 +16,10 @@ public class Alphabet extends AdvancedRobot {
 	AlphabetLogger logger       = new AlphabetLogger("Main");
 	ComponentCore componentCore = new ComponentCore(this);
 
-	Radar radar;//This is the only component that is accessable without using the componentCore.getComponent() method
-	            //I'm doing this because the radar is used in nearly every file LOTS of times and I dont want to change it over lol
-				//TLDR: I'm lazy and I dont want to change it over
+	Radar radar;//TODO: How radar is accessed
+	            //This should be accesed by using (Radar)componentCore.getComponent("Radar")
+				//But I haven't gotten around to changing everything over yet although I'm
+				//trying to write new code in that style
 
 	//Code ================================================================================================================
 	//Auto movement mode
@@ -23,7 +27,7 @@ public class Alphabet extends AdvancedRobot {
 	public final int MOVEMENT_MELEE   = 1;
 	public int movementMode = -1;
 	public boolean forceDisableAutoMovement = false;
-	public boolean useMirorMovement = false; //When i figure out how scoring works I'll probably make this a thing [TODO]
+	public boolean useMirorMovement = false; //When i figure out how scoring works I'll probably make this a thing
 											 //For example if i've won 2/3 games and i dont need to win the third i'll turn this on
 
 	//Auto gun

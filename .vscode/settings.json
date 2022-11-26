@@ -14,5 +14,8 @@
         "**/__pycache__": true,
         ".vscode": true
     },
-    "explorerExclude.backup": {}
+    "explorerExclude.backup": {},
+    "todo-tree.tree.scanMode": "workspace",
+    "todo-tree.tree.showCountsInTree": false,
+    "todo-tree.tree.showBadges": true
 }
