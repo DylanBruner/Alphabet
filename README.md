@@ -31,7 +31,7 @@
     Then for every event I only call something like ``eventCore.onScannedRobot()`` and it goes through the components
     and calls them.
     <br>This is great and all but I didn't always want to call all the components. For example I wouldn't want to call the
-    <br>on scan of all the guns at once. So to solve this I made something called ``eventConditional`` which is checked before calling the component.
+    <br> ``onScannedRobot`` of all the guns at once. So to solve this I made something called a ``eventConditional`` which is checked before calling the component.
     <br> Here is a example of the ``ON_SCANNED_ROBOT`` eventConditional for ``SurfMovement``.
     ```java
     componentCore.setEventConditional("SurfMovement", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
