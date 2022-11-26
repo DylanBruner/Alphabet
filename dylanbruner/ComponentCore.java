@@ -61,6 +61,7 @@ public class ComponentCore {
         } catch (Exception e) {
             logger.error("initializing component failed: " + component.getClass().getSimpleName());
             e.printStackTrace();
+            logUncaughtException();
         }
     }
 
@@ -70,7 +71,7 @@ public class ComponentCore {
         }
     }
 
-    public boolean shouldExecute(String componentName, String eventName){
+    private boolean shouldExecute(String componentName, String eventName){
         if (executionConditionals.containsKey(componentName)){
             if (executionConditionals.get(componentName).containsKey(eventName)){
                 return executionConditionals.get(componentName).get(eventName).apply(alphabet);
@@ -79,7 +80,7 @@ public class ComponentCore {
         return true;
     }
 
-    public void callComponents(robocode.Event e) {
+    private void callComponents(robocode.Event e) {
         //Yeah, yeah this is some ugly code, but i will never have to look at it again so it's fine!
         //Check the execution conditionals and see if the component should be executed
         for (Component component : components) {
@@ -117,9 +118,12 @@ public class ComponentCore {
             } catch (Exception ex) {
                 logger.error("calling component failed: " + component.getClass().getSimpleName());
                 ex.printStackTrace();
+                logUncaughtException();
             }
         }
     }
+
+    private void logUncaughtException() {Statistics.counter_uncaughtExceptions++;}
     
     public void execute(){ 
         for (Component component : components) {
@@ -129,6 +133,7 @@ public class ComponentCore {
             } catch (Exception e) {
                 logger.error("executing component failed: " + component.getClass().getSimpleName());
                 e.printStackTrace();
+                logUncaughtException();
             }
         }
     }
@@ -140,6 +145,7 @@ public class ComponentCore {
             } catch (Exception e) {
                 logger.error("calling component failed: " + component.getClass().getSimpleName());
                 e.printStackTrace();
+                logUncaughtException();
             }
         }
     }
@@ -151,6 +157,7 @@ public class ComponentCore {
             } catch (Exception ex) {
                 logger.error("calling component failed: " + component.getClass().getSimpleName());
                 ex.printStackTrace();
+                logUncaughtException();
             }
         }
     }
