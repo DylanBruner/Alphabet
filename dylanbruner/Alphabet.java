@@ -16,11 +16,6 @@ public class Alphabet extends AdvancedRobot {
 	AlphabetLogger logger       = new AlphabetLogger("Main");
 	ComponentCore componentCore = new ComponentCore(this);
 
-	Radar radar;//TODO: How radar is accessed
-	            //This should be accesed by using (Radar)componentCore.getComponent("Radar")
-				//But I haven't gotten around to changing everything over yet although I'm
-				//trying to write new code in that style
-
 	//Code ================================================================================================================
 	//Auto movement mode
 	public final int MOVEMENT_SURFING = 0;
@@ -52,8 +47,6 @@ public class Alphabet extends AdvancedRobot {
 			new GuessFactorGun(), new PatternMatchGun(), new MeleeRobot(),
 			new SurfMovement(), new VirtualLeaderboard(), new MirrorMovement()
 		});
-
-		radar = (Radar) componentCore.getComponent("Radar");//Go to where i create the variable radar to see why I'm doing this
 
 		//Shooting =======================================================
 
@@ -112,7 +105,7 @@ public class Alphabet extends AdvancedRobot {
 				} else if (getOthers() <= 1 && movementMode != MOVEMENT_SURFING) {
 					logger.log("Switching to surfing");
 					movementMode = MOVEMENT_SURFING;
-					radar.clearRadarLock();
+					((Radar) componentCore.getComponent("Radar")).clearRadarLock();
 				}
 			}
 			
@@ -122,8 +115,8 @@ public class Alphabet extends AdvancedRobot {
 
 	//Few helpers i need
 	public double getFirePower(){
-		if (radar.target == null || !radar.target.initialized){return 1;}
-		return Math.min(400 / myLocation.distance(radar.target.location), 3);
+		if (((Radar) componentCore.getComponent("Radar")).target == null || !((Radar) componentCore.getComponent("Radar")).target.initialized){return 1;}
+		return Math.min(400 / myLocation.distance(((Radar) componentCore.getComponent("Radar")).target.location), 3);
 	}
 
 	//Events 'n stuff

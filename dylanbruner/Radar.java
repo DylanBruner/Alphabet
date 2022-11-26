@@ -139,8 +139,7 @@ public class Radar extends Component {
         Hashtable<String, Double> enemyScores = new Hashtable<String, Double>();
         
         //Get the scores for each enemy
-        //TODO: Change radar access
-        for (Enemy enemy : alphabet.radar.enemies.values()){
+        for (Enemy enemy : ((Radar) alphabet.componentCore.getComponent("Radar")).enemies.values()){
             //logger.log("Getting optimal target...");
             if (!enemyScores.keySet().contains(enemy.name)){
                 enemyScores.put(enemy.name, 0d);

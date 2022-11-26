@@ -22,8 +22,7 @@ public class VirtualGunManager extends Component {
     public static Hashtable<String, Hashtable<Integer, Integer>> gunStats = new Hashtable<String, Hashtable<Integer, Integer>>();
 
     public void execute() {
-        //TODO: Change radar access
-        if (!alphabet.radar.target.initialized) return;
+        if (!((Radar) alphabet.componentCore.getComponent("Radar")).target.initialized) return;
         
         if (alphabet.getTime() % Config.fireInterval == 0){
             //Actually fire the bullets
@@ -34,11 +33,9 @@ public class VirtualGunManager extends Component {
         ArrayList<TrackedBullet> bulletsToRemove = new ArrayList<TrackedBullet>();
         for (TrackedBullet bullet : bullets){
             Point2D.Double bulletLocation = bullet.getLocation(alphabet);
-            //TODO: Change radar access
-            if (bulletLocation.distance(alphabet.radar.target.location) < 20){
+            if (bulletLocation.distance(((Radar) alphabet.componentCore.getComponent("Radar")).target.location) < 20){
                 //Update the target's stats
-                //TODO: Change radar access
-                Hashtable<Integer, Integer> targetStats = gunStats.get(alphabet.radar.target.name);
+                Hashtable<Integer, Integer> targetStats = gunStats.get(((Radar) alphabet.componentCore.getComponent("Radar")).target.name);
                 if (targetStats == null){
                     targetStats = new Hashtable<Integer, Integer>();
                     targetStats.put(alphabet.GUN_GUESS_FACTOR, 0);
@@ -46,8 +43,7 @@ public class VirtualGunManager extends Component {
                     targetStats.put(alphabet.GUN_PATTERN, 0);
                     targetStats.put(alphabet.GUN_HEAD_ON, 0);
                     targetStats.put(alphabet.GUN_PATTERN_V2, 0);
-                    //TODO: Change radar access
-                    gunStats.put(alphabet.radar.target.name, targetStats);
+                    gunStats.put(((Radar) alphabet.componentCore.getComponent("Radar")).target.name, targetStats);
                 }
                 targetStats.put(bullet.parentGun, targetStats.get(bullet.parentGun) + 1); //Increment the gun's hit count
             }
@@ -56,8 +52,7 @@ public class VirtualGunManager extends Component {
         bullets.removeAll(bulletsToRemove);
 
         //Use gun stats to determine which gun to use for alphabet.radar.target.name
-        //TODO: Change radar access
-        Hashtable<Integer, Integer> targetStats = gunStats.get(alphabet.radar.target.name);
+        Hashtable<Integer, Integer> targetStats = gunStats.get(((Radar) alphabet.componentCore.getComponent("Radar")).target.name);
         if (targetStats != null){
             int guessFactorGunHits = targetStats.get(alphabet.GUN_GUESS_FACTOR);
             int linearGunHits      = targetStats.get(alphabet.GUN_LINEAR);
@@ -92,10 +87,9 @@ public class VirtualGunManager extends Component {
         }
         bullets.removeAll(toRemove);
 
-        //TODO: Change radar access
-        if (!alphabet.radar.target.initialized) return;
+        if (!((Radar) alphabet.componentCore.getComponent("Radar")).target.initialized) return;
         double bulletPower = alphabet.getFirePower();
-        double absBearing  = alphabet.getHeadingRadians() + alphabet.radar.target.bearingRadians;//TODO: Change radar access
+        double absBearing  = alphabet.getHeadingRadians() + ((Radar) alphabet.componentCore.getComponent("Radar")).target.bearingRadians;
 
         TrackedBullet guessFactorBullet = new TrackedBullet();
         guessFactorBullet.fireTime      = alphabet.getTime();
@@ -114,19 +108,16 @@ public class VirtualGunManager extends Component {
         patternGunV2.parentGun = alphabet.GUN_PATTERN_V2;
 
         //Do the bullet calculations (They are relative at first)
-        //TODO: Change radar access
         guessFactorBullet.absFireRadians = ((GuessFactorGun) alphabet.componentCore.getComponent("GuessFactorGun")).doGuessFactorGun(absBearing, bulletPower) + absBearing;
-        //TODO: Change radar access
-        linearBullet.absFireRadians      = ((LinearGun) alphabet.componentCore.getComponent("LinearGun")).doLinearGun(alphabet.radar.target.lastScan, bulletPower) + absBearing;
-        //TODO: Change radar access
-        Point2D.Double location = ((PatternMatchGun) alphabet.componentCore.getComponent("PatternMatchGun")).doPatternGun(alphabet.radar.target.lastScan, bulletPower);
+        linearBullet.absFireRadians      = ((LinearGun) alphabet.componentCore.getComponent("LinearGun")).doLinearGun(((Radar) alphabet.componentCore.getComponent("Radar")).target.lastScan, bulletPower) + absBearing;
+        
+        Point2D.Double location = ((PatternMatchGun) alphabet.componentCore.getComponent("PatternMatchGun")).doPatternGun(((Radar) alphabet.componentCore.getComponent("Radar")).target.lastScan, bulletPower);
         patternGun.absFireRadians = MathUtils.absoluteBearing(alphabet.myLocation, location);
         
-        //TODO: Change radar access
-        Point2D.Double headOnLocation = ((HeadOnGun) alphabet.componentCore.getComponent("HeadOnGun")).doHeadOnGun(alphabet.radar.target, bulletPower);
+        Point2D.Double headOnLocation = ((HeadOnGun) alphabet.componentCore.getComponent("HeadOnGun")).doHeadOnGun(((Radar) alphabet.componentCore.getComponent("Radar")).target, bulletPower);
         headOnGun.absFireRadians = MathUtils.absoluteBearing(alphabet.myLocation, headOnLocation);
-        //TODO: Change radar access
-        patternGunV2.absFireRadians = ((PatternGunV2) alphabet.componentCore.getComponent("PatternGunV2")).doPatternGunV2(alphabet.radar.target.lastScan, bulletPower);
+        
+        patternGunV2.absFireRadians = ((PatternGunV2) alphabet.componentCore.getComponent("PatternGunV2")).doPatternGunV2(((Radar) alphabet.componentCore.getComponent("Radar")).target.lastScan, bulletPower);
 
         //Add the bullets to the list
         bullets.add(patternGun); bullets.add(linearBullet); bullets.add(guessFactorBullet); 

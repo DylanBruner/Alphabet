@@ -74,8 +74,7 @@ public class MeleeRobot extends Component {
 
 		// Use pattern match v2 gun now
 		double bulletPower = Math.min(Math.min(myEnergy/6d, 1300d/distanceToTarget), target.energy/3d);
-		//TODO: Change radar access
-		Enemy enemy = alphabet.radar.enemies.get(target.name);
+		Enemy enemy = ((Radar) alphabet.componentCore.getComponent("Radar")).enemies.get(target.name);
 
 		if (enemy != null && enemy.initialized && enemy.lastScan != null){
 			PatternGunV2 patternGun = (PatternGunV2) alphabet.componentCore.getComponent("PatternGunV2");

@@ -16,8 +16,7 @@ public class HeadOnGun extends Component {
     }
 
     public void onScannedRobot(ScannedRobotEvent e){
-        //TODO: Change radar access
-        Enemy enemy = alphabet.radar.enemies.get(e.getName());
+        Enemy enemy = ((Radar) alphabet.componentCore.getComponent("Radar")).enemies.get(e.getName());
         if (enemy == null || !enemy.initialized) return;
 
         double bulletPower = alphabet.getFirePower();

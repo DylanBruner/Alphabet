@@ -48,8 +48,7 @@ public class ShadowGun extends Component {
     }
 
     public Enemy getBestTarget(){
-        //TODO: Change radar access
-        if (alphabet.radar.enemies.size() == 0) {logger.log("No enemies"); return null; }
+        if (((Radar) alphabet.componentCore.getComponent("Radar")).enemies.size() == 0) {logger.log("No enemies"); return null; }
         //First lets make a hashtable of weights
         Hashtable<String, Double> weights = new Hashtable<String, Double>();
 
@@ -57,16 +56,14 @@ public class ShadowGun extends Component {
         //First lets add weight based on "swarm targeting" aka how many bots are around said bot
         //This is probably the most computationaly expensive part, turns out java is nothing like 
         //python and it takes 0ms with 5 bots
-        //TODO: Change radar access
-        for (Enemy enemy : alphabet.radar.enemies.values()) {
+        for (Enemy enemy : ((Radar) alphabet.componentCore.getComponent("Radar")).enemies.values()) {
             if (enemy == null || !enemy.initialized) continue;
             if (enemy.name.equals(alphabet.getName())) continue; //We dont want to compare the bot to itself
             if (!enemy.alive) continue;
             double strength = 0;//Each bots distance gets translated into a "strength" which will be added to the robots weight
             
             //I really cant think of a better way to do this
-            //TODO: Change radar access
-            for (Enemy e2 : alphabet.radar.enemies.values()) {
+            for (Enemy e2 : ((Radar) alphabet.componentCore.getComponent("Radar")).enemies.values()) {
                 if (e2.name.equals(enemy.name)) continue; //We dont want to compare the bot to itself
                 if (!enemy.alive) continue;
                 if (enemy == null || !enemy.initialized) continue;
@@ -93,8 +90,10 @@ public class ShadowGun extends Component {
         for (String name : weights.keySet()) {
             if (weights.get(name) > bestWeight) {
                 //Check if any robots are between us and the target
-                //TODO: Change radar access
-                if (alphabet.radar.hasLineOfSight(alphabet.radar.enemies.get(name)) && alphabet.radar.enemies.get(name).alive) {
+                if (((Radar) alphabet.componentCore.getComponent("Radar")).hasLineOfSight(((Radar) 
+                    alphabet.componentCore.getComponent("Radar")).enemies.get(name)) && 
+                    ((Radar) alphabet.componentCore.getComponent("Radar")).enemies.get(name).alive) {
+                    
                     bestBot = name;
                     bestWeight = weights.get(name);
                 }
@@ -104,7 +103,6 @@ public class ShadowGun extends Component {
         if (bestBot == null) return null;
 
         //We could just return a point or something but this way it's more modular
-        //TODO: Change radar access
-        return alphabet.radar.enemies.get(bestBot);
+        return ((Radar) alphabet.componentCore.getComponent("Radar")).enemies.get(bestBot);
     }
 }

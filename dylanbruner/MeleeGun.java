@@ -43,9 +43,8 @@ public class MeleeGun extends Component {
         //Set target
         fireAt = shadowGun.getBestTarget();
         if (fireAt != null) {
-            //TODO: Change radar access
-            if (alphabet.radar.manualRadarLockName != fireAt.name){
-                alphabet.radar.setRadarLock(fireAt.name);
+            if (((Radar) alphabet.componentCore.getComponent("Radar")).manualRadarLockName != fireAt.name){
+                ((Radar) alphabet.componentCore.getComponent("Radar")).setRadarLock(fireAt.name);
                 lockSetTime = alphabet.getTime();
             }
         }

@@ -26,8 +26,7 @@ public class GuessFactorGun extends Component {
         double absBearing = e.getBearingRadians() + alphabet.getHeadingRadians();
         long time = alphabet.getTime();
 
-        //TODO: Change radar access
-        Enemy target = alphabet.radar.target; //For readability
+        Enemy target = ((Radar) alphabet.componentCore.getComponent("Radar")).target; //For readability
 
         for (int i=0; i < waves.size(); i++){
             WaveBullet currentWave = waves.get(i);
@@ -76,8 +75,7 @@ public class GuessFactorGun extends Component {
 
         long time = alphabet.getTime();
         //Return the angle we should turn the gun
-        //TODO: Change radar access
-        int[] currentStats = stats[(int)(alphabet.radar.target.distance / 200)];
+        int[] currentStats = stats[(int)(((Radar) alphabet.componentCore.getComponent("Radar")).target.distance / 200)];
         WaveBullet newWave = new WaveBullet(alphabet.myLocation, absBearing, power, direction, time, currentStats);
 
         //Fire the bullet
