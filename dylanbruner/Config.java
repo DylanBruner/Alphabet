@@ -12,6 +12,7 @@ public class Config {
     public static final boolean DRAW_MOUSE_COORDS      = true;
     public static final boolean DRAW_SHADOW_GUN_DATA   = false; //Draw targeting data for the shadow gun
     public static final boolean DRAW_LINE_OF_SIGHT     = false; //Draw a line from the robot to any robots it can see
+    public static final boolean HIGHLIGHT_SELF         = true; //Draw a circle around the robot
 
     //Fun
     public static final boolean USE_MIRROR_MODE = true;//If we are gauranteed to win, we can use mirror mode to make the fight more interesting

@@ -1,7 +1,7 @@
 import os, shutil, hashlib
 
 BASE_COMMAND   = 'javac -classpath libs/*; -d bin -sourcepath dylanbruner dylanbruner/Alphabet.java dylanbruner/*.java'
-ROBO_CLASS_DIR = 'C:\\robocode\\robots\\Alphabet'
+ROBO_CLASS_DIR = 'C:\\robocode\\robots\\dylanbruner'
 if not os.path.exists(ROBO_CLASS_DIR): os.mkdir(ROBO_CLASS_DIR)
 
 def getFileHash(filename):

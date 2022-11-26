@@ -10,6 +10,11 @@ public class Painting extends Component {
     Point2D.Double mouseLocation = new Point2D.Double(0, 0);
     
     public void onPaint(java.awt.Graphics2D g){
+        if (Config.HIGHLIGHT_SELF){
+            g.setColor(java.awt.Color.red);
+            g.drawOval((int)(alphabet.myLocation.x - 18), (int)(alphabet.myLocation.y - 18), 36, 36);
+        }
+
         //Draw the tracked virtual bullets
         if (Config.DRAW_VIRTUAL_BULLETS){
             for (TrackedBullet bullet : ((VirtualGunManager) alphabet.componentCore.getComponent("VirtualGunManager")).bullets){
