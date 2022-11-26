@@ -76,7 +76,7 @@ public class Alphabet extends AdvancedRobot {
 			return alphabet.movementMode == alphabet.MOVEMENT_MELEE;
 		});
 
-		//Surfing movement (lots of events)
+		//Surfing movement (lots of events), this could definitely be cleaned up [TODO]
 		componentCore.setEventConditional("SurfMovement", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
 			return alphabet.movementMode == alphabet.MOVEMENT_SURFING;
 		});
