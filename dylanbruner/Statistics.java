@@ -21,8 +21,9 @@ public class Statistics extends Component {
         logger.log("Shots Hit/M: " + counter_shotsHit+"/"+counter_shotsMissed+" ("+((double)counter_shotsHit/(double)(counter_shotsHit+counter_shotsMissed))*100+"%)");
         logger.log("Turns Skipped: " + counter_turnsSkipped);
         logger.log("Uncaught Exceptions: " + counter_uncaughtExceptions);
+        logger.log("Rounds Won: " + counter_roundsWon+"/"+counter_roundNumber);
     }
 
     public void onRoundEnded(RoundEndedEvent e){counter_roundNumber++;}
-    public void onWin(WinEvent e){counter_roundsWon++; counter_roundNumber++;}
+    public void onWin(WinEvent e){counter_roundsWon++;}
 }
