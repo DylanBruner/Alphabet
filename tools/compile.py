@@ -10,7 +10,9 @@ def getFileHash(filename):
         return hashlib.md5(f.read()).hexdigest()
 
 print('[INFO] Compiling...')
-os.system(BASE_COMMAND)
+if os.system(BASE_COMMAND) != 0:
+    print('[ERROR] Compilation failed!'); exit(1)
+    
 print('[INFO] Moving output to correct locations...')
 
 copiedFiles, skippedFiles = 0, 0

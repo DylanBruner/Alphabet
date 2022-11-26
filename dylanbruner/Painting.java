@@ -11,8 +11,10 @@ public class Painting extends Component {
     
     public void onPaint(java.awt.Graphics2D g){
         if (Config.HIGHLIGHT_SELF){
-            g.setColor(java.awt.Color.red);
-            g.drawOval((int)(alphabet.myLocation.x - 18), (int)(alphabet.myLocation.y - 18), 36, 36);
+            //Draw a transparent green circle around the robot
+            g.setColor(new java.awt.Color(0, 255, 0, 75));
+            //65 pixels is the radius of the robot
+            g.fillOval((int)(alphabet.myLocation.getX() - 65), (int)(alphabet.myLocation.getY() - 65), 130, 130);
         }
 
         //Draw the tracked virtual bullets
