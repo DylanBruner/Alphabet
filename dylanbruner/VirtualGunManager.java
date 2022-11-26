@@ -128,7 +128,9 @@ public class VirtualGunManager extends Component {
         Hashtable<Integer, Integer> targetStats = gunStats.get(e.getName());
         if (targetStats != null){
             //Log gun stats like this: LinearGun: 10, GuessFactorGun: 5, PatternGun: 3, HeadOnGun: 2
-            System.out.println("LinearGun: " + targetStats.get(alphabet.GUN_LINEAR) + ", GuessFactorGun: " + targetStats.get(alphabet.GUN_GUESS_FACTOR) + ", PatternGun: " + targetStats.get(alphabet.GUN_PATTERN) + ", HeadOnGun: " + targetStats.get(alphabet.GUN_HEAD_ON)+ ", PatternGunV2: " + targetStats.get(alphabet.GUN_PATTERN_V2));
+            if (Config.LOG_STATS_ON_KILL){
+                logger.log("LinearGun: " + targetStats.get(alphabet.GUN_LINEAR) + ", GuessFactorGun: " + targetStats.get(alphabet.GUN_GUESS_FACTOR) + ", PatternGun: " + targetStats.get(alphabet.GUN_PATTERN) + ", HeadOnGun: " + targetStats.get(alphabet.GUN_HEAD_ON)+ ", PatternGunV2: " + targetStats.get(alphabet.GUN_PATTERN_V2));
+            }
         }
     }
 }
