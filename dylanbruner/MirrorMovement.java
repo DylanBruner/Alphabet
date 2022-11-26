@@ -12,11 +12,11 @@ import robocode.util.Utils;
 public class MirrorMovement extends Component {
     AlphabetLogger logger = new AlphabetLogger("MirrorMovement");
 
-    private static final int MIRROR_RELATIVE                = 0;
-    private static final int MIRROR_PERPENDICULAR           = 1;
-    private static final int COORDINATE_MOVEMENT_VERTICAL   = 2;
-    private static final int COORDINATE_MOVEMENT_HORIZONTAL = 3;
-    private static final int COORDINATE_MOVEMENT_CENTER     = 4;
+    private static final int MIRROR_RELATIVE                = 0; //Just copy the enemy's movement
+    private static final int MIRROR_PERPENDICULAR           = 1; //Should circle around the enemy
+    private static final int COORDINATE_MOVEMENT_VERTICAL   = 2; //Mirror location on the y axis
+    private static final int COORDINATE_MOVEMENT_HORIZONTAL = 3; //Mirror location on the x axis
+    private static final int COORDINATE_MOVEMENT_CENTER     = 4; //Mirror location on the center of the field
     private int mirrorMode = MIRROR_PERPENDICULAR;
     
     public void execute(){
