@@ -22,7 +22,8 @@ public class Alphabet extends AdvancedRobot {
 	public final int MOVEMENT_MELEE   = 1;
 	public int movementMode = -1;
 	public boolean forceDisableAutoMovement = false;
-	public boolean useMirorMovement = false;
+	public boolean useMirorMovement = false; //When i figure out how scoring works I'll probably make this a thing [TODO]
+											 //For example if i've won 2/3 games and i dont need to win the third i'll turn this on
 
 	//Auto gun
 	public final int GUN_GUESS_FACTOR = 0;

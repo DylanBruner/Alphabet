@@ -1,8 +1,6 @@
 package dylanbruner;
 
-import robocode.*;
 import robocode.util.Utils;
-import java.awt.geom.*;
 
 /*
  * Not sure if im even going to implement this it's kinda just a reminder
@@ -76,12 +74,5 @@ public class MirrorMovement extends Component {
         } else {
             alphabet.setBack(distance);
         }
-    }
-
-    private double wallSmoothing(double angle) {
-        while (!MathUtils.fieldBox.contains(MathUtils.project(alphabet.myLocation, angle, 160))) {
-            angle += (angle < 0) ? 0.1 : -0.1;
-        }
-        return angle;
     }
 }
