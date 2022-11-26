@@ -2,6 +2,7 @@ package dylanbruner;
 
 import robocode.*;
 import java.awt.geom.*;
+import java.util.function.Function;
 import java.awt.event.MouseEvent;
 
 /*
@@ -78,19 +79,11 @@ public class Alphabet extends AdvancedRobot {
 			return alphabet.movementMode == alphabet.MOVEMENT_MELEE && !alphabet.useMirorMovement;
 		});
 
-		//Surfing movement (lots of events), this could definitely be cleaned up [TODO]
-		componentCore.setEventConditional("SurfMovement", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.movementMode == alphabet.MOVEMENT_SURFING && !alphabet.useMirorMovement;
-		});
-		componentCore.setEventConditional("SurfMovement", componentCore.ON_HIT_BY_BULLET, (Alphabet alphabet) -> {
-			return alphabet.movementMode == alphabet.MOVEMENT_SURFING && !alphabet.useMirorMovement;
-		});
-		componentCore.setEventConditional("SurfMovement", componentCore.ON_BULLET_HIT, (Alphabet alphabet) -> {
-			return alphabet.movementMode == alphabet.MOVEMENT_SURFING && !alphabet.useMirorMovement;
-		});
-		componentCore.setEventConditional("SurfMovement", componentCore.ON_BULLET_HIT_BULLET, (Alphabet alphabet) -> {
-			return alphabet.movementMode == alphabet.MOVEMENT_SURFING && !alphabet.useMirorMovement;
-		});
+		Function<Alphabet, Boolean> surfingMovementConditional = (Alphabet alphabet) -> {return alphabet.movementMode == alphabet.MOVEMENT_SURFING && !alphabet.useMirorMovement;};
+		componentCore.setEventConditional("SurfMovement", componentCore.ON_SCANNED_ROBOT, surfingMovementConditional);
+		componentCore.setEventConditional("SurfMovement", componentCore.ON_HIT_BY_BULLET, surfingMovementConditional);
+		componentCore.setEventConditional("SurfMovement", componentCore.ON_BULLET_HIT, surfingMovementConditional);
+		componentCore.setEventConditional("SurfMovement", componentCore.ON_BULLET_HIT_BULLET, surfingMovementConditional);
 
 		//Mirror movement, this is mostly just a joke lol
 		componentCore.setEventConditional("MirrorMovement", componentCore.ON_EXECUTE, (Alphabet alphabet) -> {
