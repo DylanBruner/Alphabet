@@ -10,6 +10,8 @@ public class Statistics extends Component {
     public static int counter_shotsMissed        = 0;
     public static int counter_turnsSkipped       = 0;
     public static int counter_uncaughtExceptions = 0;
+    public static int counter_roundsWon          = 0;
+    public static int counter_roundNumber        = 0;
 
     public void onBulletHit(BulletHitEvent e) {counter_shotsHit++;}
     public void onBulletMissed(BulletMissedEvent e) {counter_shotsMissed++;}
@@ -20,4 +22,7 @@ public class Statistics extends Component {
         logger.log("Turns Skipped: " + counter_turnsSkipped);
         logger.log("Uncaught Exceptions: " + counter_uncaughtExceptions);
     }
+
+    public void onRoundEnded(RoundEndedEvent e){counter_roundNumber++;}
+    public void onWin(WinEvent e){counter_roundsWon++; counter_roundNumber++;}
 }
