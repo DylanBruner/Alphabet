@@ -22,6 +22,7 @@ public class Alphabet extends AdvancedRobot {
 	public final int MOVEMENT_MELEE   = 1;
 	public int movementMode = -1;
 	public boolean forceDisableAutoMovement = false;
+	public boolean useMirorMovement = false;
 
 	//Auto gun
 	public final int GUN_GUESS_FACTOR = 0;
@@ -43,7 +44,7 @@ public class Alphabet extends AdvancedRobot {
 			new UhOhPreventer(), new VirtualGunManager(), new Statistics(),
 			new PatternGunV2(), new LinearGun(), new HeadOnGun(),
 			new GuessFactorGun(), new PatternMatchGun(), new MeleeRobot(),
-			new SurfMovement(), new VirtualLeaderboard()
+			new SurfMovement(), new VirtualLeaderboard(), new MirrorMovement()
 		});
 
 		radar = (Radar) componentCore.getComponent("Radar");//Go to where i create the variable radar to see why I'm doing this
@@ -70,24 +71,29 @@ public class Alphabet extends AdvancedRobot {
 
 		//Melee movement
 		componentCore.setEventConditional("MeleeRobot", componentCore.ON_EXECUTE, (Alphabet alphabet) -> {
-			return alphabet.movementMode == alphabet.MOVEMENT_MELEE;
+			return alphabet.movementMode == alphabet.MOVEMENT_MELEE && !alphabet.useMirorMovement;
 		});
 		componentCore.setEventConditional("MeleeRobot", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.movementMode == alphabet.MOVEMENT_MELEE;
+			return alphabet.movementMode == alphabet.MOVEMENT_MELEE && !alphabet.useMirorMovement;
 		});
 
 		//Surfing movement (lots of events), this could definitely be cleaned up [TODO]
 		componentCore.setEventConditional("SurfMovement", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.movementMode == alphabet.MOVEMENT_SURFING;
+			return alphabet.movementMode == alphabet.MOVEMENT_SURFING && !alphabet.useMirorMovement;
 		});
 		componentCore.setEventConditional("SurfMovement", componentCore.ON_HIT_BY_BULLET, (Alphabet alphabet) -> {
-			return alphabet.movementMode == alphabet.MOVEMENT_SURFING;
+			return alphabet.movementMode == alphabet.MOVEMENT_SURFING && !alphabet.useMirorMovement;
 		});
 		componentCore.setEventConditional("SurfMovement", componentCore.ON_BULLET_HIT, (Alphabet alphabet) -> {
-			return alphabet.movementMode == alphabet.MOVEMENT_SURFING;
+			return alphabet.movementMode == alphabet.MOVEMENT_SURFING && !alphabet.useMirorMovement;
 		});
 		componentCore.setEventConditional("SurfMovement", componentCore.ON_BULLET_HIT_BULLET, (Alphabet alphabet) -> {
-			return alphabet.movementMode == alphabet.MOVEMENT_SURFING;
+			return alphabet.movementMode == alphabet.MOVEMENT_SURFING && !alphabet.useMirorMovement;
+		});
+
+		//Mirror movement, this is mostly just a joke lol
+		componentCore.setEventConditional("MirrorMovement", componentCore.ON_EXECUTE, (Alphabet alphabet) -> {
+			return alphabet.useMirorMovement;
 		});
 
 		//=======================================================[Robot]=======================================================
