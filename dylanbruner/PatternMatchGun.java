@@ -64,13 +64,15 @@ public class PatternMatchGun extends Component {
     }
 
     public Point2D.Double doPatternGun(ScannedRobotEvent e, double bulletPower){
+        //TODO: Change radar access
         if (alphabet.radar.target == null || !alphabet.radar.target.initialized){
             return estimateRobotLocation(e, bulletPower); //If pattern matching failed, use basic estimation math
         }
 
+        //TODO: Change radar access
         Enemy enemy = alphabet.radar.target;
         int snapshotsToUse = (int)(Math.abs(getAverageMovement(enemy) * MathUtils.bulletVelocity(bulletPower)));
-        ArrayList<EnemySnapshot> snapshots = alphabet.radar.target.snapshots;
+        ArrayList<EnemySnapshot> snapshots = alphabet.radar.target.snapshots;//TODO: Change radar access
 
         //Get the latest n snapshots to be used as the pattern
         ArrayList<EnemySnapshot> pattern = new ArrayList<EnemySnapshot>();

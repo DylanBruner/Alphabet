@@ -34,6 +34,7 @@ public class AntiGravity {
 
         //I know i should just loop through alphabet.radar.enemies later down but im lazy
         int index = 0;
+        //TODO: Change radar access
         for (Enemy enemy : alphabet.radar.enemies.values()) {
             enemyPoints[index] = enemy.location;
             index++;

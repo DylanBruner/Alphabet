@@ -28,8 +28,10 @@ public class Painting extends Component {
 
         //Draw a box around target
         if (Config.DRAW_BOX_AROUND_TARGET){
+            //TODO: Change radar access
             if (alphabet.radar.target.initialized){
                 g.setColor(java.awt.Color.GREEN);
+                //TODO: Change radar access
                 g.drawRect((int)alphabet.radar.target.location.x-40, (int)alphabet.radar.target.location.y-40, 40, 40);
             }
         }
@@ -52,6 +54,7 @@ public class Painting extends Component {
                     } else {
                         g.setColor(java.awt.Color.WHITE);
                     }
+                    //TODO: Change radar access
                     g.drawRect((int)alphabet.radar.enemies.get(robotName).location.x-40, (int)alphabet.radar.enemies.get(robotName).location.y-40, 40, 40);
                     g.drawString("" + placement, (int)alphabet.radar.enemies.get(robotName).location.x-40, (int)alphabet.radar.enemies.get(robotName).location.y-40);
                 } else {
@@ -62,7 +65,9 @@ public class Painting extends Component {
 
         if (Config.DRAW_LINE_OF_SIGHT){
             g.setColor(java.awt.Color.WHITE);
+            //TODO: Change radar access
             for (Enemy enemy : alphabet.radar.enemies.values()){
+                //TODO: Change radar access
                 if (alphabet.radar.hasLineOfSight(enemy)){
                     g.drawLine((int)alphabet.myLocation.x, (int)alphabet.myLocation.y, (int)enemy.location.x, (int)enemy.location.y);
                 }
