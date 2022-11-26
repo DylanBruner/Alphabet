@@ -5,6 +5,8 @@ package dylanbruner;
  * doing a uh-oh. Like for some reason just sitting still and not
  * moving. (This really only affects wave surfing) 
  * 
+ * Allthough i think i fixed the problem that caused wave surfing to fail, 
+ * i'm still going to keep this in just in case.
 */
 
 import java.awt.geom.*;
