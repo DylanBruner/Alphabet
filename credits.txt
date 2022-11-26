@@ -13,6 +13,8 @@ Things that I implemented/thought of completly on my own are listed below
   - How it picks targets
   - Component system
   - The following python tools: filestats, package, compile, clean
+  - Shadow gun
+  - UhOhPreventer (No other decent robot would use this)
 
 
 Note: lots of the math was borrowed from the internet because math is hard and we haven't 
