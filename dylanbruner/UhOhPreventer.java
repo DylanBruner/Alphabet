@@ -19,7 +19,9 @@ public class UhOhPreventer extends Component {
     Point2D.Double lastLocation = new Point2D.Double(0, 0);
 
     public void execute() {
-        if (alphabet.myLocation.distance(lastLocation) == 0 && alphabet.getTime() - lastMoveTime > Config.uhOhTriggerTime && lastEngery != alphabet.getEnergy() && alphabet.getOthers() >= 1) {
+        if (alphabet.myLocation.distance(lastLocation) == 0 && alphabet.getTime() - lastMoveTime > Config.uhOhTriggerTime 
+            && lastEngery != alphabet.getEnergy() && alphabet.getOthers() >= 1) {
+                
             lastMoveTime = alphabet.getTime();
             if (alphabet.movementMode == alphabet.MOVEMENT_SURFING) {
                 alphabet.movementMode = alphabet.MOVEMENT_MELEE;
