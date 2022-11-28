@@ -1,7 +1,5 @@
 import zipfile, os
 
-#FIXME: This definitely doesn't work with the new file structure
-
 print("=====================================[Compiling]=====================================")
 os.system('python tools/compile.py')
 print("=====================================[Packaging]=====================================")
@@ -22,15 +20,22 @@ OUTPUT_FILE = f"bin/package/{CLASS_NAME}_{VERSION}.jar"
 print(f"Output file: {OUTPUT_FILE}")
 if os.path.exists(OUTPUT_FILE) and input("File already exists. Overwrite? (y/n): ").lower().strip() != "y": print("Exiting..."); exit()
 
+def copyFolderRecursively2zip(zipFile, folder, root):
+    for file in os.listdir(folder):
+        if os.path.isdir(os.path.join(folder, file)):
+            copyFolderRecursively2zip(zipFile, os.path.join(folder, file), os.path.join(root, file))
+        else:
+            zipFile.write(os.path.join(folder, file), os.path.join(root, file))
+
+
 print("Writing...")
 with zipfile.ZipFile(OUTPUT_FILE, "w") as jar:
     try:
         #Write a new file to /META-INF/MANIFEST.MF
         jar.writestr("META-INF/MANIFEST.MF", f"Manifest-Version: 1.0\nrobots: {CLASS_NAME}")
         print(f"[INFO] Wrote manifest")
-        #Copy all files from /bin/{CLASS_NAME.split(".")[0]} to {CLASS_NAME.split(".")[0]}
-        for file in os.listdir(f"bin/{CLASS_NAME.split('.')[0]}"):
-            jar.write(f"bin/{CLASS_NAME.split('.')[0]}/{file}", f"{CLASS_NAME.split('.')[0]}/{file}")
+        #Copy all files/folders from /bin/{CLASS_NAME.split(".")[0]} to {CLASS_NAME.split(".")[0]} recursively
+        copyFolderRecursively2zip(jar, f"bin/{CLASS_NAME.split('.')[0]}", CLASS_NAME.split(".")[0])
         print("[INFO] Wrote class files")
         #Write the properties file into {CLASS_NAME.split(".")[0]}/Alphabet.properties
         jar.write("Alphabet.properties", f"{CLASS_NAME.split('.')[0]}/Alphabet.properties")
