@@ -1,9 +1,17 @@
-package dylanbruner;
+package dylanbruner.data;
 
 import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
+import dylanbruner.gun.GuessFactorGun;
+import dylanbruner.gun.HeadOnGun;
+import dylanbruner.gun.LinearGun;
+import dylanbruner.gun.PatternGunV2;
+import dylanbruner.gun.PatternMatchGun;
+import dylanbruner.util.AlphabetLogger;
+import dylanbruner.util.Component;
+import dylanbruner.util.MathUtils;
 import robocode.RobotDeathEvent;
 
 /*
@@ -17,7 +25,7 @@ public class VirtualGunManager extends Component {
     AlphabetLogger logger = new AlphabetLogger("VirtualGunManager");
 
     //Virtual gun variables 'n stuff
-    ArrayList<TrackedBullet> bullets = new ArrayList<TrackedBullet>();
+    public ArrayList<TrackedBullet> bullets = new ArrayList<TrackedBullet>();
     //                     Name,              Gun,     Shots hit
     public static Hashtable<String, Hashtable<Integer, Integer>> gunStats = new Hashtable<String, Hashtable<Integer, Integer>>();
 

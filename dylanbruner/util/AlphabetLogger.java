@@ -1,4 +1,4 @@
-package dylanbruner;
+package dylanbruner.util;
 
 public class AlphabetLogger {
     String name;

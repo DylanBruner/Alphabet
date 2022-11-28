@@ -1,6 +1,10 @@
-package dylanbruner;
+package dylanbruner.data;
 
 import java.util.Hashtable;
+
+import dylanbruner.util.AlphabetLogger;
+import dylanbruner.util.Component;
+
 import java.awt.geom.*;
 
 import robocode.*;

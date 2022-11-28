@@ -1,6 +1,8 @@
-package dylanbruner;
+package dylanbruner.data;
 
 import java.awt.geom.*;
+
+import dylanbruner.Alphabet;
 
 public class TrackedBullet {
     Point2D.Double fireLocation;

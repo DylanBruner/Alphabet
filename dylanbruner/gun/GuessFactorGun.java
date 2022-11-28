@@ -1,10 +1,15 @@
-package dylanbruner;
+package dylanbruner.gun;
 
 import robocode.*;
 import robocode.util.Utils;
 
 import java.awt.geom.*;
 import java.util.ArrayList;
+
+import dylanbruner.data.Enemy;
+import dylanbruner.data.Radar;
+import dylanbruner.util.AlphabetLogger;
+import dylanbruner.util.Component;
 
 /*                           (I have a fairly good understanding of it now)
  * I dont really know how this gun works, i mean i have a rough idea but thats

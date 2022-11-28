@@ -1,0 +1,2 @@
+@echo OFF
+javac -classpath libs/*; -d bin -sourcepath dylanbruner dylanbruner/Alphabet.java dylanbruner/*.java dylanbruner/data/*.java dylanbruner/gun/*.java dylanbruner/move/*.java dylanbruner/util/*.java

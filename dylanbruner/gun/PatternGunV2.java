@@ -1,7 +1,9 @@
-package dylanbruner;
+package dylanbruner.gun;
 
 import java.util.Hashtable;
 
+import dylanbruner.util.AlphabetLogger;
+import dylanbruner.util.Component;
 import robocode.*;
 import robocode.util.Utils;
 /*

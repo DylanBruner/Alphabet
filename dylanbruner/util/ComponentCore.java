@@ -1,8 +1,12 @@
-package dylanbruner;
+package dylanbruner.util;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.function.Function;
+
+import dylanbruner.Alphabet;
+import dylanbruner.data.Statistics;
+
 import java.awt.event.MouseEvent;
 import robocode.*;
 

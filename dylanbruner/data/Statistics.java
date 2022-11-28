@@ -1,5 +1,8 @@
-package dylanbruner;
+package dylanbruner.data;
 
+import dylanbruner.Alphabet;
+import dylanbruner.util.AlphabetLogger;
+import dylanbruner.util.Component;
 import robocode.*;
 
 public class Statistics extends Component {

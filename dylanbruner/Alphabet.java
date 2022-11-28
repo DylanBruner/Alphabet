@@ -3,10 +3,27 @@ package dylanbruner;
 import robocode.*;
 import java.awt.geom.*;
 import java.util.function.Function;
-import java.awt.event.MouseEvent;
 
-//TODO: Seperate files into folders
-//I need to ask how I should compile this before I can do it
+import dylanbruner.data.Radar;
+import dylanbruner.data.Statistics;
+import dylanbruner.data.VirtualGunManager;
+import dylanbruner.data.VirtualLeaderboard;
+import dylanbruner.gun.GuessFactorGun;
+import dylanbruner.gun.HeadOnGun;
+import dylanbruner.gun.LinearGun;
+import dylanbruner.gun.PatternGunV2;
+import dylanbruner.gun.PatternMatchGun;
+import dylanbruner.move.MeleeRobot;
+import dylanbruner.move.MirrorMovement;
+import dylanbruner.move.SurfMovement;
+import dylanbruner.move.UhOhPreventer;
+import dylanbruner.util.AlphabetLogger;
+import dylanbruner.util.Component;
+import dylanbruner.util.ComponentCore;
+import dylanbruner.util.Painting;
+import dylanbruner.util.Themer;
+
+import java.awt.event.MouseEvent;
 
 /*
  * Overview: Moved to README.md 
@@ -14,7 +31,7 @@ import java.awt.event.MouseEvent;
 
 public class Alphabet extends AdvancedRobot {
 	AlphabetLogger logger       = new AlphabetLogger("Main");
-	ComponentCore componentCore = new ComponentCore(this);
+	public ComponentCore componentCore = new ComponentCore(this);
 
 	//Code ================================================================================================================
 	//Auto movement mode

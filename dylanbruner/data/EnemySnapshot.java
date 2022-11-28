@@ -1,11 +1,11 @@
-package dylanbruner;
+package dylanbruner.data;
 
 import java.awt.geom.*;
 import robocode.*;
 
 public class EnemySnapshot {
-    double bearing, distance, energy, heading, velocity;
-    Point2D.Double location;
+    public double bearing, distance, energy, heading, velocity;
+    public Point2D.Double location;
 
     EnemySnapshot (ScannedRobotEvent e, Point2D.Double myLocation){
         bearing  = e.getBearing();

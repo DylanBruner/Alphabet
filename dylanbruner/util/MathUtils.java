@@ -1,4 +1,4 @@
-package dylanbruner;
+package dylanbruner.util;
 
 import java.awt.geom.*;
 

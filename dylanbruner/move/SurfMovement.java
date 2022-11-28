@@ -1,10 +1,14 @@
-package dylanbruner;
+package dylanbruner.move;
 
 import robocode.*;
 import robocode.util.Utils;
 
 import java.awt.geom.*;
 import java.util.ArrayList;
+
+import dylanbruner.util.AlphabetLogger;
+import dylanbruner.util.Component;
+import dylanbruner.util.MathUtils;
 
 public class SurfMovement extends Component {
     AlphabetLogger logger = new AlphabetLogger("SurfMovement");

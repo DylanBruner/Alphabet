@@ -1,4 +1,4 @@
-package dylanbruner;
+package dylanbruner.move;
 
 /*
  * This does exactly what the name says. It prevents the robot from
@@ -10,6 +10,11 @@ package dylanbruner;
 */
 
 import java.awt.geom.*;
+
+import dylanbruner.data.Config;
+import dylanbruner.util.AlphabetLogger;
+import dylanbruner.util.Component;
+import dylanbruner.util.Themer;
 
 public class UhOhPreventer extends Component {
     AlphabetLogger logger = new AlphabetLogger("OhUhPreventer");

@@ -1,6 +1,11 @@
-package dylanbruner;
+package dylanbruner.gun;
 
 import java.util.Hashtable;
+
+import dylanbruner.data.Enemy;
+import dylanbruner.data.Radar;
+import dylanbruner.util.AlphabetLogger;
+import dylanbruner.util.Component;
 
 /*
  * This gun get's it's name because that's what everyone calls it lol
@@ -12,7 +17,7 @@ public class ShadowGun extends Component {
     AlphabetLogger logger = new AlphabetLogger("ShadowGun");
     
     //Code
-    Hashtable<String, Double> computedWeights = new Hashtable<String, Double>();//Used mostly for visual debugging right now
+    public Hashtable<String, Double> computedWeights = new Hashtable<String, Double>();//Used mostly for visual debugging right now
 
     public void execute(){ }//This might be used
 

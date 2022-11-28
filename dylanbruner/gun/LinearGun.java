@@ -1,9 +1,13 @@
-package dylanbruner;
+package dylanbruner.gun;
 
 import robocode.*;
 import robocode.util.Utils;
 
 import java.awt.geom.*;
+
+import dylanbruner.util.AlphabetLogger;
+import dylanbruner.util.Component;
+import dylanbruner.util.MathUtils;
 
 public class LinearGun extends Component {
     AlphabetLogger logger = new AlphabetLogger("LinearGun");

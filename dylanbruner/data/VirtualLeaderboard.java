@@ -1,6 +1,10 @@
-package dylanbruner;
+package dylanbruner.data;
 
 import java.util.ArrayList;
+
+import dylanbruner.util.AlphabetLogger;
+import dylanbruner.util.Component;
+import dylanbruner.util.MathUtils;
 import robocode.*;
 
 /*

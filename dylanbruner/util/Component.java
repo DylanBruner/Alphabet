@@ -1,11 +1,13 @@
-package dylanbruner;
+package dylanbruner.util;
 
 import robocode.*;
 import java.awt.event.MouseEvent;
 
+import dylanbruner.Alphabet;
+
 public class Component {
-    Alphabet alphabet;
-    AlphabetLogger logger;
+    public Alphabet alphabet;
+    public AlphabetLogger logger;
 
     public void init(Alphabet alphabet) {
         this.alphabet = alphabet; //The component shouldn't need to this manually

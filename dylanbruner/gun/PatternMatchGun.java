@@ -1,9 +1,16 @@
-package dylanbruner;
+package dylanbruner.gun;
 
 import robocode.*;
 import robocode.util.Utils;
 import java.awt.geom.*;
 import java.util.ArrayList;
+
+import dylanbruner.data.EnemySnapshot;
+import dylanbruner.data.Enemy;
+import dylanbruner.data.Radar;
+import dylanbruner.util.AlphabetLogger;
+import dylanbruner.util.Component;
+import dylanbruner.util.MathUtils;
 
 // import java.awt.geom.*;
 

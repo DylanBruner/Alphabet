@@ -1,6 +1,14 @@
-package dylanbruner;
+package dylanbruner.util;
 
 import java.awt.geom.*;
+
+import dylanbruner.data.Config;
+import dylanbruner.data.Enemy;
+import dylanbruner.data.Radar;
+import dylanbruner.data.TrackedBullet;
+import dylanbruner.data.VirtualGunManager;
+import dylanbruner.gun.ShadowGun;
+
 import java.awt.event.MouseEvent;
 
 public class Painting extends Component {

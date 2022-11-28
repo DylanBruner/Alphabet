@@ -1,9 +1,15 @@
-package dylanbruner;
+package dylanbruner.move;
 
 import robocode.*;
 import robocode.util.Utils;
 
 import java.awt.geom.*;
+
+import dylanbruner.Alphabet;
+import dylanbruner.data.Enemy;
+import dylanbruner.data.Radar;
+import dylanbruner.util.AlphabetLogger;
+import dylanbruner.util.MathUtils;
 
 /*
  * Not used currently. At the moment we use MeleeRobot.java & SurfMovement.java 

@@ -1,5 +1,6 @@
 import zipfile, os
 
+#FIXME: This definitely doesn't work with the new file structure
 
 print("=====================================[Compiling]=====================================")
 os.system('python tools/compile.py')

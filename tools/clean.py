@@ -1,8 +1,5 @@
-import os
+import os, shutil
 
-removedFiles = 0
-
-for file in os.listdir("bin/dylanbruner"):
-    if file.endswith(".class"): os.remove(os.path.join("bin/dylanbruner", file)); removedFiles += 1
-
-print("Cleaned " + str(removedFiles) + " files")
+if os.path.exists('bin/dylanbruner'): shutil.rmtree('bin/dylanbruner')
+os.mkdir('bin/dylanbruner')
+print('[INFO] Cleaned bin/dylanbruner')

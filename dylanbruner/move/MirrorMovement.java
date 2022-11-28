@@ -1,5 +1,9 @@
-package dylanbruner;
+package dylanbruner.move;
 
+import dylanbruner.data.Enemy;
+import dylanbruner.data.Radar;
+import dylanbruner.util.AlphabetLogger;
+import dylanbruner.util.Component;
 import robocode.util.Utils;
 
 /*

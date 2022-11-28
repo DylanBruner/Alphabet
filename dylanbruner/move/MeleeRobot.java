@@ -1,8 +1,16 @@
-package dylanbruner;
+package dylanbruner.move;
 
 import robocode.*;
 import robocode.util.Utils;
 import java.util.Hashtable;
+
+import dylanbruner.data.Enemy;
+import dylanbruner.data.Radar;
+import dylanbruner.gun.PatternGunV2;
+import dylanbruner.util.AlphabetLogger;
+import dylanbruner.util.Component;
+import dylanbruner.util.MathUtils;
+
 import java.awt.geom.Point2D;
 
 /*

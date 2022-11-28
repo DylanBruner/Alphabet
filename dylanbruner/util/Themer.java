@@ -1,6 +1,9 @@
-package dylanbruner;
+package dylanbruner.util;
 
 import java.awt.Color;
+
+import dylanbruner.Alphabet;
+import dylanbruner.data.VirtualLeaderboard;
 
 //The most unnecessary class in this entire robot
 
@@ -12,7 +15,7 @@ public class Themer extends Component {
     Color tomatoRed = new Color(255, 99, 71);
 
     //Variables
-    boolean flashing  = false;
+    public boolean flashing  = false;
     boolean lastFlash = false;
 
     public final Color[][] BASE_THEMES = {

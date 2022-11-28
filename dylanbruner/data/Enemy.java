@@ -1,18 +1,19 @@
-package dylanbruner;
+package dylanbruner.data;
 
 import java.awt.geom.*;
 import java.util.ArrayList;
 
+import dylanbruner.Alphabet;
 import robocode.ScannedRobotEvent;
 
 
 //Yeah I know this is a really convoluted way of doing this but It's also the easiest
 public class Enemy {
-    String name;
-    double bearing, distance, energy, heading, velocity, lastVelocity, lastDistance, absBearing, bearingRadians, absBearingRadians;
-    Point2D.Double location, lastLocation;
-    ScannedRobotEvent lastScan;
-    long lastHitTime = 0;
+    public String name;
+    public double bearing, distance, energy, heading, velocity, lastVelocity, lastDistance, absBearing, bearingRadians, absBearingRadians;
+    public Point2D.Double location, lastLocation;
+    public ScannedRobotEvent lastScan;
+    public long lastHitTime = 0;
 
     //Data gathering
     public ArrayList<EnemySnapshot> snapshots = new ArrayList<EnemySnapshot>();
@@ -22,8 +23,8 @@ public class Enemy {
     public int tracker_guessFactorGun = 0;
     public int tracker_patternGun     = 0; 
 
-    boolean alive = true;
-    boolean initialized = false;
+    public boolean alive = true;
+    public boolean initialized = false;
 
     public boolean isIdle(){
         //check the last 20 snapshots (or less if we don't have that many)

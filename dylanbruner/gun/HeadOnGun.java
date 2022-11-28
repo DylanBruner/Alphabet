@@ -1,8 +1,14 @@
-package dylanbruner;
+package dylanbruner.gun;
 
 import robocode.ScannedRobotEvent;
 import robocode.util.Utils;
 import java.awt.geom.*;
+
+import dylanbruner.data.Enemy;
+import dylanbruner.data.Radar;
+import dylanbruner.util.AlphabetLogger;
+import dylanbruner.util.Component;
+import dylanbruner.util.MathUtils;
 
 public class HeadOnGun extends Component {
     AlphabetLogger logger = new AlphabetLogger("HeadOnGun");
