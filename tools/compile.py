@@ -19,4 +19,3 @@ copiedFiles, skippedFiles = 0, 0
 
 if os.path.exists('bin/dylanbruner'): shutil.rmtree(ROBO_CLASS_DIR)
 shutil.copytree('bin/dylanbruner', ROBO_CLASS_DIR)
-print(f"[INFO] Copied {copiedFiles} files, skipped {skippedFiles} files.")
