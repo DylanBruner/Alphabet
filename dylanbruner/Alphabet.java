@@ -30,7 +30,7 @@ import dylanbruner.util.Themer;
 */
 
 public class Alphabet extends AdvancedRobot {
-	AlphabetLogger logger       = new AlphabetLogger("Main");
+	AlphabetLogger logger              = new AlphabetLogger("Main");
 	public ComponentCore componentCore = new ComponentCore(this);
 
 	//Code ================================================================================================================
