@@ -3,6 +3,7 @@ package dylanbruner;
 import robocode.*;
 import java.awt.geom.*;
 import java.util.function.Function;
+import java.awt.event.MouseEvent;
 
 import dylanbruner.data.Radar;
 import dylanbruner.data.Statistics;
@@ -23,7 +24,6 @@ import dylanbruner.util.ComponentCore;
 import dylanbruner.util.Painting;
 import dylanbruner.util.Themer;
 
-import java.awt.event.MouseEvent;
 
 /*
  * Overview: Moved to README.md 
@@ -64,6 +64,7 @@ public class Alphabet extends AdvancedRobot {
 			new GuessFactorGun(), new PatternMatchGun(), new MeleeRobot(),
 			new SurfMovement(), new VirtualLeaderboard(), new MirrorMovement()
 		});
+
 
 		//Shooting =======================================================
 
