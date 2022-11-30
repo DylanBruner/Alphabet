@@ -26,11 +26,4 @@ public class TrackedBullet {
         return new Point2D.Double(fireLocation.x + Math.sin(absFireRadians) * bulletTravelDistance, 
                                   fireLocation.y + Math.cos(absFireRadians) * bulletTravelDistance);
     }
-
-    // TrackedBullet (Point2D.Double fireLocation, double absFireRadians, int parentGun){
-    //     this.fireLocation   = fireLocation;
-    //     this.absFireRadians = absFireRadians;
-    //     this.fireTime       = alphabet.getTime();
-    //     this.parentGun      = parentGun;
-    // }
 }
