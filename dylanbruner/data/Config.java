@@ -1,5 +1,4 @@
 package dylanbruner.data;
-
 public class Config {
     //Virtual Gun Config
     public static final int fireInterval          = 25;
@@ -18,13 +17,20 @@ public class Config {
     public static final boolean USE_MIRROR_MODE = true;//If we are gauranteed to win, we can use mirror mode to make the fight more interesting
                                                        //Currently this config value does nothing, it will be adjusted when I figure out how scoring
                                                        //TODO: Mirror Movement Toggling
-
     //Uh-Oh Preventer
     public static final int UHOH_TRIGGER_TIME = 100;
 
     //Radar
     public static final int MAX_SNAPSHOTS_PER_ENEMY         = 4000; //May have to be lowered if we start getting turn skips
     public static final boolean CLR_MAN_RADAR_LOCK_ON_SWTCH = true; //When we switch to 1v1 clear any manual radar lock
+
+    //Funny Stuff
+    //When in 1v1 we will try to only dodge robots in this list and not shoot them until were below n health or they are below n health 
+    public static final String[] DODGE_ME = {"travis"};
+    public static final int ABORT_DODGE_HEALTH = 50;
+    public static final int ABORT_DODGE_ENEMY_HEALTH = 10;
+    public static final int ABORT_AFTER_ROUNDS = 1;
+    public static final long ABORT_AFTER_TIME = 5000;//Idk what units this is in MS maybe
 
     //Game mode specific ============================================
     //[Melee]
