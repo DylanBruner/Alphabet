@@ -1,4 +1,5 @@
 package dylanbruner.data;
+
 public class Config {
     //Virtual Gun Config
     public static final int fireInterval          = 25;
