@@ -26,7 +26,7 @@ public class Config {
 
     //Funny Stuff
     //When in 1v1 we will try to only dodge robots in this list and not shoot them until were below n health or they are below n health 
-    public static final String[] DODGE_ME = {"travis"};
+    public static final String[] DODGE_ME = {"travis", "Sample"};
     public static final int ABORT_DODGE_HEALTH = 50;
     public static final int ABORT_DODGE_ENEMY_HEALTH = 10;
     public static final int ABORT_AFTER_ROUNDS = 1;
