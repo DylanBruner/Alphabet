@@ -21,7 +21,7 @@ public class MirrorMovement extends Component {
     private static final int COORDINATE_MOVEMENT_VERTICAL   = 2; //Mirror location on the y axis
     private static final int COORDINATE_MOVEMENT_HORIZONTAL = 3; //Mirror location on the x axis
     private static final int COORDINATE_MOVEMENT_CENTER     = 4; //Mirror location on the center of the field
-    private int mirrorMode = MIRROR_PERPENDICULAR;
+    private int mirrorMode = MIRROR_RELATIVE;
     
     public void execute(){
         Enemy target = ((Radar) alphabet.componentCore.getComponent("Radar")).target;

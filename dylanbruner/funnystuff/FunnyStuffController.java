@@ -28,8 +28,10 @@ public class FunnyStuffController extends Component {
             && shouldDodge() && alphabet.getRoundNum() < Config.ABORT_AFTER_ROUNDS && alphabet.getTime() < Config.ABORT_AFTER_TIME
             && !has_died){
             disable_guns = true;
+            // alphabet.useMirorMovement = true;
         } else {
             disable_guns = false;
+            alphabet.useMirorMovement = false;
         }
     }
 
