@@ -3,6 +3,7 @@ package dylanbruner;
 import robocode.*;
 import java.awt.geom.*;
 import java.util.function.Function;
+import java.awt.event.MouseEvent;
 
 import dylanbruner.data.Radar;
 import dylanbruner.data.Statistics;
@@ -22,15 +23,15 @@ import dylanbruner.util.Component;
 import dylanbruner.util.ComponentCore;
 import dylanbruner.util.Painting;
 import dylanbruner.util.Themer;
+import dylanbruner.funnystuff.FunnyStuffController;
 
-import java.awt.event.MouseEvent;
 
 /*
  * Overview: Moved to README.md 
 */
 
 public class Alphabet extends AdvancedRobot {
-	AlphabetLogger logger       = new AlphabetLogger("Main");
+	AlphabetLogger logger              = new AlphabetLogger("Main");
 	public ComponentCore componentCore = new ComponentCore(this);
 
 	//Code ================================================================================================================
@@ -62,25 +63,36 @@ public class Alphabet extends AdvancedRobot {
 			new UhOhPreventer(), new VirtualGunManager(), new Statistics(),
 			new PatternGunV2(), new LinearGun(), new HeadOnGun(),
 			new GuessFactorGun(), new PatternMatchGun(), new MeleeRobot(),
-			new SurfMovement(), new VirtualLeaderboard(), new MirrorMovement()
+			new SurfMovement(), new VirtualLeaderboard(), new MirrorMovement(),
+			new FunnyStuffController()
 		});
 
 		//Shooting =======================================================
 
 		componentCore.setEventConditional("PatternGunV2", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_PATTERN_V2 && alphabet.movementMode == alphabet.MOVEMENT_SURFING;
+			return alphabet.selectedGun == alphabet.GUN_PATTERN_V2 
+			       && alphabet.movementMode == alphabet.MOVEMENT_SURFING 
+				   && ((FunnyStuffController) componentCore.getComponent("FunnyStuffController")).disable_guns == false;
 		});
 		componentCore.setEventConditional("LinearGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_LINEAR && alphabet.movementMode == alphabet.MOVEMENT_SURFING;
+			return alphabet.selectedGun == alphabet.GUN_LINEAR 
+			       && alphabet.movementMode == alphabet.MOVEMENT_SURFING
+				   && ((FunnyStuffController) componentCore.getComponent("FunnyStuffController")).disable_guns == false;
 		});
 		componentCore.setEventConditional("HeadOnGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_HEAD_ON && alphabet.movementMode == alphabet.MOVEMENT_SURFING;
+			return alphabet.selectedGun == alphabet.GUN_HEAD_ON 
+			       && alphabet.movementMode == alphabet.MOVEMENT_SURFING
+				   && ((FunnyStuffController) componentCore.getComponent("FunnyStuffController")).disable_guns == false;
 		});
 		componentCore.setEventConditional("GuessFactorGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_GUESS_FACTOR && alphabet.movementMode == alphabet.MOVEMENT_SURFING;
+			return alphabet.selectedGun == alphabet.GUN_GUESS_FACTOR 
+			       && alphabet.movementMode == alphabet.MOVEMENT_SURFING
+				   && ((FunnyStuffController) componentCore.getComponent("FunnyStuffController")).disable_guns == false;
 		});
 		componentCore.setEventConditional("PatternMatchGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_PATTERN && alphabet.movementMode == alphabet.MOVEMENT_SURFING;
+			return alphabet.selectedGun == alphabet.GUN_PATTERN 
+			       && alphabet.movementMode == alphabet.MOVEMENT_SURFING
+				   && ((FunnyStuffController) componentCore.getComponent("FunnyStuffController")).disable_guns == false;
 		});
 
 		//Movement =======================================================

@@ -1,14 +1,14 @@
 package dylanbruner.data;
 
+import robocode.*;
+import robocode.util.Utils;
 import java.util.Hashtable;
+import java.awt.geom.*;
 
 import dylanbruner.util.AlphabetLogger;
 import dylanbruner.util.Component;
 
-import java.awt.geom.*;
 
-import robocode.*;
-import robocode.util.Utils;
 
 public class Radar extends Component {
     //Component stuff

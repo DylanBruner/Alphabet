@@ -47,7 +47,9 @@ public class ComponentCore {
     }
 
     public Component getComponent(String name) {
-        return componentLookup.get(name);
+        Component component = componentLookup.get(name);
+        if (component == null){logger.error("Component " + name + " does not exist");}
+        return component;
     }
 
     public void setEventConditional(String componentName, String eventName, Function<Alphabet, Boolean> conditional){
