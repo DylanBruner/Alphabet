@@ -78,5 +78,3 @@ public class PatternGunV2 extends Component {
         return absoluteBearing;
     }
 }
-
-//Tristan was here
