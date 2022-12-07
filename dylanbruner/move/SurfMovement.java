@@ -100,12 +100,20 @@ public class SurfMovement extends Component {
     public void doSurfing(ScannedRobotEvent e) {
         EnemyWave surfWave = getClosestSurfableWave();
 
-        if (surfWave == null) {return;}
+        //Keep moving even if there aren't currently any surfable waves
+        if (surfWave == null) {
+            double angle = MathUtils.absoluteBearing(myLocation, enemyLocation) + (Math.PI/1.5);
+            angle = MathUtils.wallSmoothing(myLocation, angle, -1);
+            setBackAsFront(alphabet, angle);
+            return;
+        }
+
+        // if (surfWave == null) {return;}
 
         double dangerLeft  = checkDanger(surfWave, -1);
         double dangerRight = checkDanger(surfWave, 1);
 
-        double goAngle = MathUtils.absoluteBearing(surfWave.fireLocation, myLocation);
+        double goAngle = MathUtils.absoluteBearing(surfWave.fireLocation, myLocation) * 1.25;
         if (dangerLeft < dangerRight) {
             goAngle = MathUtils.wallSmoothing(myLocation, goAngle - (Math.PI/2), -1);
         } else {
