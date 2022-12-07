@@ -147,6 +147,10 @@ public class MeleeRobot extends Component {
 			target = enemy;
 		}		
 	}
+
+	public void onHitRobot(HitRobotEvent e) {
+		//Reverse direction upon hitting a robot
+	}
 	
 	public void onRobotDeath(RobotDeathEvent e) {
 		//This event isn't blocked when in surfing mode so we might not of actually
