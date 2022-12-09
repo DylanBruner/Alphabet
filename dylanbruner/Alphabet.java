@@ -31,6 +31,12 @@ import dylanbruner.funnystuff.FunnyStuffController;
  * 
  * TODO: Segemented Wave Surfing
  * TODO: anti-bullet shielding gun
+ * 
+ * If we can't hit the robot when it's bullet shielding
+ * try to trick it into falling back into normal movement
+ * 
+ * Maybe we can ram the robot when it's bullet shielding, it's hard to tell if the robot
+ * will fall back into normal shooting if we don't do anything.
 */
 
 public class Alphabet extends AdvancedRobot {
