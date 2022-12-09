@@ -29,14 +29,14 @@ import dylanbruner.funnystuff.FunnyStuffController;
 /*
  * Overview: Moved to README.md
  * 
- * TODO: Segemented Wave Surfing
- * TODO: anti-bullet shielding gun
- *
  * His robot falls back into normal shooting if we don't do anything for like 250 ticks during the first round
  * NOTE: We only need to do this the first round
  * 
  * Changes i need/want to do:
  *   - SEGMENT WAVE SURVING, this is the number one thing i need to do
+ *     - Things to segment upon:
+ *        - Distance
+ *       
  *   - I could possibly trick his bot into falling back into normal surfing+shooting and then we switch to bullet shielding
  *   - I could also try to write a anti-wave surfing gun which should do well
  *   - Mirror Movement????
