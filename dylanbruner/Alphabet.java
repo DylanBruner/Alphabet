@@ -40,6 +40,8 @@ import dylanbruner.funnystuff.FunnyStuffController;
  *   - I could possibly trick his bot into falling back into normal surfing+shooting and then we switch to bullet shielding
  *   - I could also try to write a anti-wave surfing gun which should do well
  *   - Mirror Movement????
+ * 
+ * tests
 */
 
 public class Alphabet extends AdvancedRobot {
