@@ -17,6 +17,7 @@ public class ComponentCore {
     ArrayList<Component> components = new ArrayList<Component>();
     //Make a hashtable like this <String(componentName), <String(eventName), Function>>
     Hashtable<String, Hashtable<String, Function<Alphabet, Boolean>>> executionConditionals = new Hashtable<String, Hashtable<String, Function<Alphabet, Boolean>>>();
+    Hashtable<String, Boolean> disabled = new Hashtable<String, Boolean>();
 
     Hashtable<String, Component> componentLookup = new Hashtable<String, Component>();
 
@@ -52,6 +53,18 @@ public class ComponentCore {
         return component;
     }
 
+    public void setComponentState(String name, boolean state) {
+        disabled.put(name, !state);
+    }
+
+    public void unloadAll(){
+        logger.warn("Unloading all components!");
+        logger.warn("Unloading all components!");
+        logger.warn("Unloading all components!");
+        components.clear();
+        componentLookup.clear();
+    }
+
     public void setEventConditional(String componentName, String eventName, Function<Alphabet, Boolean> conditional){
         if (!executionConditionals.containsKey(componentName)){
             executionConditionals.put(componentName, new Hashtable<String, Function<Alphabet, Boolean>>());
@@ -78,6 +91,7 @@ public class ComponentCore {
     }
 
     private boolean shouldExecute(String componentName, String eventName){
+        if (disabled.containsKey(componentName) && disabled.get(componentName) == true){return false;}
         if (executionConditionals.containsKey(componentName)){
             if (executionConditionals.get(componentName).containsKey(eventName)){
                 return executionConditionals.get(componentName).get(eventName).apply(alphabet);

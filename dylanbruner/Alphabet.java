@@ -18,6 +18,7 @@ import dylanbruner.move.MeleeRobot;
 import dylanbruner.move.MirrorMovement;
 import dylanbruner.move.SurfMovement;
 import dylanbruner.move.UhOhPreventer;
+import dylanbruner.special.SpecialGandalf;
 import dylanbruner.util.AlphabetLogger;
 import dylanbruner.util.Component;
 import dylanbruner.util.ComponentCore;
@@ -63,7 +64,7 @@ public class Alphabet extends AdvancedRobot {
 	public final int GUN_PATTERN	  = 2;
 	public final int GUN_HEAD_ON	  = 3;
 	public final int GUN_PATTERN_V2   = 4;
-	public int selectedGun = -1;
+	public int selectedGun = GUN_PATTERN_V2;
 
 	//Other public variables
 	public Point2D.Double myLocation;
@@ -78,7 +79,7 @@ public class Alphabet extends AdvancedRobot {
 			new PatternGunV2(), new LinearGun(), new HeadOnGun(),
 			new GuessFactorGun(), new PatternMatchGun(), new MeleeRobot(),
 			new SurfMovement(), new VirtualLeaderboard(), new MirrorMovement(),
-			new FunnyStuffController()
+			new FunnyStuffController(), new SpecialGandalf()
 		});
 
 		//Shooting =======================================================
@@ -138,10 +139,6 @@ public class Alphabet extends AdvancedRobot {
 		
 		//Main
 		while (true){
-			if (getTime() > 250) {
-				selectedGun = GUN_PATTERN_V2;
-			}
-
 			myLocation = new Point2D.Double(getX(), getY());
 			componentCore.execute();
 			
@@ -162,9 +159,8 @@ public class Alphabet extends AdvancedRobot {
 
 	//Few helpers i need
 	public double getFirePower(){
-		return 0.1;
-		// if (((Radar) componentCore.getComponent("Radar")).target == null || !((Radar) componentCore.getComponent("Radar")).target.initialized){return 1;}
-		// return Math.min(400 / myLocation.distance(((Radar) componentCore.getComponent("Radar")).target.location), 3);
+		if (((Radar) componentCore.getComponent("Radar")).target == null || !((Radar) componentCore.getComponent("Radar")).target.initialized){return 1;}
+		return Math.min(400 / myLocation.distance(((Radar) componentCore.getComponent("Radar")).target.location), 3);
 	}
 
 	//Events 'n stuff
