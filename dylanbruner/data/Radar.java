@@ -27,12 +27,6 @@ public class Radar extends Component {
 
     public void execute(){
         if (disableManagement) return;
-        //If we are doing melee limit the max time we can lock onto an enemy
-        if ((radarLocked && alphabet.movementMode == alphabet.MOVEMENT_MELEE) && alphabet.getTime() - radarLockStarted > Config.MELEE_MAX_RADAR_LOCK_TIME){
-            radarLocked = false;
-            radarLockCooldown = true;
-            alphabet.setTurnRadarRight(360);
-        }
 
         if (!radarLocked && !radarLockCooldown){
             alphabet.setTurnRadarRight(Double.POSITIVE_INFINITY);
@@ -50,7 +44,7 @@ public class Radar extends Component {
     }
 
     public void onScannedRobot(ScannedRobotEvent e) {
-        if (Config.CLR_MAN_RADAR_LOCK_ON_SWTCH && alphabet.movementMode != alphabet.MOVEMENT_MELEE){
+        if (Config.CLR_MAN_RADAR_LOCK_ON_SWTCH){
             manualRadarLockName = null;
         }
 
@@ -81,16 +75,8 @@ public class Radar extends Component {
         }
         
         enemies.get(e.getName()).snapshots.add(new EnemySnapshot(e, alphabet.myLocation));
-        //Log amount of snapshots
-        //logger.log("Enemy " + e.getName() + " has " + enemies.get(e.getName()).snapshots.size() + " snapshots");
 
-        // Deciding which enemy to target
-        if (alphabet.movementMode == alphabet.MOVEMENT_SURFING){
-            //It's a easy choice, just target most recently scanned enemy
-            target = enemies.get(e.getName());
-        } else if (alphabet.movementMode == alphabet.MOVEMENT_MELEE && !radarLocked){
-            target = getOptimalMeleeTarget();
-        }
+        target = enemies.get(e.getName());
     }
 
     public void onHitByBullet(HitByBulletEvent e){

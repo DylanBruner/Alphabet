@@ -2,28 +2,12 @@ package dylanbruner;
 
 import robocode.*;
 import java.awt.geom.*;
-import java.util.function.Function;
 import java.awt.event.MouseEvent;
 
 import dylanbruner.data.Radar;
-import dylanbruner.data.Statistics;
-import dylanbruner.data.VirtualGunManager;
-import dylanbruner.data.VirtualLeaderboard;
-import dylanbruner.gun.GuessFactorGun;
-import dylanbruner.gun.HeadOnGun;
-import dylanbruner.gun.LinearGun;
-import dylanbruner.gun.PatternGunV2;
-import dylanbruner.gun.PatternMatchGun;
-import dylanbruner.move.MeleeRobot;
-import dylanbruner.move.MirrorMovement;
-import dylanbruner.move.SurfMovement;
-import dylanbruner.move.UhOhPreventer;
 import dylanbruner.util.AlphabetLogger;
 import dylanbruner.util.Component;
 import dylanbruner.util.ComponentCore;
-import dylanbruner.util.Painting;
-import dylanbruner.util.Themer;
-import dylanbruner.funnystuff.FunnyStuffController;
 
 
 /*
@@ -40,8 +24,6 @@ import dylanbruner.funnystuff.FunnyStuffController;
  *   - I could possibly trick his bot into falling back into normal surfing+shooting and then we switch to bullet shielding
  *   - I could also try to write a anti-wave surfing gun which should do well
  *   - Mirror Movement????
- * 
- * tests
 */
 
 public class Alphabet extends AdvancedRobot {
@@ -50,9 +32,6 @@ public class Alphabet extends AdvancedRobot {
 
 	//Code ================================================================================================================
 	//Auto movement mode
-	public final int MOVEMENT_SURFING = 0;
-	public final int MOVEMENT_MELEE   = 1;
-	public int movementMode = -1;
 	public boolean forceDisableAutoMovement = false;
 	public boolean useMirorMovement = false; //When i figure out how scoring works I'll probably make this a thing
 											 //For example if i've won 2/3 games and i dont need to win the third i'll turn this on
@@ -73,61 +52,7 @@ public class Alphabet extends AdvancedRobot {
 
 		//=======================================================[Components]=======================================================
 		componentCore.registerComponents(new Component[] {
-			new Radar(), new Painting(), new Themer(),
-			new UhOhPreventer(), new VirtualGunManager(), new Statistics(),
-			new PatternGunV2(), new LinearGun(), new HeadOnGun(),
-			new GuessFactorGun(), new PatternMatchGun(), new MeleeRobot(),
-			new SurfMovement(), new VirtualLeaderboard(), new MirrorMovement(),
-			new FunnyStuffController()
-		});
-
-		//Shooting =======================================================
-
-		componentCore.setEventConditional("PatternGunV2", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_PATTERN_V2 
-			       && alphabet.movementMode == alphabet.MOVEMENT_SURFING 
-				   && ((FunnyStuffController) componentCore.getComponent("FunnyStuffController")).disable_guns == false;
-		});
-		componentCore.setEventConditional("LinearGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_LINEAR 
-			       && alphabet.movementMode == alphabet.MOVEMENT_SURFING
-				   && ((FunnyStuffController) componentCore.getComponent("FunnyStuffController")).disable_guns == false;
-		});
-		componentCore.setEventConditional("HeadOnGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_HEAD_ON 
-			       && alphabet.movementMode == alphabet.MOVEMENT_SURFING
-				   && ((FunnyStuffController) componentCore.getComponent("FunnyStuffController")).disable_guns == false;
-		});
-		componentCore.setEventConditional("GuessFactorGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_GUESS_FACTOR 
-			       && alphabet.movementMode == alphabet.MOVEMENT_SURFING
-				   && ((FunnyStuffController) componentCore.getComponent("FunnyStuffController")).disable_guns == false;
-		});
-		componentCore.setEventConditional("PatternMatchGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_PATTERN 
-			       && alphabet.movementMode == alphabet.MOVEMENT_SURFING
-				   && ((FunnyStuffController) componentCore.getComponent("FunnyStuffController")).disable_guns == false;
-		});
-
-		//Movement =======================================================
-
-		//Melee movement
-		componentCore.setEventConditional("MeleeRobot", componentCore.ON_EXECUTE, (Alphabet alphabet) -> {
-			return alphabet.movementMode == alphabet.MOVEMENT_MELEE && !alphabet.useMirorMovement;
-		});
-		componentCore.setEventConditional("MeleeRobot", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.movementMode == alphabet.MOVEMENT_MELEE && !alphabet.useMirorMovement;
-		});
-
-		Function<Alphabet, Boolean> surfingMovementConditional = (Alphabet alphabet) -> {return alphabet.movementMode == alphabet.MOVEMENT_SURFING && !alphabet.useMirorMovement;};
-		componentCore.setEventConditional("SurfMovement", componentCore.ON_SCANNED_ROBOT, surfingMovementConditional);
-		componentCore.setEventConditional("SurfMovement", componentCore.ON_HIT_BY_BULLET, surfingMovementConditional);
-		componentCore.setEventConditional("SurfMovement", componentCore.ON_BULLET_HIT, surfingMovementConditional);
-		componentCore.setEventConditional("SurfMovement", componentCore.ON_BULLET_HIT_BULLET, surfingMovementConditional);
-
-		//Mirror movement, this is mostly just a joke lol
-		componentCore.setEventConditional("MirrorMovement", componentCore.ON_EXECUTE, (Alphabet alphabet) -> {
-			return alphabet.useMirorMovement;
+			new Radar()
 		});
 
 		//=======================================================[Robot]=======================================================
@@ -138,33 +63,11 @@ public class Alphabet extends AdvancedRobot {
 		
 		//Main
 		while (true){
-			if (getTime() > 250) {
-				selectedGun = GUN_PATTERN_V2;
-			}
-
 			myLocation = new Point2D.Double(getX(), getY());
-			componentCore.execute();
 			
-			if (!forceDisableAutoMovement) {//This is really only used by OhUhPreventer
-				if (getOthers() > 1 && movementMode != MOVEMENT_MELEE) {
-					logger.log("Switching to melee movement");
-					movementMode = MOVEMENT_MELEE;
-				} else if (getOthers() <= 1 && movementMode != MOVEMENT_SURFING) {
-					logger.log("Switching to surfing");
-					movementMode = MOVEMENT_SURFING;
-					((Radar) componentCore.getComponent("Radar")).clearRadarLock();
-				}
-			}
-			
+			componentCore.execute();			
 			execute();
 		}
-	}
-
-	//Few helpers i need
-	public double getFirePower(){
-		return 0.1;
-		// if (((Radar) componentCore.getComponent("Radar")).target == null || !((Radar) componentCore.getComponent("Radar")).target.initialized){return 1;}
-		// return Math.min(400 / myLocation.distance(((Radar) componentCore.getComponent("Radar")).target.location), 3);
 	}
 
 	//Events 'n stuff
