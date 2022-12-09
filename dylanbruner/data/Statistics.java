@@ -2,7 +2,6 @@ package dylanbruner.data;
 
 import java.util.ArrayList;
 
-import dylanbruner.Alphabet;
 import dylanbruner.util.AlphabetLogger;
 import dylanbruner.util.Component;
 import robocode.*;

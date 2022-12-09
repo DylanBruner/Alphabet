@@ -31,12 +31,15 @@ import dylanbruner.funnystuff.FunnyStuffController;
  * 
  * TODO: Segemented Wave Surfing
  * TODO: anti-bullet shielding gun
+ *
+ * His robot falls back into normal shooting if we don't do anything for like 250 ticks during the first round
+ * NOTE: We only need to do this the first round
  * 
- * If we can't hit the robot when it's bullet shielding
- * try to trick it into falling back into normal movement
- * 
- * Maybe we can ram the robot when it's bullet shielding, it's hard to tell if the robot
- * will fall back into normal shooting if we don't do anything.
+ * Changes i need/want to do:
+ *   - SEGMENT WAVE SURVING, this is the number one thing i need to do
+ *   - I could possibly trick his bot into falling back into normal surfing+shooting and then we switch to bullet shielding
+ *   - I could also try to write a anti-wave surfing gun which should do well
+ *   - Mirror Movement????
 */
 
 public class Alphabet extends AdvancedRobot {
@@ -58,7 +61,7 @@ public class Alphabet extends AdvancedRobot {
 	public final int GUN_PATTERN	  = 2;
 	public final int GUN_HEAD_ON	  = 3;
 	public final int GUN_PATTERN_V2   = 4;
-	public int selectedGun = GUN_PATTERN_V2;
+	public int selectedGun = -1;
 
 	//Other public variables
 	public Point2D.Double myLocation;
@@ -133,6 +136,10 @@ public class Alphabet extends AdvancedRobot {
 		
 		//Main
 		while (true){
+			if (getTime() > 250) {
+				selectedGun = GUN_PATTERN_V2;
+			}
+
 			myLocation = new Point2D.Double(getX(), getY());
 			componentCore.execute();
 			
@@ -153,8 +160,9 @@ public class Alphabet extends AdvancedRobot {
 
 	//Few helpers i need
 	public double getFirePower(){
-		if (((Radar) componentCore.getComponent("Radar")).target == null || !((Radar) componentCore.getComponent("Radar")).target.initialized){return 1;}
-		return Math.min(400 / myLocation.distance(((Radar) componentCore.getComponent("Radar")).target.location), 3);
+		return 0.1;
+		// if (((Radar) componentCore.getComponent("Radar")).target == null || !((Radar) componentCore.getComponent("Radar")).target.initialized){return 1;}
+		// return Math.min(400 / myLocation.distance(((Radar) componentCore.getComponent("Radar")).target.location), 3);
 	}
 
 	//Events 'n stuff
