@@ -5,6 +5,7 @@ import java.awt.geom.*;
 import java.awt.event.MouseEvent;
 
 import dylanbruner.data.Radar;
+import dylanbruner.gun.BulletShieldingGun;
 import dylanbruner.util.AlphabetLogger;
 import dylanbruner.util.Component;
 import dylanbruner.util.ComponentCore;
@@ -52,7 +53,7 @@ public class Alphabet extends AdvancedRobot {
 
 		//=======================================================[Components]=======================================================
 		componentCore.registerComponents(new Component[] {
-			new Radar()
+			new Radar(), new BulletShieldingGun()
 		});
 
 		//=======================================================[Robot]=======================================================
