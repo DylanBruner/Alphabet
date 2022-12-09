@@ -27,7 +27,7 @@ public class SpecialGandalf extends Component {
         //TODO: Make sure this is the correct name
         if (alphabet.getOthers() == 1 && e.getName().toLowerCase().contains("gandalf")){
             if (alphabet.getRoundNum() == 0 && (!gottenIntoFallbackMode && !doingAction)){
-                logger.log("Found Gandalf! Fallback mode activated!");
+                logger.log("Found Gandalf! Exploiting fallback");
                 doingAction = true;
                 //Disable all guns
                 setGunStates(false);

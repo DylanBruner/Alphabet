@@ -8,6 +8,7 @@ import dylanbruner.Alphabet;
 public class Component {
     public Alphabet alphabet;
     public AlphabetLogger logger;
+    public String componentTag;
 
     public void init(Alphabet alphabet) {
         this.alphabet = alphabet; //The component shouldn't need to this manually

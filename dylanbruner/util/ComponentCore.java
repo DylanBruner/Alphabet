@@ -57,6 +57,14 @@ public class ComponentCore {
         disabled.put(name, !state);
     }
 
+    public void setComponentStateByTag(String tag, boolean state) {
+        for (Component component : components) {
+            if (component.componentTag != null && component.componentTag.equals(tag)){
+                setComponentState(component.getClass().getSimpleName(), state);
+            }
+        }
+    }
+
     public void unloadAll(){
         logger.warn("Unloading all components!");
         logger.warn("Unloading all components!");
