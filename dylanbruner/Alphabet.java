@@ -27,7 +27,10 @@ import dylanbruner.funnystuff.FunnyStuffController;
 
 
 /*
- * Overview: Moved to README.md 
+ * Overview: Moved to README.md
+ * 
+ * TODO: Segemented Wave Surfing
+ * TODO: anti-bullet shielding gun
 */
 
 public class Alphabet extends AdvancedRobot {
