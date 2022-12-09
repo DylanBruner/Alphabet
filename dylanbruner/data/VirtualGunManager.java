@@ -4,7 +4,7 @@ import java.awt.geom.*;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
-import dylanbruner.gun.GuessFactorGun;
+// import dylanbruner.gun.GuessFactorGun;
 import dylanbruner.gun.HeadOnGun;
 import dylanbruner.gun.LinearGun;
 import dylanbruner.gun.PatternGunV2;
@@ -116,7 +116,7 @@ public class VirtualGunManager extends Component {
         patternGunV2.parentGun = alphabet.GUN_PATTERN_V2;
 
         //Do the bullet calculations (They are relative at first)
-        guessFactorBullet.absFireRadians = ((GuessFactorGun) alphabet.componentCore.getComponent("GuessFactorGun")).doGuessFactorGun(absBearing, bulletPower) + absBearing;
+        // guessFactorBullet.absFireRadians = ((GuessFactorGun) alphabet.componentCore.getComponent("GuessFactorGun")).doGuessFactorGun(absBearing, bulletPower) + absBearing;
         linearBullet.absFireRadians      = ((LinearGun) alphabet.componentCore.getComponent("LinearGun")).doLinearGun(((Radar) alphabet.componentCore.getComponent("Radar")).target.lastScan, bulletPower) + absBearing;
         
         Point2D.Double location = ((PatternMatchGun) alphabet.componentCore.getComponent("PatternMatchGun")).doPatternGun(((Radar) alphabet.componentCore.getComponent("Radar")).target.lastScan, bulletPower);

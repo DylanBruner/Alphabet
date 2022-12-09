@@ -25,7 +25,8 @@ public class SpecialGandalf extends Component {
 
     public void onScannedRobot(ScannedRobotEvent e) {
         //TODO: Make sure this is the correct name
-        if (alphabet.getOthers() == 1 && e.getName().toLowerCase().contains("gandalf")){
+        if (alphabet.getOthers() == 1 && e.getName().toLowerCase().contains("super")){
+            alphabet.selectedGun = alphabet.GUN_GUESS_FACTOR;// Because the robot is a surfer
             if (alphabet.getRoundNum() == 0 && (!gottenIntoFallbackMode && !doingAction)){
                 logger.log("Found Gandalf! Exploiting fallback");
                 doingAction = true;
