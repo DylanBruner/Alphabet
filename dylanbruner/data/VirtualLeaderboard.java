@@ -88,8 +88,8 @@ public class VirtualLeaderboard extends Component {
         for (int i = 0; i < entries.length; i++){
             LeaderboardEntry entry = entries[i];
             if (alphabet.getName() == entry.name && results.getRank() == i + 1){
-                logger.log(i + ". " + entry.name + " with score " + entry.getAverageScore()+" (Correct)");
-            } else {logger.log(i + ". " + entry.name + " with score " + entry.getAverageScore());}
+                logger.log(i+1 + ". " + entry.name + " with score " + entry.getAverageScore()+" (Correct)");
+            } else {logger.log(i+1 + ". " + entry.name + " with score " + entry.getAverageScore());}
         }
     }
 
