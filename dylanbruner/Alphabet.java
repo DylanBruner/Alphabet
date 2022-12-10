@@ -5,6 +5,7 @@ import java.awt.geom.*;
 import java.util.function.Function;
 import java.awt.event.MouseEvent;
 
+import dylanbruner.data.Enemy;
 import dylanbruner.data.Radar;
 import dylanbruner.data.Statistics;
 import dylanbruner.data.VirtualGunManager;
@@ -168,6 +169,30 @@ public class Alphabet extends TeamRobot {
 	public double getFirePower(){
 		if (((Radar) componentCore.getComponent("Radar")).target == null || !((Radar) componentCore.getComponent("Radar")).target.initialized){return 1;}
 		return Math.min(400 / myLocation.distance(((Radar) componentCore.getComponent("Radar")).target.location), 3);
+	}
+
+	public boolean canIFire(){
+		//Make sure none of our teammates are in the way
+		String[] teammates = getTeammates();
+		boolean canFire = true;
+		//Cast a straight line from us to the target
+		Radar radar = (Radar) componentCore.getComponent("Radar");
+		Line2D.Double line = new Line2D.Double(myLocation, ((Radar) componentCore.getComponent("Radar")).target.location);
+		//Check if any of our teammates are in the way
+		for (String teammate : teammates){
+			if (teammate.equals(getName())){continue;}
+			//Get the location of the teammate
+			Enemy teammateObj = radar.enemies.get(teammate);
+			if (teammateObj == null){continue;}
+			Point2D.Double teammateLocation = new Point2D.Double(teammateObj.location.getX(), teammateObj.location.getY());
+			//Check if the teammate is in the way
+			if (line.ptSegDist(teammateLocation) < 18){
+				canFire = false;
+				break;
+			}
+		}
+
+		return canFire;
 	}
 
 	//Events 'n stuff
