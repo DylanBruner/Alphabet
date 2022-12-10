@@ -10,18 +10,12 @@ import dylanbruner.util.AlphabetLogger;
 import dylanbruner.util.Component;
 import dylanbruner.util.MathUtils;
 
-/*
- * Todo:
- *   - Rolling average for surf stats
- *   - Segment data 
-*/
-
 public class SurfMovement extends Component {
     AlphabetLogger logger = new AlphabetLogger("SurfMovement");
 
     //This stores how often the gun shoots at us from a certain angle
     public static int BINS = 47;                  //Distance
-    public static double surfStats[][] = new double[7][BINS];
+    public static double surfStats[][] = new double[8][BINS];
 
     public Point2D.Double myLocation;     
     public Point2D.Double enemyLocation;
