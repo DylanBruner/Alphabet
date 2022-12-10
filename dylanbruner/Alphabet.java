@@ -72,6 +72,9 @@ public class Alphabet extends AdvancedRobot {
 	public void run() {
 		myLocation = new Point2D.Double(getX(), getY());
 
+		setAdjustGunForRobotTurn(true);
+		setAdjustRadarForGunTurn(true);
+
 		//=======================================================[Components]=======================================================
 		componentCore.registerComponents(new Component[] {
 			new Radar(), new Painting(), new Themer(),
