@@ -5,7 +5,6 @@ import dylanbruner.testing.TestBot;
 import dylanbruner.testing.TestLoader;
 import dylanbruner.util.AlphabetLogger;
 import dylanbruner.util.Component;
-import dylanbruner.util.ComponentCore;
 import robocode.ScannedRobotEvent;
 
 /*

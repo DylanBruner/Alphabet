@@ -19,7 +19,6 @@ import dylanbruner.move.MirrorMovement;
 import dylanbruner.move.SurfMovement;
 import dylanbruner.move.UhOhPreventer;
 import dylanbruner.special.SpecialGandalf;
-import dylanbruner.testing.TestLoader;
 import dylanbruner.util.AlphabetLogger;
 import dylanbruner.util.Component;
 import dylanbruner.util.ComponentCore;
