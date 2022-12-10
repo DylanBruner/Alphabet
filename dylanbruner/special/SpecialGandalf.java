@@ -1,8 +1,11 @@
 package dylanbruner.special;
 
+import dylanbruner.Alphabet;
+import dylanbruner.testing.TestBot;
+import dylanbruner.testing.TestLoader;
 import dylanbruner.util.AlphabetLogger;
 import dylanbruner.util.Component;
-import robocode.Rules;
+import dylanbruner.util.ComponentCore;
 import robocode.ScannedRobotEvent;
 
 /*
@@ -23,12 +26,17 @@ public class SpecialGandalf extends Component {
     //Code ==========================================
 
     public static boolean gottenIntoFallbackMode = false;
-
     public boolean doingAction = false;
+
+    TestLoader loader;
+
+    public void execute(){
+    }
 
     public void onScannedRobot(ScannedRobotEvent e) {
         //TODO: Make sure this is the correct name
         if (alphabet.getOthers() == 1 && e.getName().toLowerCase().contains(ROBOT_NAME.toLowerCase())){
+            Alphabet.DEV_DISABLE_MOST = true;
             alphabet.selectedGun = alphabet.GUN_GUESS_FACTOR;// Because the robot is a surfer
             if (alphabet.getRoundNum() == 0 && (!gottenIntoFallbackMode && !doingAction)){
                 logger.log("Found Gandalf! Exploiting fallback");
@@ -38,43 +46,29 @@ public class SpecialGandalf extends Component {
                 alphabet.setTurnRight(0);
                 setGunStates(false);
                 setMovementStates(false);
-            }
+            } 
 
             if (doingAction && e.getEnergy() < 100){
                 doingAction = false;
                 gottenIntoFallbackMode = true;
                 logger.log("Detected Energy drop! Fallback mode enabled!");
-                setGunStates(true);
-                setMovementStates(true);
-            } else if (doingAction) {
-                //Calculate if we have enough time to get into position
-                double timeNeeded = e.getDistance() / Rules.MAX_VELOCITY;
-                double timeToTurn = Math.abs(alphabet.getHeading() + e.getBearing()) / Rules.MAX_TURN_RATE;
-                double totalTime = timeNeeded + timeToTurn;
-                double timeLeft = RAM_TIME - alphabet.getTime();
-                if (totalTime > timeLeft){
-                    logger.log("Not enough time to ram Gandalf!");
-                } else {
 
-                    //Turn the gun to the robot
-                    double relTurn = alphabet.getHeading() + e.getBearing() - alphabet.getGunHeading();
-                    alphabet.setTurnGunRight(relTurn);
-    
-                    //Face the robot
-                    alphabet.setTurnRight(e.getBearing());
-                    alphabet.setMaxVelocity(8);
-    
-                    if (alphabet.getTurnRemaining() == 0){
-                        if (e.getDistance() > 100){
-                            alphabet.setAhead(e.getDistance() + 100);
-                        } else {
-                            alphabet.setAhead(e.getDistance() + 100);
-                            alphabet.setFire(3);
-                        }
-                    }
-                }
+                alphabet.componentCore.unloadAll();
 
+                loader = new TestLoader();
+                loader.load(new TestBot());
+                alphabet.componentCore.registerComponent(loader);
+                ((TestBot) loader.child).init(alphabet);
             }
+        }
+
+        if (gottenIntoFallbackMode && !alphabet.componentCore.componentLookup.containsKey("TestLoader")){
+            alphabet.componentCore.unloadAll();
+
+            loader = new TestLoader();
+            loader.load(new TestBot());
+            alphabet.componentCore.registerComponent(loader);
+            ((TestBot) loader.child).init(alphabet);
         }
     }
 

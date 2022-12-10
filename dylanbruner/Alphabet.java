@@ -19,6 +19,7 @@ import dylanbruner.move.MirrorMovement;
 import dylanbruner.move.SurfMovement;
 import dylanbruner.move.UhOhPreventer;
 import dylanbruner.special.SpecialGandalf;
+import dylanbruner.testing.TestLoader;
 import dylanbruner.util.AlphabetLogger;
 import dylanbruner.util.Component;
 import dylanbruner.util.ComponentCore;
@@ -68,6 +69,8 @@ public class Alphabet extends AdvancedRobot {
 
 	//Other public variables
 	public Point2D.Double myLocation;
+
+	public static boolean DEV_DISABLE_MOST = false;
 
 	public void run() {
 		myLocation = new Point2D.Double(getX(), getY());
@@ -142,20 +145,23 @@ public class Alphabet extends AdvancedRobot {
 		
 		//Main
 		while (true){
-			myLocation = new Point2D.Double(getX(), getY());
 			componentCore.execute();
-			
-			if (!forceDisableAutoMovement) {//This is really only used by OhUhPreventer
-				if (getOthers() > 1 && movementMode != MOVEMENT_MELEE) {
-					logger.log("Switching to melee movement");
-					movementMode = MOVEMENT_MELEE;
-				} else if (getOthers() <= 1 && movementMode != MOVEMENT_SURFING) {
-					logger.log("Switching to surfing");
-					movementMode = MOVEMENT_SURFING;
-					((Radar) componentCore.getComponent("Radar")).clearRadarLock();
+
+			if (!DEV_DISABLE_MOST) {
+				myLocation = new Point2D.Double(getX(), getY());
+				
+				if (!forceDisableAutoMovement) {//This is really only used by OhUhPreventer
+					if (getOthers() > 1 && movementMode != MOVEMENT_MELEE) {
+						logger.log("Switching to melee movement");
+						movementMode = MOVEMENT_MELEE;
+					} else if (getOthers() <= 1 && movementMode != MOVEMENT_SURFING) {
+						logger.log("Switching to surfing");
+						movementMode = MOVEMENT_SURFING;
+						((Radar) componentCore.getComponent("Radar")).clearRadarLock();
+					}
 				}
+				
 			}
-			
 			execute();
 		}
 	}
@@ -182,4 +188,5 @@ public class Alphabet extends AdvancedRobot {
 	public void onWin(WinEvent event) {componentCore.onWin(event);}
 	@Override
 	public void onPaint(java.awt.Graphics2D g) {componentCore.onPaint(g);}
+	public void onCustomEvent(CustomEvent event) {componentCore.onCustomEvent(event);}
 }

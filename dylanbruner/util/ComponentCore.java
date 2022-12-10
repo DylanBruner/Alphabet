@@ -1,6 +1,7 @@
 package dylanbruner.util;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Hashtable;
 import java.util.function.Function;
 
@@ -19,7 +20,7 @@ public class ComponentCore {
     Hashtable<String, Hashtable<String, Function<Alphabet, Boolean>>> executionConditionals = new Hashtable<String, Hashtable<String, Function<Alphabet, Boolean>>>();
     Hashtable<String, Boolean> disabled = new Hashtable<String, Boolean>();
 
-    Hashtable<String, Component> componentLookup = new Hashtable<String, Component>();
+    public Hashtable<String, Component> componentLookup = new Hashtable<String, Component>();
 
     //Event names as string
     public final String ON_SCANNED_ROBOT = "onScannedRobot";
@@ -66,11 +67,10 @@ public class ComponentCore {
     }
 
     public void unloadAll(){
-        logger.warn("Unloading all components!");
-        logger.warn("Unloading all components!");
-        logger.warn("Unloading all components!");
         components.clear();
         componentLookup.clear();
+        executionConditionals.clear();
+        disabled.clear();
     }
 
     public void setEventConditional(String componentName, String eventName, Function<Alphabet, Boolean> conditional){
@@ -111,43 +111,53 @@ public class ComponentCore {
     private void callComponents(robocode.Event e) {
         //Yeah, yeah this is some ugly code, but i will never have to look at it again so it's fine!
         //Check the execution conditionals and see if the component should be executed
-        for (Component component : components) {
-            String componentName = component.getClass().getSimpleName();
-            try {
-                if (e instanceof ScannedRobotEvent && shouldExecute(componentName, ON_SCANNED_ROBOT)) {
-                    component.onScannedRobot((ScannedRobotEvent) e);
-                } else if (e instanceof HitByBulletEvent && shouldExecute(componentName, ON_HIT_BY_BULLET)) {
-                    component.onHitByBullet((HitByBulletEvent) e);
-                } else if (e instanceof BulletHitEvent && shouldExecute(componentName, ON_BULLET_HIT)) {
-                    component.onBulletHit((BulletHitEvent) e);
-                } else if (e instanceof BulletMissedEvent && shouldExecute(componentName, ON_BULLET_MISSED)) {
-                    component.onBulletMissed((BulletMissedEvent) e);
-                } else if (e instanceof BulletHitBulletEvent && shouldExecute(componentName, ON_BULLET_HIT_BULLET)) {
-                    component.onBulletHitBullet((BulletHitBulletEvent) e);
-                } else if (e instanceof HitRobotEvent && shouldExecute(componentName, ON_HIT_ROBOT)) {
-                    component.onHitRobot((HitRobotEvent) e);
-                } else if (e instanceof RobotDeathEvent && shouldExecute(componentName, ON_ROBOT_DEATH)) {
-                    component.onRobotDeath((RobotDeathEvent) e);
-                } else if (e instanceof HitWallEvent && shouldExecute(componentName, ON_HIT_WALL)) {
-                    component.onHitWall((HitWallEvent) e);
-                } else if (e instanceof DeathEvent && shouldExecute(componentName, ON_DEATH)) {
-                    component.onDeath((DeathEvent) e);
-                } else if (e instanceof WinEvent && shouldExecute(componentName, ON_WIN)) {
-                    component.onWin((WinEvent) e);
-                } else if (e instanceof RoundEndedEvent && shouldExecute(componentName, ON_ROUND_ENDED)) {
-                    component.onRoundEnded((RoundEndedEvent) e);
-                } else if (e instanceof BattleEndedEvent && shouldExecute(componentName, ON_BATTLE_ENDED)) {
-                    component.onBattleEnded((BattleEndedEvent) e);
-                } else if (e instanceof SkippedTurnEvent && shouldExecute(componentName, ON_SKIPPED_TURN)) {
-                    component.onSkippedTurn((SkippedTurnEvent) e);
-                } else if (e instanceof StatusEvent && shouldExecute(componentName, ON_STATUS)) {
-                    component.onStatus((StatusEvent) e);
+        //Make a copy of components so that if a component is unloaded it doesn't cause a concurrent modification exception
+        try {
+            ArrayList<Component> componentsCopy = new ArrayList<Component>(components);
+            for (Component component : componentsCopy) {
+                String componentName = component.getClass().getSimpleName();
+                try {
+                    if (e instanceof ScannedRobotEvent && shouldExecute(componentName, ON_SCANNED_ROBOT)) {
+                        component.onScannedRobot((ScannedRobotEvent) e);
+                    } else if (e instanceof HitByBulletEvent && shouldExecute(componentName, ON_HIT_BY_BULLET)) {
+                        component.onHitByBullet((HitByBulletEvent) e);
+                    } else if (e instanceof BulletHitEvent && shouldExecute(componentName, ON_BULLET_HIT)) {
+                        component.onBulletHit((BulletHitEvent) e);
+                    } else if (e instanceof BulletMissedEvent && shouldExecute(componentName, ON_BULLET_MISSED)) {
+                        component.onBulletMissed((BulletMissedEvent) e);
+                    } else if (e instanceof BulletHitBulletEvent && shouldExecute(componentName, ON_BULLET_HIT_BULLET)) {
+                        component.onBulletHitBullet((BulletHitBulletEvent) e);
+                    } else if (e instanceof HitRobotEvent && shouldExecute(componentName, ON_HIT_ROBOT)) {
+                        component.onHitRobot((HitRobotEvent) e);
+                    } else if (e instanceof RobotDeathEvent && shouldExecute(componentName, ON_ROBOT_DEATH)) {
+                        component.onRobotDeath((RobotDeathEvent) e);
+                    } else if (e instanceof HitWallEvent && shouldExecute(componentName, ON_HIT_WALL)) {
+                        component.onHitWall((HitWallEvent) e);
+                    } else if (e instanceof DeathEvent && shouldExecute(componentName, ON_DEATH)) {
+                        component.onDeath((DeathEvent) e);
+                    } else if (e instanceof WinEvent && shouldExecute(componentName, ON_WIN)) {
+                        component.onWin((WinEvent) e);
+                    } else if (e instanceof RoundEndedEvent && shouldExecute(componentName, ON_ROUND_ENDED)) {
+                        component.onRoundEnded((RoundEndedEvent) e);
+                    } else if (e instanceof BattleEndedEvent && shouldExecute(componentName, ON_BATTLE_ENDED)) {
+                        component.onBattleEnded((BattleEndedEvent) e);
+                    } else if (e instanceof SkippedTurnEvent && shouldExecute(componentName, ON_SKIPPED_TURN)) {
+                        component.onSkippedTurn((SkippedTurnEvent) e);
+                    } else if (e instanceof StatusEvent && shouldExecute(componentName, ON_STATUS)) {
+                        component.onStatus((StatusEvent) e);
+                    } else if (e instanceof CustomEvent && shouldExecute(componentName, ON_CUSTOM_EVENT)){
+                        component.onCustomEvent((CustomEvent) e);
+                    }
+                } catch (Exception ex) {
+                    logger.error("calling component failed: " + component.getClass().getSimpleName());
+                    ex.printStackTrace();
+                    logUncaughtException();
                 }
-            } catch (Exception ex) {
-                logger.error("calling component failed: " + component.getClass().getSimpleName());
-                ex.printStackTrace();
-                logUncaughtException();
             }
+        } catch (ConcurrentModificationException ex){
+            logger.error("Concurrent modification exception while calling components!");
+            // ex.printStackTrace();
+            // logUncaughtException();
         }
     }
 
@@ -204,4 +214,5 @@ public class ComponentCore {
     public void onBattleEnded(BattleEndedEvent e)         {callComponents(e);}
     public void onSkippedTurn(SkippedTurnEvent e)         {callComponents(e);}
     public void onStatus(StatusEvent e)                   {callComponents(e);}
+    public void onCustomEvent(CustomEvent e)              {callComponents(e);}
 }

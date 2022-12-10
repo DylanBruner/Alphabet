@@ -32,4 +32,5 @@ public class Component {
     public void onBattleEnded(BattleEndedEvent e) { }
     public void onSkippedTurn(SkippedTurnEvent e) { }
     public void onStatus(StatusEvent e) { }
+    public void onCustomEvent(CustomEvent e) { }
 }
