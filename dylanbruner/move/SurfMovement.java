@@ -14,8 +14,6 @@ import dylanbruner.util.MathUtils;
  * Todo:
  *   - Rolling average for surf stats
  *   - Segment data 
- *
- * 5825-6000smthing 
 */
 
 public class SurfMovement extends Component {
