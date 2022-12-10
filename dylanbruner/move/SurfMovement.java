@@ -10,17 +10,25 @@ import dylanbruner.util.AlphabetLogger;
 import dylanbruner.util.Component;
 import dylanbruner.util.MathUtils;
 
+/*
+ * Todo:
+ *   - Rolling average for surf stats
+ *   - Segment data 
+ *
+ * 5825-6000smthing 
+*/
+
 public class SurfMovement extends Component {
     AlphabetLogger logger = new AlphabetLogger("SurfMovement");
 
     //This stores how often the gun shoots at us from a certain angle
-    public static int BINS = 47;
-    public static double surfStats[] = new double[BINS];
+    public static int BINS = 47;                  //Distance
+    public static double surfStats[][] = new double[7][BINS];
 
     public Point2D.Double myLocation;     
     public Point2D.Double enemyLocation;
 
-    public ArrayList<EnemyWave> enemyWaves = new ArrayList<EnemyWave>();
+    public ArrayList<EnemyWave> enemyWaves   = new ArrayList<EnemyWave>();
     public ArrayList<Integer> surfDirections = new ArrayList<Integer>();
     public ArrayList<Double> surfAbsBearings = new ArrayList<Double>();
 
@@ -46,6 +54,9 @@ public class SurfMovement extends Component {
             ew.distanceTraveled = MathUtils.bulletVelocity(bulletPower);
             ew.direction        = surfDirections.get(2);
             ew.directAngle      = surfAbsBearings.get(2);
+            ew.absBearing       = absBearing;
+            ew.velocity         = e.getVelocity();
+            ew.heading          = e.getHeadingRadians();
             ew.fireLocation     = (Point2D.Double) enemyLocation.clone(); // last tick
 
             enemyWaves.add(ew);
@@ -87,14 +98,18 @@ public class SurfMovement extends Component {
                 enemyWaves.remove(enemyWaves.lastIndexOf(hitWave));
             }
         }
+
+        oppEnergy += Math.min(3.0, e.getBullet().getPower()); //Store the amount of energy the enemy gained from us
     }
-    public void onBulletHit(BulletHitEvent e) {}
+    public void onBulletHit(BulletHitEvent e) {
+        oppEnergy -= Math.min(3.0, e.getBullet().getPower()); //Store the amount of energy the enemy lost from us
+    }
     public void onBulletHitBullet(BulletHitBulletEvent e) {}
 
     //Helpers 'n stuff
     public double checkDanger(EnemyWave surfWave, int direction) {
         int index = getFactorIndex(surfWave, predictPosition(surfWave, direction));
-        return surfStats[index];
+        return surfStats[(int)(surfWave.fireLocation.distance(alphabet.myLocation) / 120)][index];
     }
 
     public void doSurfing(ScannedRobotEvent e) {
@@ -114,6 +129,14 @@ public class SurfMovement extends Component {
         double dangerRight = checkDanger(surfWave, 1);
 
         double goAngle = MathUtils.absoluteBearing(surfWave.fireLocation, myLocation) * 1.25;
+
+        double curveAmount = Math.min(Math.max(0, Math.abs(dangerLeft - dangerRight)), 2);
+        if (dangerLeft < dangerRight) {
+            goAngle += curveAmount;
+        } else {
+            goAngle -= curveAmount;
+        }
+
         if (dangerLeft < dangerRight) {
             goAngle = MathUtils.wallSmoothing(myLocation, goAngle - (Math.PI/2), -1);
         } else {
@@ -210,9 +233,8 @@ public class SurfMovement extends Component {
     //update our stat array to reflect the danger in that area.
     public void logHit(EnemyWave ew, Point2D.Double targetLocation) {
         int index = getFactorIndex(ew, targetLocation);
-
         for (int x = 0; x < BINS; x++) {
-            surfStats[x] += 1.0 / (Math.pow(index - x, 2) + 1);
+            surfStats[(int)(ew.fireLocation.distance(alphabet.myLocation) / 120)][x] += 1.0 / (Math.pow(index - x, 2) + 1);
         }
     }
 
@@ -237,11 +259,15 @@ public class SurfMovement extends Component {
         }
     }
 
+    //Rolling average
+    // public void updateRo
+
     //Classes 'n stuff
     class EnemyWave {
         Point2D.Double fireLocation;
         long fireTime;
         double bulletVelocity, directAngle, distanceTraveled;
+        double absBearing, velocity, heading;
         int direction;
 
         public EnemyWave() { }
