@@ -172,6 +172,7 @@ public class Alphabet extends TeamRobot {
 	}
 
 	public boolean canIFire(){
+		if (true) return true;
 		//Make sure none of our teammates are in the way
 		String[] teammates = getTeammates();
 		boolean canFire = true;
