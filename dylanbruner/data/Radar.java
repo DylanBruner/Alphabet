@@ -62,7 +62,7 @@ public class Radar extends Component {
             radarLockStarted = alphabet.getTime();
         }
 
-        if (radarLocked){
+        if (radarLocked && !alphabet.isTeammate(e.getName())){
             alphabet.setTurnRadarRightRadians(Utils.normalRelativeAngle(absBearing - alphabet.getRadarHeadingRadians()) * 2);
         }
 

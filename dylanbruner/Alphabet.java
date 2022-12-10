@@ -45,7 +45,7 @@ import dylanbruner.funnystuff.FunnyStuffController;
  * test
 */
 
-public class Alphabet extends AdvancedRobot {
+public class Alphabet extends TeamRobot {
 	AlphabetLogger logger              = new AlphabetLogger("Main");
 	public ComponentCore componentCore = new ComponentCore(this);
 
@@ -76,7 +76,6 @@ public class Alphabet extends AdvancedRobot {
 
 		setAdjustGunForRobotTurn(true);
 		setAdjustRadarForGunTurn(true);
-
 		//=======================================================[Components]=======================================================
 		componentCore.registerComponents(new Component[] {
 			new Radar(), new Painting(), new Themer(),

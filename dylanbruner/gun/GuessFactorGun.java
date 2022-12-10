@@ -23,6 +23,8 @@ public class GuessFactorGun extends Component {
     }
 
     public void onScannedRobot(ScannedRobotEvent e){
+        if (alphabet.isTeammate(e.getName())) return;
+
         double enemyAbsoluteBearing = alphabet.getHeadingRadians() + e.getBearingRadians();
         double enemyDistance        = e.getDistance();
         double enemyVelocity        = e.getVelocity();

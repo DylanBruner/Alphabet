@@ -133,6 +133,8 @@ public class PatternMatchGun extends Component {
     }
 
     public void onScannedRobot(ScannedRobotEvent e){
+        if (alphabet.isTeammate(e.getName())) return;
+
         double bulletPower = alphabet.getFirePower();
         Point2D.Double location = doPatternGun(e, bulletPower);
         //Get the angle to the predicted location

@@ -37,6 +37,8 @@ public class LinearGun extends Component {
     }
 
     public void onScannedRobot(ScannedRobotEvent e){
+        if (alphabet.isTeammate(e.getName())) return;
+
         double bulletPower = alphabet.getFirePower();
         double gunRadians = doLinearGun(e, bulletPower);
 

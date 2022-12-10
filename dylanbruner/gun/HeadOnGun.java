@@ -22,6 +22,8 @@ public class HeadOnGun extends Component {
     }
 
     public void onScannedRobot(ScannedRobotEvent e){
+        if (alphabet.isTeammate(e.getName())) return;
+
         Enemy enemy = ((Radar) alphabet.componentCore.getComponent("Radar")).enemies.get(e.getName());
         if (enemy == null || !enemy.initialized) return;
 

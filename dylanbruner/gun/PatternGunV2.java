@@ -36,6 +36,8 @@ public class PatternGunV2 extends Component {
     static final int PATTERN_DEPTH = 30;
 
     public void onScannedRobot(ScannedRobotEvent e){
+        if (alphabet.isTeammate(e.getName())) return;
+
         double bulletPower = alphabet.getFirePower();
         double absBearing = doPatternGunV2(e, bulletPower);
         alphabet.setTurnGunRightRadians(Utils.normalRelativeAngle(absBearing - alphabet.getGunHeadingRadians()));

@@ -19,6 +19,8 @@ public class MeleeGun extends Component {
     long lockSetTime = -1;
 
     public void onScannedRobot(ScannedRobotEvent e) {
+        if (alphabet.isTeammate(e.getName())) return;
+
         if (fireAt == null) return;
         if (e.getName().equals(fireAt.name)){
             fireGun();
