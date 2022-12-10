@@ -61,7 +61,6 @@ public class MathUtils {
         return Math.atan2(point2.x - point1.x, point2.y - point1.y);
     }
 
-    //Make a function that resizes a list of any type
     public static Object resizeArray(Object oldArray, int newSize) {
         int oldSize = java.lang.reflect.Array.getLength(oldArray);
         Class elementType = oldArray.getClass().getComponentType(); //FIXME: Fix raw type warning
