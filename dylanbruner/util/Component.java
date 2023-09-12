@@ -14,6 +14,9 @@ public class Component {
         this.alphabet = alphabet; //The component shouldn't need to this manually
     }
 
+    // Can be overridden by the component to internally setup conditionals
+    public void setupConditionals(ComponentCore componentCore){}
+
     //All events that should be overridden by the component
     public void execute() { }
     public void onScannedRobot(ScannedRobotEvent e) { }

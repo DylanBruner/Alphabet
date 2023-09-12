@@ -80,11 +80,18 @@ public class ComponentCore {
         executionConditionals.get(componentName).put(eventName, conditional);
     }
 
+    public void setEventConditional(String componentName, String[] eventNames, Function<Alphabet, Boolean> conditional){
+        for (String eventName : eventNames){
+            setEventConditional(componentName, eventName, conditional);
+        }
+    }
+
     public void registerComponent(Component component) {
         components.add(component);
         componentLookup.put(component.getClass().getSimpleName(), component);
         try {
             component.init(alphabet);
+            component.setupConditionals(this);
         } catch (Exception e) {
             logger.error("initializing component failed: " + component.getClass().getSimpleName());
             e.printStackTrace();

@@ -5,51 +5,60 @@ import robocode.util.Utils;
 
 import java.awt.geom.*;
 import java.util.ArrayList;
+import java.util.function.Function;
 
+import dylanbruner.Alphabet;
 import dylanbruner.util.AlphabetLogger;
 import dylanbruner.util.Component;
+import dylanbruner.util.ComponentCore;
 import dylanbruner.util.MathUtils;
 
 public class SurfMovement extends Component {
     AlphabetLogger logger = new AlphabetLogger("SurfMovement");
 
-    //This stores how often the gun shoots at us from a certain angle
-    public static int BINS = 47;                  //Distance
+    // This stores how often the gun shoots at us from a certain angle
+    public static int BINS = 47; // Distance
     public static double surfStats[][] = new double[8][BINS];
 
-    public Point2D.Double myLocation;     
+    public Point2D.Double myLocation;
     public Point2D.Double enemyLocation;
 
-    public ArrayList<EnemyWave> enemyWaves   = new ArrayList<EnemyWave>();
+    public ArrayList<EnemyWave> enemyWaves = new ArrayList<EnemyWave>();
     public ArrayList<Integer> surfDirections = new ArrayList<Integer>();
     public ArrayList<Double> surfAbsBearings = new ArrayList<Double>();
 
     public static double oppEnergy = 100.0;
 
+    public void setupConditionals(ComponentCore componentCore) {
+        componentCore.setEventConditional("SurfMovement", new String[] {componentCore.ON_SCANNED_ROBOT, componentCore.ON_HIT_BY_BULLET, 
+            componentCore.ON_BULLET_HIT, componentCore.ON_BULLET_HIT_BULLET}, (Alphabet alphabet) -> {
+            return alphabet.movementMode == alphabet.MOVEMENT_SURFING && !alphabet.useMirorMovement;
+        });
+    }
+
     public void onScannedRobot(ScannedRobotEvent e) {
         myLocation = alphabet.myLocation;
 
-        double lateralVelocity = alphabet.getVelocity()*Math.sin(e.getBearingRadians());
+        double lateralVelocity = alphabet.getVelocity() * Math.sin(e.getBearingRadians());
         double absBearing = e.getBearingRadians() + alphabet.getHeadingRadians();
 
         surfDirections.add(0, (int) ((lateralVelocity >= 0) ? 1 : -1));
         surfAbsBearings.add(0, (double) (absBearing + Math.PI));
 
-
-        //Energy drop means the robot has fired (most likely)
+        // Energy drop means the robot has fired (most likely)
         double bulletPower = oppEnergy - e.getEnergy();
         if (bulletPower < 3.01 && bulletPower > 0.09
-            && surfDirections.size() > 2) {
+                && surfDirections.size() > 2) {
             EnemyWave ew = new EnemyWave();
-            ew.fireTime         = alphabet.getTime() - 1;
-            ew.bulletVelocity   = MathUtils.bulletVelocity(bulletPower);
+            ew.fireTime = alphabet.getTime() - 1;
+            ew.bulletVelocity = MathUtils.bulletVelocity(bulletPower);
             ew.distanceTraveled = MathUtils.bulletVelocity(bulletPower);
-            ew.direction        = surfDirections.get(2);
-            ew.directAngle      = surfAbsBearings.get(2);
-            ew.absBearing       = absBearing;
-            ew.velocity         = e.getVelocity();
-            ew.heading          = e.getHeadingRadians();
-            ew.fireLocation     = (Point2D.Double) enemyLocation.clone(); // last tick
+            ew.direction = surfDirections.get(2);
+            ew.directAngle = surfAbsBearings.get(2);
+            ew.absBearing = absBearing;
+            ew.velocity = e.getVelocity();
+            ew.heading = e.getHeadingRadians();
+            ew.fireLocation = (Point2D.Double) enemyLocation.clone(); // last tick
 
             enemyWaves.add(ew);
         }
@@ -67,7 +76,7 @@ public class SurfMovement extends Component {
     public void onHitByBullet(HitByBulletEvent e) {
         if (!enemyWaves.isEmpty()) {
             Point2D.Double hitBulletLocation = new Point2D.Double(
-                e.getBullet().getX(), e.getBullet().getY());
+                    e.getBullet().getX(), e.getBullet().getY());
             EnemyWave hitWave = null;
 
             // look through the EnemyWaves, and find one that could've hit us.
@@ -75,9 +84,9 @@ public class SurfMovement extends Component {
                 EnemyWave ew = (EnemyWave) enemyWaves.get(x);
 
                 if (Math.abs(ew.distanceTraveled -
-                    myLocation.distance(ew.fireLocation)) < 50
-                    && Math.abs(MathUtils.bulletVelocity(e.getBullet().getPower()) 
-                        - ew.bulletVelocity) < 0.001) {
+                        myLocation.distance(ew.fireLocation)) < 50
+                        && Math.abs(MathUtils.bulletVelocity(e.getBullet().getPower())
+                                - ew.bulletVelocity) < 0.001) {
                     hitWave = ew;
                     break;
                 }
@@ -91,25 +100,28 @@ public class SurfMovement extends Component {
             }
         }
 
-        oppEnergy += Math.min(3.0, e.getBullet().getPower()); //Store the amount of energy the enemy gained from us
+        oppEnergy += Math.min(3.0, e.getBullet().getPower()); // Store the amount of energy the enemy gained from us
     }
-    public void onBulletHit(BulletHitEvent e) {
-        oppEnergy -= Math.min(3.0, e.getBullet().getPower()); //Store the amount of energy the enemy lost from us
-    }
-    public void onBulletHitBullet(BulletHitBulletEvent e) {}
 
-    //Helpers 'n stuff
+    public void onBulletHit(BulletHitEvent e) {
+        oppEnergy -= Math.min(3.0, e.getBullet().getPower()); // Store the amount of energy the enemy lost from us
+    }
+
+    public void onBulletHitBullet(BulletHitBulletEvent e) {
+    }
+
+    // Helpers 'n stuff
     public double checkDanger(EnemyWave surfWave, int direction) {
         int index = getFactorIndex(surfWave, predictPosition(surfWave, direction));
-        return surfStats[(int)(surfWave.fireLocation.distance(alphabet.myLocation) / 120)][index];
+        return surfStats[(int) (surfWave.fireLocation.distance(alphabet.myLocation) / 120)][index];
     }
 
     public void doSurfing(ScannedRobotEvent e) {
         EnemyWave surfWave = getClosestSurfableWave();
 
-        //Keep moving even if there aren't currently any surfable waves
+        // Keep moving even if there aren't currently any surfable waves
         if (surfWave == null) {
-            double angle = MathUtils.absoluteBearing(myLocation, enemyLocation) + (Math.PI/1.5);
+            double angle = MathUtils.absoluteBearing(myLocation, enemyLocation) + (Math.PI / 1.5);
             angle = MathUtils.wallSmoothing(myLocation, angle, -1);
             setBackAsFront(alphabet, angle);
             return;
@@ -117,7 +129,7 @@ public class SurfMovement extends Component {
 
         // if (surfWave == null) {return;}
 
-        double dangerLeft  = checkDanger(surfWave, -1);
+        double dangerLeft = checkDanger(surfWave, -1);
         double dangerRight = checkDanger(surfWave, 1);
 
         double goAngle = MathUtils.absoluteBearing(surfWave.fireLocation, myLocation) * 1.25;
@@ -130,16 +142,16 @@ public class SurfMovement extends Component {
         }
 
         if (dangerLeft < dangerRight) {
-            goAngle = MathUtils.wallSmoothing(myLocation, goAngle - (Math.PI/2), -1);
+            goAngle = MathUtils.wallSmoothing(myLocation, goAngle - (Math.PI / 2), -1);
         } else {
-            goAngle = MathUtils.wallSmoothing(myLocation, goAngle + (Math.PI/2), 1);
+            goAngle = MathUtils.wallSmoothing(myLocation, goAngle + (Math.PI / 2), 1);
         }
 
         setBackAsFront(alphabet, goAngle);
     }
 
     public Point2D.Double predictPosition(EnemyWave surfWave, int direction) {
-        Point2D.Double predictedPosition = (Point2D.Double)myLocation.clone();
+        Point2D.Double predictedPosition = (Point2D.Double) myLocation.clone();
         double predictedVelocity = alphabet.getVelocity();
         double predictedHeading = alphabet.getHeadingRadians();
         double maxTurning, moveAngle, moveDir;
@@ -147,15 +159,14 @@ public class SurfMovement extends Component {
         int counter = 0; // number of ticks in the future
         boolean intercepted = false;
 
-        while(!intercepted && counter < 500) {
-            moveAngle =
-                MathUtils.wallSmoothing(predictedPosition, MathUtils.absoluteBearing(surfWave.fireLocation,
-                predictedPosition) + (direction * (Math.PI/2)), direction)
-                - predictedHeading;
+        while (!intercepted && counter < 500) {
+            moveAngle = MathUtils.wallSmoothing(predictedPosition, MathUtils.absoluteBearing(surfWave.fireLocation,
+                    predictedPosition) + (direction * (Math.PI / 2)), direction)
+                    - predictedHeading;
             moveDir = 1;
 
-            //Max turning
-            if(Math.cos(moveAngle) < 0) {
+            // Max turning
+            if (Math.cos(moveAngle) < 0) {
                 moveAngle += Math.PI;
                 moveDir = -1;
             }
@@ -163,10 +174,11 @@ public class SurfMovement extends Component {
             moveAngle = Utils.normalRelativeAngle(moveAngle);
 
             // maxTurning is built in like this, you can't turn more then this in one tick
-            maxTurning = Math.PI/720d*(40d - 3d*Math.abs(predictedVelocity));
-            predictedHeading = Utils.normalRelativeAngle(predictedHeading + MathUtils.limit(-maxTurning, moveAngle, maxTurning));
+            maxTurning = Math.PI / 720d * (40d - 3d * Math.abs(predictedVelocity));
+            predictedHeading = Utils
+                    .normalRelativeAngle(predictedHeading + MathUtils.limit(-maxTurning, moveAngle, maxTurning));
 
-            predictedVelocity += (predictedVelocity * moveDir < 0 ? 2*moveDir : moveDir);
+            predictedVelocity += (predictedVelocity * moveDir < 0 ? 2 * moveDir : moveDir);
             predictedVelocity = MathUtils.limit(-8, predictedVelocity, 8);
 
             // calculate the new predicted position
@@ -174,7 +186,8 @@ public class SurfMovement extends Component {
 
             counter++;
 
-            if (predictedPosition.distance(surfWave.fireLocation) < surfWave.distanceTraveled + (counter * surfWave.bulletVelocity) + surfWave.bulletVelocity) {
+            if (predictedPosition.distance(surfWave.fireLocation) < surfWave.distanceTraveled
+                    + (counter * surfWave.bulletVelocity) + surfWave.bulletVelocity) {
                 intercepted = true;
             }
         }
@@ -184,11 +197,10 @@ public class SurfMovement extends Component {
 
     public void updateWaves() {
         for (int x = 0; x < enemyWaves.size(); x++) {
-            EnemyWave ew = (EnemyWave)enemyWaves.get(x);
+            EnemyWave ew = (EnemyWave) enemyWaves.get(x);
 
             ew.distanceTraveled = (alphabet.getTime() - ew.fireTime) * ew.bulletVelocity;
-            if (ew.distanceTraveled >
-                myLocation.distance(ew.fireLocation) + 50) {
+            if (ew.distanceTraveled > myLocation.distance(ew.fireLocation) + 50) {
                 enemyWaves.remove(x);
                 x--;
             }
@@ -200,9 +212,9 @@ public class SurfMovement extends Component {
         EnemyWave surfWave = null;
 
         for (int x = 0; x < enemyWaves.size(); x++) {
-            EnemyWave ew = (EnemyWave)enemyWaves.get(x);
+            EnemyWave ew = (EnemyWave) enemyWaves.get(x);
             double distance = myLocation.distance(ew.fireLocation)
-                - ew.distanceTraveled;
+                    - ew.distanceTraveled;
 
             if (distance > ew.bulletVelocity && distance < closestDistance) {
                 surfWave = ew;
@@ -214,27 +226,28 @@ public class SurfMovement extends Component {
     }
 
     public static int getFactorIndex(EnemyWave ew, Point2D.Double targetLocation) {
-        //Angle used to fire at us
+        // Angle used to fire at us
         double offsetAngle = (MathUtils.absoluteBearing(ew.fireLocation, targetLocation) - ew.directAngle);
-        
-        double factor = Utils.normalRelativeAngle(offsetAngle) / MathUtils.maxEscapeAngle(ew.bulletVelocity) * ew.direction;
+
+        double factor = Utils.normalRelativeAngle(offsetAngle) / MathUtils.maxEscapeAngle(ew.bulletVelocity)
+                * ew.direction;
 
         return (int) MathUtils.limit(0, (factor * ((BINS - 1) / 2)) + ((BINS - 1) / 2), BINS - 1);
     }
 
-    //update our stat array to reflect the danger in that area.
+    // update our stat array to reflect the danger in that area.
     public void logHit(EnemyWave ew, Point2D.Double targetLocation) {
         int index = getFactorIndex(ew, targetLocation);
         for (int x = 0; x < BINS; x++) {
-            surfStats[(int)(ew.fireLocation.distance(alphabet.myLocation) / 120)][x] += 1.0 / (Math.pow(index - x, 2) + 1);
+            surfStats[(int) (ew.fireLocation.distance(alphabet.myLocation) / 120)][x] += 1.0
+                    / (Math.pow(index - x, 2) + 1);
         }
     }
 
     public static void setBackAsFront(AdvancedRobot robot, double goAngle) {
-        //Invert movement
-        double angle =
-            Utils.normalRelativeAngle(goAngle - robot.getHeadingRadians());
-        if (Math.abs(angle) > (Math.PI/2)) {
+        // Invert movement
+        double angle = Utils.normalRelativeAngle(goAngle - robot.getHeadingRadians());
+        if (Math.abs(angle) > (Math.PI / 2)) {
             if (angle < 0) {
                 robot.setTurnRightRadians(Math.PI + angle);
             } else {
@@ -243,18 +256,18 @@ public class SurfMovement extends Component {
             robot.setBack(100);
         } else {
             if (angle < 0) {
-                robot.setTurnLeftRadians(-1*angle);
-           } else {
+                robot.setTurnLeftRadians(-1 * angle);
+            } else {
                 robot.setTurnRightRadians(angle);
-           }
+            }
             robot.setAhead(100);
         }
     }
 
-    //Rolling average
+    // Rolling average
     // public void updateRo
 
-    //Classes 'n stuff
+    // Classes 'n stuff
     class EnemyWave {
         Point2D.Double fireLocation;
         long fireTime;
@@ -262,6 +275,7 @@ public class SurfMovement extends Component {
         double absBearing, velocity, heading;
         int direction;
 
-        public EnemyWave() { }
+        public EnemyWave() {
+        }
     }
 }

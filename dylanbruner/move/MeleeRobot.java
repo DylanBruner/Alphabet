@@ -4,11 +4,13 @@ import robocode.*;
 import robocode.util.Utils;
 import java.util.Hashtable;
 
+import dylanbruner.Alphabet;
 import dylanbruner.data.Enemy;
 import dylanbruner.data.Radar;
 import dylanbruner.gun.PatternGunV2;
 import dylanbruner.util.AlphabetLogger;
 import dylanbruner.util.Component;
+import dylanbruner.util.ComponentCore;
 import dylanbruner.util.MathUtils;
 
 import java.awt.geom.Point2D;
@@ -27,7 +29,7 @@ import java.awt.geom.Point2D;
 */
 
 public class MeleeRobot extends Component {
-    AlphabetLogger logger = new AlphabetLogger("MeleeRobot");
+	AlphabetLogger logger = new AlphabetLogger("MeleeRobot");
 
 	static Hashtable<String, internEnemy> enemies = new Hashtable<String, internEnemy>();
 	static internEnemy target;
@@ -37,100 +39,114 @@ public class MeleeRobot extends Component {
 	static double myEnergy;
 
 	public boolean firingGun = false;
-	
-	//Called every tick by the main robot
-    public void execute() {
+
+	public void setupConditionals(ComponentCore componentCore) {
+		componentCore.setEventConditional("MeleeRobot", componentCore.ON_EXECUTE, (Alphabet alphabet) -> {
+			return alphabet.movementMode == alphabet.MOVEMENT_MELEE && !alphabet.useMirorMovement;
+		});
+		componentCore.setEventConditional("MeleeRobot", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
+			return alphabet.movementMode == alphabet.MOVEMENT_MELEE && !alphabet.useMirorMovement;
+		});
+	}
+
+	// Called every tick by the main robot
+	public void execute() {
 		myPos = alphabet.myLocation;
-		if (target == null){
+		if (target == null) {
 			nextDestination = lastPosition = myPos = alphabet.myLocation;
 			target = new internEnemy();
-			target.live = false;//So it doesn't try to shoot
+			target.live = false;// So it doesn't try to shoot
 		}
-		if (nextDestination == null){
+		if (nextDestination == null) {
 			nextDestination = lastPosition = myPos = alphabet.myLocation;
 		}
-        myEnergy = alphabet.getEnergy();
+		myEnergy = alphabet.getEnergy();
 
-		//If the target is not alive, wait for the next scan
-		//If the time is less than 9, wait so all the enemies can be scanned before we start moving
-        if(target.live && alphabet.getTime() > 9) {
-            moveAndShoot();
-        }
-    }
-	
+		// If the target is not alive, wait for the next scan
+		// If the time is less than 9, wait so all the enemies can be scanned before we
+		// start moving
+		if (target.live && alphabet.getTime() > 9) {
+			moveAndShoot();
+		}
+	}
+
 	public void moveAndShoot() {
 		double distanceToTarget = alphabet.myLocation.distance(target.pos);
 
 		// Use pattern match v2 gun now
-		double bulletPower = Math.min(Math.min(myEnergy/6d, 1300d/distanceToTarget), target.energy/3d);
+		double bulletPower = Math.min(Math.min(myEnergy / 6d, 1300d / distanceToTarget), target.energy / 3d);
 		Enemy enemy = ((Radar) alphabet.componentCore.getComponent("Radar")).enemies.get(target.name);
 
-		if (enemy != null && enemy.initialized && enemy.lastScan != null){
+		if (enemy != null && enemy.initialized && enemy.lastScan != null) {
 			PatternGunV2 patternGun = (PatternGunV2) alphabet.componentCore.getComponent("PatternGunV2");
 
 			double absFireAngle = patternGun.doPatternGunV2(enemy.lastScan, bulletPower);
 			double relFireAngle = Utils.normalRelativeAngle(absFireAngle - alphabet.getGunHeadingRadians());
 
 			alphabet.setTurnGunRightRadians(relFireAngle);
-			
-			//If the gun has turned enough to fire, fire
-			if (Math.abs(relFireAngle) < 0.1){
+
+			// If the gun has turned enough to fire, fire
+			if (Math.abs(relFireAngle) < 0.1) {
 				alphabet.setFire(bulletPower);
 			}
 		}
 
 		double distanceToNextDestination = alphabet.myLocation.distance(nextDestination);
-		
-		if(distanceToNextDestination < 15) {
-			double addLast = 1 - Math.rint(Math.pow(Math.random(), alphabet.getOthers()));			
-			Point2D.Double testPoint;
-			
-			//Wall smoothing
-            for (int i=0; i < 200; i++){
-                testPoint = MathUtils.calcPoint(myPos, Math.min(distanceToTarget*0.8, 100 + 200*Math.random()), 2*Math.PI*Math.random());
-                if(MathUtils.fieldBox.contains(testPoint) && getDangerAt(testPoint, addLast) < getDangerAt(nextDestination, addLast)) {
-                    nextDestination = testPoint;
-                }
-            }
 
-			lastPosition = myPos;			
-		} else {			
+		if (distanceToNextDestination < 15) {
+			double addLast = 1 - Math.rint(Math.pow(Math.random(), alphabet.getOthers()));
+			Point2D.Double testPoint;
+
+			// Wall smoothing
+			for (int i = 0; i < 200; i++) {
+				testPoint = MathUtils.calcPoint(myPos, Math.min(distanceToTarget * 0.8, 100 + 200 * Math.random()),
+						2 * Math.PI * Math.random());
+				if (MathUtils.fieldBox.contains(testPoint)
+						&& getDangerAt(testPoint, addLast) < getDangerAt(nextDestination, addLast)) {
+					nextDestination = testPoint;
+				}
+			}
+
+			lastPosition = myPos;
+		} else {
 			double angle = MathUtils.calcAngle(nextDestination, myPos) - alphabet.getHeadingRadians();
 			double direction = 1;
-			
-			if(Math.cos(angle) < 0) {
+
+			if (Math.cos(angle) < 0) {
 				angle += Math.PI;
 				direction = -1;
 			}
-			
+
 			alphabet.setAhead(distanceToNextDestination * direction);
 			alphabet.setTurnRightRadians(angle = Utils.normalRelativeAngle(angle));
 			alphabet.setMaxVelocity(Math.abs(angle) > 1 ? 0 : 8d);
 		}
 	}
-	
+
 	public static double getDangerAt(Point2D.Double p, double addLast) {
-		double danger = addLast*0.08/p.distanceSq(lastPosition);
-		
-		//Loop through the enemies and add their danger to the danger variable
-        for (internEnemy enemy : enemies.values()) {
-            if(!enemy.live) {continue;}
-			danger += Math.min(enemy.energy/myEnergy,2) * 
-					(1 + Math.abs(Math.cos(MathUtils.calcAngle(myPos, p) - MathUtils.calcAngle(enemy.pos, p)))) / p.distanceSq(enemy.pos);
-			//Basically we add danger based on the following
-			//1. The closer the enemy is
-			//2. The more energy the enemy
-			//3. The more the enemy is facing us
-        }
+		double danger = addLast * 0.08 / p.distanceSq(lastPosition);
+
+		// Loop through the enemies and add their danger to the danger variable
+		for (internEnemy enemy : enemies.values()) {
+			if (!enemy.live) {
+				continue;
+			}
+			danger += Math.min(enemy.energy / myEnergy, 2) *
+					(1 + Math.abs(Math.cos(MathUtils.calcAngle(myPos, p) - MathUtils.calcAngle(enemy.pos, p))))
+					/ p.distanceSq(enemy.pos);
+			// Basically we add danger based on the following
+			// 1. The closer the enemy is
+			// 2. The more energy the enemy
+			// 3. The more the enemy is facing us
+		}
 		return danger;
 	}
-	
-    //RoboCode events ==========================================================
-	public void onScannedRobot(ScannedRobotEvent e)
-	{
-		internEnemy enemy = (internEnemy)enemies.get(e.getName());
-		
-		if(enemy == null){
+
+	// RoboCode events ==========================================================
+	public void onScannedRobot(ScannedRobotEvent e) {
+		internEnemy enemy = (internEnemy) enemies.get(e.getName());
+
+		if (enemy == null) {
 			enemy = new internEnemy();
 			enemies.put(e.getName(), enemy);
 		}
@@ -138,39 +154,45 @@ public class MeleeRobot extends Component {
 		enemy.live = true;
 		enemy.name = e.getName();
 		enemy.energy = e.getEnergy();
-		enemy.pos = MathUtils.calcPoint(alphabet.myLocation, e.getDistance(), alphabet.getHeadingRadians() + e.getBearingRadians());
-		
-		// will be replaced soon, just kidding movement relies on it but when ever i feel like it i wanna
-		// replace it with a better target selection system that uses the virtual leaderboard
-		if (target == null){target = enemy;}
-		if(!target.live || e.getDistance() < alphabet.myLocation.distance(target.pos)) {
+		enemy.pos = MathUtils.calcPoint(alphabet.myLocation, e.getDistance(),
+				alphabet.getHeadingRadians() + e.getBearingRadians());
+
+		// will be replaced soon, just kidding movement relies on it but when ever i
+		// feel like it i wanna
+		// replace it with a better target selection system that uses the virtual
+		// leaderboard
+		if (target == null) {
 			target = enemy;
-		}		
+		}
+		if (!target.live || e.getDistance() < alphabet.myLocation.distance(target.pos)) {
+			target = enemy;
+		}
 	}
 
 	public void onHitRobot(HitRobotEvent e) {
-		//Reverse direction upon hitting a robot
+		// Reverse direction upon hitting a robot
 	}
-	
+
 	public void onRobotDeath(RobotDeathEvent e) {
-		//This event isn't blocked when in surfing mode so we might not of actually
-		//scanned the enemy when this event is called so we need to check if the enemy
-		//is in the enemies list first
-		if (enemies.containsKey(e.getName())){
+		// This event isn't blocked when in surfing mode so we might not of actually
+		// scanned the enemy when this event is called so we need to check if the enemy
+		// is in the enemies list first
+		if (enemies.containsKey(e.getName())) {
 			enemies.get(e.getName()).live = false;
 		} else {
 			internEnemy enemy = new internEnemy();
 			enemy.name = e.getName();
 			enemy.live = false;
-			enemy.pos = new Point2D.Double(0,0);
+			enemy.pos = new Point2D.Double(0, 0);
 			enemies.put(e.getName(), enemy);
 		}
 	}
-	
-    // classes =================================================================
 
-	//Used for tracking enemies because all radar control is handed off to this "robot"
-	//When being used for melee combat
+	// classes =================================================================
+
+	// Used for tracking enemies because all radar control is handed off to this
+	// "robot"
+	// When being used for melee combat
 	public class internEnemy {
 		public double energy;
 		public String name;

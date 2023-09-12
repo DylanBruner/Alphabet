@@ -87,7 +87,6 @@ public class Alphabet extends AdvancedRobot {
 		setAdjustGunForRobotTurn(true);
 		setAdjustRadarForGunTurn(true);
 
-		// =======================================================[Components]=======================================================
 		componentCore.registerComponents(new Component[] {
 				new Radar(), new Painting(), new Themer(),
 				new UhOhPreventer(), new VirtualGunManager(), new Statistics(),
@@ -95,63 +94,6 @@ public class Alphabet extends AdvancedRobot {
 				new GuessFactorGun(), new PatternMatchGun(), new MeleeRobot(),
 				new SurfMovement(), new VirtualLeaderboard(), new MirrorMovement(),
 				new FunnyStuffController(), new SpecialGandalf()
-		});
-
-		// Shooting =======================================================
-
-		componentCore.setEventConditional("PatternGunV2", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_PATTERN_V2
-					&& alphabet.movementMode == alphabet.MOVEMENT_SURFING
-					&& ((FunnyStuffController) componentCore
-							.getComponent("FunnyStuffController")).disable_guns == false;
-		});
-		componentCore.setEventConditional("LinearGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_LINEAR
-					&& alphabet.movementMode == alphabet.MOVEMENT_SURFING
-					&& ((FunnyStuffController) componentCore
-							.getComponent("FunnyStuffController")).disable_guns == false;
-		});
-		componentCore.setEventConditional("HeadOnGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_HEAD_ON
-					&& alphabet.movementMode == alphabet.MOVEMENT_SURFING
-					&& ((FunnyStuffController) componentCore
-							.getComponent("FunnyStuffController")).disable_guns == false;
-		});
-		componentCore.setEventConditional("GuessFactorGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_GUESS_FACTOR
-					&& alphabet.movementMode == alphabet.MOVEMENT_SURFING
-					&& ((FunnyStuffController) componentCore
-							.getComponent("FunnyStuffController")).disable_guns == false;
-		});
-		componentCore.setEventConditional("PatternMatchGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_PATTERN
-					&& alphabet.movementMode == alphabet.MOVEMENT_SURFING
-					&& ((FunnyStuffController) componentCore
-							.getComponent("FunnyStuffController")).disable_guns == false;
-		});
-
-		// Movement =======================================================
-
-		// Melee movement
-		componentCore.setEventConditional("MeleeRobot", componentCore.ON_EXECUTE, (Alphabet alphabet) -> {
-			return alphabet.movementMode == alphabet.MOVEMENT_MELEE && !alphabet.useMirorMovement;
-		});
-		componentCore.setEventConditional("MeleeRobot", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.movementMode == alphabet.MOVEMENT_MELEE && !alphabet.useMirorMovement;
-		});
-
-		Function<Alphabet, Boolean> surfingMovementConditional = (Alphabet alphabet) -> {
-			return alphabet.movementMode == alphabet.MOVEMENT_SURFING && !alphabet.useMirorMovement;
-		};
-		componentCore.setEventConditional("SurfMovement", componentCore.ON_SCANNED_ROBOT, surfingMovementConditional);
-		componentCore.setEventConditional("SurfMovement", componentCore.ON_HIT_BY_BULLET, surfingMovementConditional);
-		componentCore.setEventConditional("SurfMovement", componentCore.ON_BULLET_HIT, surfingMovementConditional);
-		componentCore.setEventConditional("SurfMovement", componentCore.ON_BULLET_HIT_BULLET,
-				surfingMovementConditional);
-
-		// Mirror movement, this is mostly just a joke lol
-		componentCore.setEventConditional("MirrorMovement", componentCore.ON_EXECUTE, (Alphabet alphabet) -> {
-			return alphabet.useMirorMovement;
 		});
 
 		// =======================================================[Robot]=======================================================
@@ -182,15 +124,6 @@ public class Alphabet extends AdvancedRobot {
 			execute();
 		}
 	}
-
-	// Few helpers i need
-	// public double getFirePower() {
-	// 	if (((Radar) componentCore.getComponent("Radar")).target == null
-	// 			|| !((Radar) componentCore.getComponent("Radar")).target.initialized) {
-	// 		return 1;
-	// 	}
-	// 	return Math.min(400 / myLocation.distance(((Radar) componentCore.getComponent("Radar")).target.location), 3);
-	// }
 
 	public double getFirePower() {
 		Enemy target = ((Radar) componentCore.getComponent("Radar")).target;

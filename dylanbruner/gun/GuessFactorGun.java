@@ -3,8 +3,10 @@ package dylanbruner.gun;
 import java.awt.geom.Point2D;
 
 import dylanbruner.Alphabet;
+import dylanbruner.funnystuff.FunnyStuffController;
 import dylanbruner.util.AlphabetLogger;
 import dylanbruner.util.Component;
+import dylanbruner.util.ComponentCore;
 import dylanbruner.util.MathUtils;
 import robocode.BulletHitEvent;
 import robocode.RoundEndedEvent;
@@ -19,9 +21,18 @@ public class GuessFactorGun extends Component {
 
     private static double lateralDirection;
     private static double lastEnemyVelocity;
-    
+
     public void init(Alphabet alphabet) {
         super.init(alphabet);
+    }
+
+    public void setupConditionals(ComponentCore componentCore) {
+        componentCore.setEventConditional("GuessFactorGun", new String[] {componentCore.ON_SCANNED_ROBOT, componentCore.ON_ROUND_ENDED, componentCore.ON_BULLET_HIT}, (Alphabet alphabet) -> {
+            return alphabet.selectedGun == alphabet.GUN_GUESS_FACTOR
+                    && alphabet.movementMode == alphabet.MOVEMENT_SURFING
+                    && ((FunnyStuffController) componentCore
+                            .getComponent("FunnyStuffController")).disable_guns == false;
+        });
     }
 
     public void onScannedRobot(ScannedRobotEvent e) {
