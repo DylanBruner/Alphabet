@@ -9,7 +9,9 @@ for root, dirs, files in os.walk("dylanbruner"):
         # add the folder to the list
         folders.append(root.replace("\\", "/").replace("dylanbruner/", ""))
 folders.remove("dylanbruner")
-command = "javac -cp lib/*; -d bin -sourcepath dylanbruner dylanbruner/Alphabet.java dylanbruner/*.java [INSERT]".replace(
+os.makedirs("bin/dylanbruner", exist_ok=True)
+
+command = "javac -cp libs/*; -d bin -sourcepath dylanbruner dylanbruner/Alphabet.java dylanbruner/*.java [INSERT]".replace(
     "[INSERT]", " ".join(["dylanbruner/" + folder + "/*.java" for folder in folders])
 )
 r = os.system(command)
