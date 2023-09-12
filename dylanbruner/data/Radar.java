@@ -81,8 +81,6 @@ public class Radar extends Component {
         }
         
         enemies.get(e.getName()).snapshots.add(new EnemySnapshot(e, alphabet.myLocation));
-        //Log amount of snapshots
-        //logger.log("Enemy " + e.getName() + " has " + enemies.get(e.getName()).snapshots.size() + " snapshots");
 
         // Deciding which enemy to target
         if (alphabet.movementMode == alphabet.MOVEMENT_SURFING){
@@ -91,6 +89,18 @@ public class Radar extends Component {
         } else if (alphabet.movementMode == alphabet.MOVEMENT_MELEE && !radarLocked){
             target = getOptimalMeleeTarget();
         }
+    }
+
+    public void onBulletHit(BulletHitEvent e){
+        Enemy hit = enemies.get(e.getName());
+        if (hit == null) return;
+        hit.__shielding_shotsHit++;
+    }
+
+    public void onBulletHitBullet(BulletHitBulletEvent e){
+        Enemy hit = enemies.get(e.getHitBullet().getName());
+        if (hit == null) return;
+        hit.__shielding_shotsShielded++;
     }
 
     public void onHitByBullet(HitByBulletEvent e){

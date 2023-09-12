@@ -2,30 +2,18 @@ package dylanbruner;
 
 import robocode.*;
 import java.awt.geom.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.function.Function;
 import java.awt.event.MouseEvent;
 
-import dylanbruner.data.Radar;
-import dylanbruner.data.Statistics;
-import dylanbruner.data.VirtualGunManager;
-import dylanbruner.data.VirtualLeaderboard;
-import dylanbruner.gun.GuessFactorGun;
-import dylanbruner.gun.HeadOnGun;
-import dylanbruner.gun.LinearGun;
-import dylanbruner.gun.PatternGunV2;
-import dylanbruner.gun.PatternMatchGun;
-import dylanbruner.move.MeleeRobot;
-import dylanbruner.move.MirrorMovement;
-import dylanbruner.move.SurfMovement;
-import dylanbruner.move.UhOhPreventer;
+import dylanbruner.data.*;
+import dylanbruner.gun.*;
+import dylanbruner.move.*;
 import dylanbruner.special.SpecialGandalf;
-import dylanbruner.util.AlphabetLogger;
-import dylanbruner.util.Component;
-import dylanbruner.util.ComponentCore;
-import dylanbruner.util.Painting;
-import dylanbruner.util.Themer;
+import dylanbruner.util.*;
 import dylanbruner.funnystuff.FunnyStuffController;
-
 
 /*
  * Overview: Moved to README.md
@@ -46,30 +34,52 @@ import dylanbruner.funnystuff.FunnyStuffController;
 */
 
 public class Alphabet extends AdvancedRobot {
-	AlphabetLogger logger              = new AlphabetLogger("Main");
+	AlphabetLogger logger = new AlphabetLogger("Main");
 	public ComponentCore componentCore = new ComponentCore(this);
 
-	//Code ================================================================================================================
-	//Auto movement mode
+	// Code
+	// ================================================================================================================
+	// Auto movement mode
 	public final int MOVEMENT_SURFING = 0;
-	public final int MOVEMENT_MELEE   = 1;
+	public final int MOVEMENT_MELEE = 1;
 	public int movementMode = -1;
 	public boolean forceDisableAutoMovement = false;
-	public boolean useMirorMovement = false; //When i figure out how scoring works I'll probably make this a thing
-											 //For example if i've won 2/3 games and i dont need to win the third i'll turn this on
+	public boolean useMirorMovement = false; // When i figure out how scoring works I'll probably make this a thing
+												// For example if i've won 2/3 games and i dont need to win the third
+												// i'll turn this on
 
-	//Auto gun
+	// Auto gun
 	public final int GUN_GUESS_FACTOR = 0;
-	public final int GUN_LINEAR       = 1;
-	public final int GUN_PATTERN	  = 2;
-	public final int GUN_HEAD_ON	  = 3;
-	public final int GUN_PATTERN_V2   = 4;
-	public int selectedGun = GUN_PATTERN_V2;
+	public final int GUN_LINEAR = 1;
+	public final int GUN_PATTERN = 2;
+	public final int GUN_HEAD_ON = 3;
+	public final int GUN_PATTERN_V2 = 4;
+	public int selectedGun = GUN_GUESS_FACTOR;
 
-	//Other public variables
+	// Other public variables
 	public Point2D.Double myLocation;
 
 	public static boolean DEV_DISABLE_MOST = false;
+
+
+	static final String RED = "\u001B[31m";
+    static final String GREEN = "\u001B[32m";
+    static final String RESET = "\u001B[0m";
+	public static void main(String[] args) { // for development
+		try {
+			Process proc = new ProcessBuilder("python", "compile.py").start();
+			new Thread(() -> new BufferedReader(new InputStreamReader(proc.getInputStream()))
+					.lines().forEach(System.out::println)).start();
+			new Thread(() -> new BufferedReader(new InputStreamReader(proc.getErrorStream()))
+					.lines().forEach(System.err::println)).start();
+			int exitCode = proc.waitFor();
+			System.out.println(
+					exitCode == 0 ? GREEN + "Compilation successful" + RESET
+							: RED + "Error compiling Python code. Exit code: " + exitCode + RESET);
+		} catch (IOException | InterruptedException e) {
+			System.err.println("Error running compilation process: " + e.getMessage());
+		}
+	}
 
 	public void run() {
 		myLocation = new Point2D.Double(getX(), getY());
@@ -77,47 +87,52 @@ public class Alphabet extends AdvancedRobot {
 		setAdjustGunForRobotTurn(true);
 		setAdjustRadarForGunTurn(true);
 
-		//=======================================================[Components]=======================================================
+		// =======================================================[Components]=======================================================
 		componentCore.registerComponents(new Component[] {
-			new Radar(), new Painting(), new Themer(),
-			new UhOhPreventer(), new VirtualGunManager(), new Statistics(),
-			new PatternGunV2(), new LinearGun(), new HeadOnGun(),
-			new GuessFactorGun(), new PatternMatchGun(), new MeleeRobot(),
-			new SurfMovement(), new VirtualLeaderboard(), new MirrorMovement(),
-			new FunnyStuffController(), new SpecialGandalf()
+				new Radar(), new Painting(), new Themer(),
+				new UhOhPreventer(), new VirtualGunManager(), new Statistics(),
+				new PatternGunV2(), new LinearGun(), new HeadOnGun(),
+				new GuessFactorGun(), new PatternMatchGun(), new MeleeRobot(),
+				new SurfMovement(), new VirtualLeaderboard(), new MirrorMovement(),
+				new FunnyStuffController(), new SpecialGandalf()
 		});
 
-		//Shooting =======================================================
+		// Shooting =======================================================
 
 		componentCore.setEventConditional("PatternGunV2", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_PATTERN_V2 
-			       && alphabet.movementMode == alphabet.MOVEMENT_SURFING 
-				   && ((FunnyStuffController) componentCore.getComponent("FunnyStuffController")).disable_guns == false;
+			return alphabet.selectedGun == alphabet.GUN_PATTERN_V2
+					&& alphabet.movementMode == alphabet.MOVEMENT_SURFING
+					&& ((FunnyStuffController) componentCore
+							.getComponent("FunnyStuffController")).disable_guns == false;
 		});
 		componentCore.setEventConditional("LinearGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_LINEAR 
-			       && alphabet.movementMode == alphabet.MOVEMENT_SURFING
-				   && ((FunnyStuffController) componentCore.getComponent("FunnyStuffController")).disable_guns == false;
+			return alphabet.selectedGun == alphabet.GUN_LINEAR
+					&& alphabet.movementMode == alphabet.MOVEMENT_SURFING
+					&& ((FunnyStuffController) componentCore
+							.getComponent("FunnyStuffController")).disable_guns == false;
 		});
 		componentCore.setEventConditional("HeadOnGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_HEAD_ON 
-			       && alphabet.movementMode == alphabet.MOVEMENT_SURFING
-				   && ((FunnyStuffController) componentCore.getComponent("FunnyStuffController")).disable_guns == false;
+			return alphabet.selectedGun == alphabet.GUN_HEAD_ON
+					&& alphabet.movementMode == alphabet.MOVEMENT_SURFING
+					&& ((FunnyStuffController) componentCore
+							.getComponent("FunnyStuffController")).disable_guns == false;
 		});
 		componentCore.setEventConditional("GuessFactorGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_GUESS_FACTOR 
-			       && alphabet.movementMode == alphabet.MOVEMENT_SURFING
-				   && ((FunnyStuffController) componentCore.getComponent("FunnyStuffController")).disable_guns == false;
+			return alphabet.selectedGun == alphabet.GUN_GUESS_FACTOR
+					&& alphabet.movementMode == alphabet.MOVEMENT_SURFING
+					&& ((FunnyStuffController) componentCore
+							.getComponent("FunnyStuffController")).disable_guns == false;
 		});
 		componentCore.setEventConditional("PatternMatchGun", componentCore.ON_SCANNED_ROBOT, (Alphabet alphabet) -> {
-			return alphabet.selectedGun == alphabet.GUN_PATTERN 
-			       && alphabet.movementMode == alphabet.MOVEMENT_SURFING
-				   && ((FunnyStuffController) componentCore.getComponent("FunnyStuffController")).disable_guns == false;
+			return alphabet.selectedGun == alphabet.GUN_PATTERN
+					&& alphabet.movementMode == alphabet.MOVEMENT_SURFING
+					&& ((FunnyStuffController) componentCore
+							.getComponent("FunnyStuffController")).disable_guns == false;
 		});
 
-		//Movement =======================================================
+		// Movement =======================================================
 
-		//Melee movement
+		// Melee movement
 		componentCore.setEventConditional("MeleeRobot", componentCore.ON_EXECUTE, (Alphabet alphabet) -> {
 			return alphabet.movementMode == alphabet.MOVEMENT_MELEE && !alphabet.useMirorMovement;
 		});
@@ -125,31 +140,34 @@ public class Alphabet extends AdvancedRobot {
 			return alphabet.movementMode == alphabet.MOVEMENT_MELEE && !alphabet.useMirorMovement;
 		});
 
-		Function<Alphabet, Boolean> surfingMovementConditional = (Alphabet alphabet) -> {return alphabet.movementMode == alphabet.MOVEMENT_SURFING && !alphabet.useMirorMovement;};
+		Function<Alphabet, Boolean> surfingMovementConditional = (Alphabet alphabet) -> {
+			return alphabet.movementMode == alphabet.MOVEMENT_SURFING && !alphabet.useMirorMovement;
+		};
 		componentCore.setEventConditional("SurfMovement", componentCore.ON_SCANNED_ROBOT, surfingMovementConditional);
 		componentCore.setEventConditional("SurfMovement", componentCore.ON_HIT_BY_BULLET, surfingMovementConditional);
 		componentCore.setEventConditional("SurfMovement", componentCore.ON_BULLET_HIT, surfingMovementConditional);
-		componentCore.setEventConditional("SurfMovement", componentCore.ON_BULLET_HIT_BULLET, surfingMovementConditional);
+		componentCore.setEventConditional("SurfMovement", componentCore.ON_BULLET_HIT_BULLET,
+				surfingMovementConditional);
 
-		//Mirror movement, this is mostly just a joke lol
+		// Mirror movement, this is mostly just a joke lol
 		componentCore.setEventConditional("MirrorMovement", componentCore.ON_EXECUTE, (Alphabet alphabet) -> {
 			return alphabet.useMirorMovement;
 		});
 
-		//=======================================================[Robot]=======================================================
+		// =======================================================[Robot]=======================================================
 
-		//Setup robot
+		// Setup robot
 		setAdjustGunForRobotTurn(true);
 		setAdjustRadarForGunTurn(true);
-		
-		//Main
-		while (true){
+
+		// Main
+		while (true) {
 			componentCore.execute();
 
 			if (!DEV_DISABLE_MOST) {
 				myLocation = new Point2D.Double(getX(), getY());
-				
-				if (!forceDisableAutoMovement) {//This is really only used by OhUhPreventer
+
+				if (!forceDisableAutoMovement) {// This is really only used by OhUhPreventer
 					if (getOthers() > 1 && movementMode != MOVEMENT_MELEE) {
 						logger.log("Switching to melee movement");
 						movementMode = MOVEMENT_MELEE;
@@ -159,19 +177,39 @@ public class Alphabet extends AdvancedRobot {
 						((Radar) componentCore.getComponent("Radar")).clearRadarLock();
 					}
 				}
-				
+
 			}
 			execute();
 		}
 	}
 
-	//Few helpers i need
-	public double getFirePower(){
-		if (((Radar) componentCore.getComponent("Radar")).target == null || !((Radar) componentCore.getComponent("Radar")).target.initialized){return 1;}
-		return Math.min(400 / myLocation.distance(((Radar) componentCore.getComponent("Radar")).target.location), 3);
-	}
+	// Few helpers i need
+	// public double getFirePower() {
+	// 	if (((Radar) componentCore.getComponent("Radar")).target == null
+	// 			|| !((Radar) componentCore.getComponent("Radar")).target.initialized) {
+	// 		return 1;
+	// 	}
+	// 	return Math.min(400 / myLocation.distance(((Radar) componentCore.getComponent("Radar")).target.location), 3);
+	// }
 
-	//Events 'n stuff
+	public double getFirePower() {
+		Enemy target = ((Radar) componentCore.getComponent("Radar")).target;
+		if (target == null) return 1;
+
+        double bulletPower = (target.location.distance(myLocation) < 100) ? 2.95 : 1.95;
+        bulletPower = Math.min(bulletPower, target.energy / 4); // Only use amount of energy required
+        if (getEnergy() < 20) {
+            bulletPower = Math.min(bulletPower, 1);
+        }
+
+		if (target.isShielding()) {
+			bulletPower = 0.1;
+		}
+
+        return Math.min(Math.max(bulletPower, .1), 3);
+    }
+
+	// Events 'n stuff
 	public void onScannedRobot(ScannedRobotEvent e) {componentCore.onScannedRobot(e);}
 	public void onRobotDeath(RobotDeathEvent e) {componentCore.onRobotDeath(e);}
 	public void onHitByBullet(HitByBulletEvent e) {componentCore.onHitByBullet(e);}
@@ -185,7 +223,6 @@ public class Alphabet extends AdvancedRobot {
 	public void onRoundEnded(RoundEndedEvent event) {componentCore.onRoundEnded(event);}
 	public void onBattleEnded(BattleEndedEvent event) {componentCore.onBattleEnded(event);}
 	public void onWin(WinEvent event) {componentCore.onWin(event);}
-	@Override
 	public void onPaint(java.awt.Graphics2D g) {componentCore.onPaint(g);}
 	public void onCustomEvent(CustomEvent event) {componentCore.onCustomEvent(event);}
 }

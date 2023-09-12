@@ -21,10 +21,16 @@ public class Enemy {
     //Gun accuracy trackers
     public int tracker_linearGun      = 0;
     public int tracker_guessFactorGun = 0;
-    public int tracker_patternGun     = 0; 
+    public int tracker_patternGun     = 0;
+
+    // Shielding detection
+    public int __shielding_shotsHit = 0;
+    public int __shielding_shotsShielded = 0;
 
     public boolean alive = true;
     public boolean initialized = false;
+
+    public boolean isShielding(){return __shielding_shotsShielded > __shielding_shotsHit;}
 
     public boolean isIdle(){
         //check the last 20 snapshots (or less if we don't have that many)

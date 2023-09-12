@@ -35,10 +35,10 @@ public class MathUtils {
         return angle;
     }
 
-    public static Point2D.Double project(Point2D.Double sourceLocation,
+    public static Point2D.Double project(Point2D sourceLocation,
         double angle, double length) {
-        return new Point2D.Double(sourceLocation.x + Math.sin(angle) * length,
-            sourceLocation.y + Math.cos(angle) * length);
+        return new Point2D.Double(sourceLocation.getX() + Math.sin(angle) * length,
+            sourceLocation.getY() + Math.cos(angle) * length);
     }
 
     public static double absoluteBearing(Point2D.Double source, Point2D.Double target) {
@@ -61,9 +61,22 @@ public class MathUtils {
         return Math.atan2(point2.x - point1.x, point2.y - point1.y);
     }
 
+    public static double minMax(double v, double min, double max) {
+        return Math.max(min, Math.min(max, v));
+    }
+
+    public static int minMax(int v, int min, int max) {
+        return Math.max(min, Math.min(max, v));
+    }
+
+    public static double absoluteBearing(Point2D source, Point2D target) {
+        return Math.atan2(target.getX() - source.getX(), target.getY() - source.getY());
+    }
+
+    @SuppressWarnings("rawtypes")
     public static Object resizeArray(Object oldArray, int newSize) {
         int oldSize = java.lang.reflect.Array.getLength(oldArray);
-        Class elementType = oldArray.getClass().getComponentType(); //FIXME: Fix raw type warning
+        Class elementType = oldArray.getClass().getComponentType();
         Object newArray = java.lang.reflect.Array.newInstance(elementType,newSize);
         int preserveLength = Math.min(oldSize,newSize);
         if (preserveLength > 0)
